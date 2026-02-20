@@ -8,530 +8,256 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
-  --ink: #0a0a0a;
-  --paper: #f5f0e8;
-  --accent: #c8a96e;
-  --accent-dark: #9a7a45;
-  --muted: #6b6560;
-  --line: rgba(10,10,10,0.12);
-  --green: #2d7a4f;
-  --green-light: #4caf7a;
-  --amber: #e08f3a;
-  --red: #c0392b;
-  --blue: #2c5f8a;
+  --ink:#0a0a0a; --paper:#f5f0e8;
+  --accent:#c8a96e; --accent-dark:#9a7a45;
+  --muted:#6b6560; --line:rgba(10,10,10,0.12);
+  --green:#2d7a4f; --green-light:#4caf7a;
+  --amber:#e08f3a; --red:#c0392b; --blue:#2c5f8a;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
 
 body {
-  font-family: 'Syne', sans-serif;
-  background: var(--ink);
-  color: var(--paper);
-  overflow-x: hidden;
-  cursor: none;
+  font-family:'Syne',sans-serif;
+  background:var(--ink); color:var(--paper);
+  overflow-x:hidden;
 }
-
-.cursor {
-  width: 10px; height: 10px;
-  background: var(--accent);
-  border-radius: 50%;
-  position: fixed; pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: width .3s, height .3s, background .3s;
-}
-.cursor-ring {
-  width: 34px; height: 34px;
-  border: 1.5px solid var(--accent);
-  border-radius: 50%;
-  position: fixed; pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%);
-  transition: all .15s ease;
-  opacity: 0.4;
-}
-
-/* Noise */
 body::before {
-  content:'';
-  position:fixed; inset:0;
+  content:''; position:fixed; inset:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events:none; z-index:1; opacity:0.5;
 }
 
+/* CURSOR */
+.cursor,.cursor-ring{display:none;}
+@media(pointer:fine){
+  .cursor{display:block;width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s;}
+  .cursor-ring{display:block;width:34px;height:34px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease;opacity:.4;}
+  body{cursor:none;}
+}
+
 /* NAV */
 nav {
-  position:fixed; top:0; width:100%; z-index:500;
-  display:flex; justify-content:space-between; align-items:center;
-  padding:20px 6%;
-  background: rgba(10,10,10,0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(200,169,110,0.15);
+  position:fixed;top:0;width:100%;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 6%;
+  background:rgba(10,10,10,0.92);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(200,169,110,0.15);
 }
-.nav-logo {
-  font-family:'DM Serif Display',serif;
-  font-size:18px;
-  color:var(--paper);
-}
-.nav-logo span { color:var(--accent); font-style:italic; }
-.nav-right {
-  display:flex; gap:28px; align-items:center;
-}
-.nav-right a {
-  font-family:'Space Mono',monospace;
-  font-size:10px; letter-spacing:0.14em;
-  text-transform:uppercase; text-decoration:none;
-  color:rgba(255,255,255,0.5);
-  transition:color .3s;
-}
-.nav-right a:hover { color:var(--accent); }
-.nav-right a.active { color:var(--accent); }
+.nav-logo{font-family:'DM Serif Display',serif;font-size:16px;color:var(--paper);}
+.nav-logo span{color:var(--accent);font-style:italic;}
+.nav-right{display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+.nav-right a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.5);transition:color .3s;}
+.nav-right a:hover{color:var(--accent);}
+.nav-back{color:var(--accent)!important;border:1px solid rgba(200,169,110,.3);padding:7px 14px;}
 
 /* HERO */
 .analytics-hero {
-  min-height: 60vh;
-  display:flex; flex-direction:column;
-  justify-content:flex-end;
-  padding: 140px 6% 80px;
-  border-bottom: 1px solid rgba(200,169,110,0.15);
-  position:relative; overflow:hidden;
+  padding:120px 6% 72px;
+  border-bottom:1px solid rgba(200,169,110,.15);
+  position:relative;overflow:hidden;
 }
-
 .hero-bg-text {
-  position:absolute; top:60px; right:4%;
+  position:absolute;top:60px;right:4%;
   font-family:'DM Serif Display',serif;
-  font-size:260px; line-height:1;
-  color:rgba(200,169,110,0.04);
-  font-style:italic; pointer-events:none;
-  letter-spacing:-0.05em;
+  font-size:clamp(100px,20vw,260px);line-height:1;
+  color:rgba(200,169,110,0.04);font-style:italic;
+  pointer-events:none;letter-spacing:-.05em;
+  white-space:nowrap;
 }
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;opacity:0;animation:fadeUp .8s .2s forwards;}
+.analytics-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(40px,7vw,90px);line-height:.95;letter-spacing:-.03em;opacity:0;animation:fadeUp .9s .35s forwards;}
+.analytics-hero h1 em{font-style:italic;color:var(--accent);}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.45);line-height:1.7;max-width:480px;margin-top:24px;opacity:0;animation:fadeUp .8s .5s forwards;}
 
-.hero-eyebrow {
-  font-family:'Space Mono',monospace;
-  font-size:10px; letter-spacing:0.22em;
-  text-transform:uppercase;
-  color:var(--accent);
-  margin-bottom:24px;
-  opacity:0; animation: fadeUp .8s .2s forwards;
-}
-.analytics-hero h1 {
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(52px,7vw,96px);
-  line-height:.95; letter-spacing:-.03em;
-  opacity:0; animation: fadeUp .9s .35s forwards;
-}
-.analytics-hero h1 em { font-style:italic; color:var(--accent); }
+.hero-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border-top:1px solid rgba(200,169,110,.2);opacity:0;animation:fadeUp .8s .65s forwards;}
+.kpi{padding:28px 0;border-right:1px solid rgba(200,169,110,.15);}
+.kpi:last-child{border-right:none;}
+.kpi-val{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);letter-spacing:-.04em;line-height:1;color:var(--accent);}
+.kpi-label{font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.4);margin-top:6px;}
 
-.hero-sub {
-  font-size:15px; color:rgba(255,255,255,0.45);
-  line-height:1.7; max-width:480px;
-  margin-top:28px;
-  opacity:0; animation: fadeUp .8s .5s forwards;
-}
+/* SECTION */
+.section{padding:72px 6%;border-bottom:1px solid rgba(200,169,110,.12);}
 
-.hero-kpi-row {
-  display:grid; grid-template-columns:repeat(4,1fr);
-  gap:0; margin-top:64px;
-  border-top:1px solid rgba(200,169,110,0.2);
-  opacity:0; animation: fadeUp .8s .65s forwards;
-}
+.section-header{display:grid;grid-template-columns:1fr 2fr;gap:36px;align-items:start;margin-bottom:56px;}
+.section-num{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,50px);line-height:1.05;letter-spacing:-.03em;}
+.section-title em{font-style:italic;color:var(--accent);}
+.section-insight{font-size:13px;color:rgba(255,255,255,.5);line-height:1.75;max-width:500px;padding-top:6px;}
 
-.kpi {
-  padding:32px 0;
-  border-right:1px solid rgba(200,169,110,0.15);
-}
-.kpi:last-child { border-right:none; }
-.kpi-val {
-  font-family:'DM Serif Display',serif;
-  font-size:52px; letter-spacing:-.04em;
-  line-height:1; color:var(--accent);
-}
-.kpi-label {
-  font-family:'Space Mono',monospace;
-  font-size:9px; text-transform:uppercase;
-  letter-spacing:0.16em; color:rgba(255,255,255,0.4);
-  margin-top:8px;
-}
+.insight-callout{border-left:2px solid var(--accent);padding:14px 20px;background:rgba(200,169,110,.06);font-size:12px;line-height:1.7;color:rgba(255,255,255,.7);font-style:italic;margin-top:14px;}
+.insight-callout strong{color:var(--accent);font-style:normal;}
 
-/* SECTION STRUCTURE */
-.section {
-  padding:100px 6%;
-  border-bottom:1px solid rgba(200,169,110,0.12);
-}
+/* CHART */
+.chart-wrap{position:relative;background:rgba(255,255,255,.03);border:1px solid rgba(200,169,110,.12);padding:24px;border-radius:2px;}
+.chart-wrap canvas{max-height:340px;}
+.chart-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:16px;}
 
-.section-header {
-  display:grid; grid-template-columns:1fr 2fr;
-  gap:40px; align-items:start;
-  margin-bottom:72px;
-}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.full-col{display:grid;grid-template-columns:1fr;gap:20px;}
 
-.section-label-block {}
+/* SEM CARDS */
+.sem-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid rgba(200,169,110,.15);}
+.sem-card{padding:24px 18px;border-right:1px solid rgba(200,169,110,.12);position:relative;overflow:hidden;transition:.3s;cursor:pointer;}
+.sem-card:last-child{border-right:none;}
+.sem-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,169,110,.08),transparent);opacity:0;transition:.3s;}
+.sem-card:hover::before{opacity:1;}
+.sem-card-num{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:10px;}
+.sem-card-sgpa{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,40px);letter-spacing:-.04em;line-height:1;}
+.sem-card-sgpa.high{color:var(--green-light);}
+.sem-card-sgpa.mid{color:var(--accent);}
+.sem-card-sgpa.low{color:var(--amber);}
+.sem-card-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:6px;}
+.sem-card-bar{margin-top:12px;height:2px;background:rgba(255,255,255,.08);border-radius:1px;}
+.sem-card-bar-fill{height:100%;border-radius:1px;background:var(--accent);transition:width 1.5s ease;}
+.sem-card-note{margin-top:10px;font-size:10px;color:rgba(255,255,255,.3);line-height:1.5;font-family:'Space Mono',monospace;}
 
-.section-num {
-  font-family:'Space Mono',monospace;
-  font-size:9px; letter-spacing:0.2em;
-  color:var(--accent); text-transform:uppercase;
-  margin-bottom:16px;
-}
-
-.section-title {
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(32px,4vw,52px);
-  line-height:1.05; letter-spacing:-.03em;
-  color:var(--paper);
-}
-.section-title em { font-style:italic; color:var(--accent); }
-
-.section-insight {
-  font-size:14px; color:rgba(255,255,255,0.5);
-  line-height:1.75; max-width:520px;
-  padding-top:8px;
-}
-
-/* INSIGHT CALLOUT */
-.insight-callout {
-  border-left:2px solid var(--accent);
-  padding:16px 24px;
-  background:rgba(200,169,110,0.06);
-  font-size:13px; line-height:1.7;
-  color:rgba(255,255,255,0.7);
-  font-style:italic;
-  border-radius:0 4px 4px 0;
-  margin-top:16px;
-}
-
-.insight-callout strong { color:var(--accent); font-style:normal; }
-
-/* CHART CONTAINERS */
-.chart-wrap {
-  position:relative;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(200,169,110,0.12);
-  padding:36px;
-  border-radius:2px;
-}
-
-.chart-wrap canvas { max-height: 380px; }
-
-.chart-label {
-  font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.18em;
-  text-transform:uppercase; color:var(--accent-dark);
-  margin-bottom:20px;
-}
-
-/* GRID LAYOUTS */
-.two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
-.full-col { display:grid; grid-template-columns:1fr; gap:24px; }
-
-/* SEMESTER CARDS */
-.sem-cards {
-  display:grid; grid-template-columns:repeat(5,1fr); gap:0;
-  border:1px solid rgba(200,169,110,0.15);
-}
-
-.sem-card {
-  padding:28px 24px;
-  border-right:1px solid rgba(200,169,110,0.12);
-  position:relative; overflow:hidden;
-  transition:.3s;
-  cursor:pointer;
-}
-.sem-card:last-child { border-right:none; }
-.sem-card::before {
-  content:'';
-  position:absolute; inset:0;
-  background:linear-gradient(135deg, rgba(200,169,110,0.08), transparent);
-  opacity:0; transition:.3s;
-}
-.sem-card:hover::before { opacity:1; }
-
-.sem-card-num {
-  font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.2em;
-  color:rgba(255,255,255,0.3); text-transform:uppercase;
-  margin-bottom:12px;
-}
-
-.sem-card-sgpa {
-  font-family:'DM Serif Display',serif;
-  font-size:42px; letter-spacing:-.04em;
-  line-height:1;
-}
-
-.sem-card-sgpa.high { color:var(--green-light); }
-.sem-card-sgpa.mid { color:var(--accent); }
-.sem-card-sgpa.low { color:var(--amber); }
-
-.sem-card-label {
-  font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.12em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,0.35);
-  margin-top:8px;
-}
-
-.sem-card-bar {
-  margin-top:16px;
-  height:2px; background:rgba(255,255,255,0.08);
-  border-radius:1px;
-}
-.sem-card-bar-fill {
-  height:100%; border-radius:1px;
-  background:var(--accent);
-  transition:width 1.5s ease;
-}
-
-/* ATTENDANCE TABLE */
-.att-table {
-  width:100%; border-collapse:collapse;
-  font-size:12px;
-}
-.att-table th {
-  font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.16em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,0.35);
-  padding:12px 16px;
-  border-bottom:1px solid rgba(200,169,110,0.15);
-  text-align:left;
-}
-.att-table td {
-  padding:14px 16px;
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  font-size:12px;
-  color:rgba(255,255,255,0.75);
-  transition:.3s;
-}
-.att-table tr:hover td { background:rgba(200,169,110,0.04); }
-.att-table .course-name { color:var(--paper); }
-.att-table .att-pct {
-  font-family:'DM Serif Display',serif;
-  font-size:18px; letter-spacing:-.02em;
-}
-.att-pct.perfect { color:var(--green-light); }
-.att-pct.good { color:var(--accent); }
-.att-pct.warn { color:var(--amber); }
-.att-pct.danger { color:var(--red); }
-
-.att-bar-cell { width:120px; }
-.att-mini-bar {
-  height:3px; background:rgba(255,255,255,0.08);
-  border-radius:2px; overflow:hidden;
-}
-.att-mini-fill { height:100%; border-radius:2px; }
-.att-mini-fill.perfect { background:var(--green-light); }
-.att-mini-fill.good { background:var(--accent); }
-.att-mini-fill.warn { background:var(--amber); }
-.att-mini-fill.danger { background:var(--red); }
+/* GRADE ROWS */
+.grade-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.grade-letter{font-family:'DM Serif Display',serif;font-size:26px;width:36px;text-align:center;flex-shrink:0;}
+.grade-A-plus{color:#4caf7a}.grade-A{color:#81c784}.grade-B-plus{color:var(--accent)}.grade-B{color:#e0c070}.grade-C{color:var(--amber)}.grade-P{color:rgba(255,255,255,.35)}
+.grade-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.grade-bar-fill{height:100%;border-radius:3px;transition:width 1.5s ease;}
+.grade-count{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);width:56px;text-align:right;flex-shrink:0;}
 
 /* SEM TABS */
-.sem-tabs {
-  display:flex; gap:0;
-  border:1px solid rgba(200,169,110,0.15);
-  margin-bottom:28px;
-  width:fit-content;
-}
-.sem-tab {
-  font-family:'Space Mono',monospace;
-  font-size:9px; letter-spacing:0.16em;
-  text-transform:uppercase;
-  padding:12px 20px;
-  cursor:pointer;
-  color:rgba(255,255,255,0.4);
-  border-right:1px solid rgba(200,169,110,0.15);
-  transition:.3s;
-  user-select:none;
-}
-.sem-tab:last-child { border-right:none; }
-.sem-tab.active { background:var(--accent-dark); color:var(--paper); }
-.sem-tab:hover:not(.active) { color:var(--accent); background:rgba(200,169,110,0.05); }
+.sem-tabs{display:flex;flex-wrap:wrap;gap:0;margin-bottom:20px;border:1px solid rgba(200,169,110,.15);width:fit-content;}
+.sem-tab{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:rgba(255,255,255,.4);border-right:1px solid rgba(200,169,110,.15);transition:.3s;user-select:none;}
+.sem-tab:last-child{border-right:none;}
+.sem-tab.active{background:var(--accent-dark);color:var(--paper);}
+.sem-tab:hover:not(.active){color:var(--accent);background:rgba(200,169,110,.05);}
+.sem-content{display:none;}
+.sem-content.active{display:block;}
 
-.sem-content { display:none; }
-.sem-content.active { display:block; }
+/* BADGE */
+.badge{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;}
+.badge-safe{background:rgba(76,175,122,.15);color:var(--green-light);border:1px solid rgba(76,175,122,.3);}
+.badge-warn{background:rgba(224,143,58,.15);color:var(--amber);border:1px solid rgba(224,143,58,.3);}
+.badge-danger{background:rgba(192,57,43,.15);color:#e74c3c;border:1px solid rgba(192,57,43,.3);}
 
-/* STATUS BADGE */
-.badge {
-  display:inline-block;
-  font-family:'Space Mono',monospace;
-  font-size:7px; letter-spacing:0.14em;
-  text-transform:uppercase;
-  padding:3px 8px;
-  border-radius:1px;
-}
-.badge-safe { background:rgba(76,175,122,0.15); color:var(--green-light); border:1px solid rgba(76,175,122,0.3); }
-.badge-warn { background:rgba(224,143,58,0.15); color:var(--amber); border:1px solid rgba(224,143,58,0.3); }
-.badge-danger { background:rgba(192,57,43,0.15); color:#e74c3c; border:1px solid rgba(192,57,43,0.3); }
+/* ATTENDANCE TABLE */
+.att-table{width:100%;border-collapse:collapse;font-size:11px;}
+.att-table th{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:10px 12px;border-bottom:1px solid rgba(200,169,110,.15);text-align:left;}
+.att-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.75);transition:.3s;}
+.att-table tr:hover td{background:rgba(200,169,110,.04);}
+.course-name{color:var(--paper);}
+.att-pct{font-family:'DM Serif Display',serif;font-size:16px;letter-spacing:-.02em;}
+.att-pct.perfect{color:var(--green-light)}.att-pct.good{color:var(--accent)}.att-pct.warn{color:var(--amber)}.att-pct.danger{color:var(--red)}
+.att-mini-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;min-width:60px;}
+.att-mini-fill{height:100%;border-radius:2px;}
+.att-mini-fill.perfect{background:var(--green-light)}.att-mini-fill.good{background:var(--accent)}.att-mini-fill.warn{background:var(--amber)}.att-mini-fill.danger{background:var(--red)}
 
-/* GRADE DISTRIBUTION */
-.grade-row {
-  display:flex; align-items:center;
-  gap:16px; padding:16px 0;
-  border-bottom:1px solid rgba(255,255,255,0.05);
-}
-.grade-letter {
-  font-family:'DM Serif Display',serif;
-  font-size:28px; width:40px;
-  text-align:center; flex-shrink:0;
-}
-.grade-A-plus { color:#4caf7a; }
-.grade-A { color:#81c784; }
-.grade-B-plus { color:var(--accent); }
-.grade-B { color:#e0c070; }
-.grade-C { color:var(--amber); }
-.grade-P { color:rgba(255,255,255,0.35); }
+/* ATT SUMMARY */
+.att-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid rgba(200,169,110,.15);margin-bottom:40px;}
+.att-sum-cell{padding:20px 16px;border-right:1px solid rgba(200,169,110,.12);text-align:center;}
+.att-sum-cell:last-child{border-right:none;}
+.att-sum-val{font-family:'DM Serif Display',serif;font-size:clamp(22px,3vw,34px);letter-spacing:-.03em;line-height:1;}
+.att-sum-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:6px;}
 
-.grade-bar-wrap {
-  flex:1; height:6px;
-  background:rgba(255,255,255,0.06);
-  border-radius:3px; overflow:hidden;
-}
-.grade-bar-fill { height:100%; border-radius:3px; transition:width 1.5s ease; }
+.risk-alert{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.25);border-left:3px solid var(--red);padding:14px 18px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.7);}
+.risk-alert strong{color:#e74c3c;}
 
-.grade-count {
-  font-family:'Space Mono',monospace;
-  font-size:10px; color:rgba(255,255,255,0.4);
-  width:60px; text-align:right;
-  flex-shrink:0;
-}
+/* INSIGHT PANELS */
+.insight-panel{padding:22px;border:1px solid rgba(200,169,110,.15);background:rgba(255,255,255,.02);}
+.insight-panel-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px;}
+.insight-panel-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:8px;}
+.insight-panel-text{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;}
 
-/* RADAR / SUBJECT INSIGHT */
-.subject-insight {
-  padding:20px 24px;
-  border:1px solid rgba(200,169,110,0.12);
-  background:rgba(255,255,255,0.02);
-  margin-top:12px;
-}
-.si-top {
-  display:flex; justify-content:space-between; align-items:flex-start;
-  margin-bottom:8px;
-}
-.si-name {
-  font-family:'DM Serif Display',serif;
-  font-size:16px;
-}
-.si-grade {
-  font-family:'DM Serif Display',serif;
-  font-size:22px; color:var(--accent);
-}
-.si-code {
-  font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.12em;
-  text-transform:uppercase; color:rgba(255,255,255,0.3);
-}
+/* STAT PILLS */
+.stat-pills{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+.stat-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(200,169,110,.2);padding:8px 14px;}
+.stat-pill-val{font-family:'DM Serif Display',serif;font-size:18px;color:var(--accent);}
+.stat-pill-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);}
 
-/* TIMELINE */
-.cgpa-journey {
-  position:relative; padding:40px 0;
-}
+/* FINAL VERDICT */
+.verdict-block{padding:40px;border:1px solid rgba(200,169,110,.2);background:rgba(200,169,110,.04);position:relative;overflow:hidden;margin-top:40px;}
+.verdict-bg{position:absolute;top:16px;right:24px;font-family:'DM Serif Display',serif;font-size:clamp(80px,15vw,180px);color:rgba(200,169,110,.04);font-style:italic;line-height:1;pointer-events:none;}
+.verdict-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.verdict-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,3vw,36px);line-height:1.2;max-width:600px;margin-bottom:18px;}
+.verdict-body{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;max-width:580px;}
 
 /* FOOTER */
-.analytics-footer {
-  padding:36px 6%;
-  border-top:1px solid rgba(200,169,110,0.15);
-  display:flex; justify-content:space-between; align-items:center;
-}
-.footer-text {
-  font-family:'Space Mono',monospace;
-  font-size:9px; letter-spacing:0.14em;
-  text-transform:uppercase; color:rgba(255,255,255,0.3);
-}
+.analytics-footer{padding:28px 6%;border-top:1px solid rgba(200,169,110,.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-text{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.back-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;padding:9px 18px;border:1px solid rgba(200,169,110,.2);transition:.3s;}
+.back-btn:hover{color:var(--accent);border-color:var(--accent-dark);}
 
 /* ANIMATIONS */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(24px); }
-  to { opacity:1; transform:translateY(0); }
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ─── MOBILE RESPONSIVE ─── */
+@media(max-width:900px){
+  nav{padding:16px 5%;}
+  .nav-right a:not(.nav-back){display:none;}
+  .analytics-hero{padding:90px 5% 56px;}
+  .hero-bg-text{display:none;}
+  .hero-kpi-row{grid-template-columns:1fr 1fr;}
+  .kpi{border-right:none;border-bottom:1px solid rgba(200,169,110,.15);padding:18px 0;}
+  .kpi:nth-child(odd){border-right:1px solid rgba(200,169,110,.15);}
+  .kpi:nth-last-child(-n+2){border-bottom:none;}
+
+  .section{padding:48px 5%;}
+  .section-header{grid-template-columns:1fr;}
+  .section-header{margin-bottom:36px;}
+
+  .sem-cards{grid-template-columns:1fr 1fr;border:1px solid rgba(200,169,110,.15);}
+  .sem-card{border-right:1px solid rgba(200,169,110,.12)!important;border-bottom:1px solid rgba(200,169,110,.12);}
+  .sem-card:nth-child(2n){border-right:none!important;}
+  .sem-card:nth-last-child(-n+2){border-bottom:none;}
+  .sem-card:last-child{grid-column:1/-1;border-right:none!important;}
+  .sem-card-note{display:none;}
+
+  .two-col{grid-template-columns:1fr;}
+  .att-summary-grid{grid-template-columns:1fr 1fr 1fr;}
+  .att-sum-cell:nth-child(3n){border-right:none;}
+  .att-sum-cell:nth-child(n+4){border-top:1px solid rgba(200,169,110,.12);}
+  .att-sum-cell:last-child{grid-column:1/-1;border-right:none;border-top:1px solid rgba(200,169,110,.12);}
+
+  /* Hide attendance table columns on small screens */
+  .att-table .att-bar-col,.hide-mobile{display:none;}
+
+  .verdict-block{padding:28px 20px;}
+  .stat-pills{gap:8px;}
 }
 
-.reveal {
-  opacity:0; transform:translateY(28px);
-  transition:opacity .8s ease, transform .8s ease;
-}
-.reveal.visible { opacity:1; transform:none; }
+@media(max-width:600px){
+  nav{padding:14px 5%;}
+  .analytics-hero{padding:80px 5% 44px;}
+  .hero-kpi-row{grid-template-columns:1fr 1fr;}
+  .kpi-val{font-size:28px;}
 
-/* STAT PILL */
-.stat-pill {
-  display:inline-flex; align-items:center; gap:10px;
-  border:1px solid rgba(200,169,110,0.2);
-  padding:10px 18px;
-  margin:4px;
-}
-.stat-pill-val {
-  font-family:'DM Serif Display',serif;
-  font-size:20px; color:var(--accent);
-}
-.stat-pill-label {
-  font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.12em;
-  text-transform:uppercase; color:rgba(255,255,255,0.4);
-}
+  .sem-cards{grid-template-columns:1fr;}
+  .sem-card{border-right:none!important;border-bottom:1px solid rgba(200,169,110,.12)!important;}
+  .sem-card:last-child{border-bottom:none!important;}
 
-/* TREND ARROW */
-.trend-up { color:var(--green-light); }
-.trend-down { color:var(--red); }
-.trend-flat { color:var(--amber); }
+  .att-summary-grid{grid-template-columns:1fr 1fr;}
+  .att-sum-cell:nth-child(2n){border-right:none;}
+  .att-sum-cell:nth-child(n+3){border-top:1px solid rgba(200,169,110,.12);}
 
-/* BACK BTN */
-.back-btn {
-  display:inline-flex; align-items:center; gap:10px;
-  font-family:'Space Mono',monospace;
-  font-size:10px; letter-spacing:0.14em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,0.5);
-  text-decoration:none;
-  padding:10px 20px;
-  border:1px solid rgba(200,169,110,0.2);
-  transition:.3s;
-}
-.back-btn:hover { color:var(--accent); border-color:var(--accent-dark); }
+  .sem-tabs{width:100%;}
+  .sem-tab{flex:1;text-align:center;padding:10px 8px;font-size:8px;}
 
-/* OVERALL ATT SUMMARY */
-.att-summary-grid {
-  display:grid; grid-template-columns:repeat(5,1fr); gap:0;
-  border:1px solid rgba(200,169,110,0.15);
-  margin-bottom:48px;
-}
-.att-sum-cell {
-  padding:24px 20px;
-  border-right:1px solid rgba(200,169,110,0.12);
-  text-align:center;
-}
-.att-sum-cell:last-child { border-right:none; }
-.att-sum-val {
-  font-family:'DM Serif Display',serif;
-  font-size:36px; letter-spacing:-.03em;
-  line-height:1;
-}
-.att-sum-label {
-  font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.14em;
-  text-transform:uppercase; color:rgba(255,255,255,0.3);
-  margin-top:8px;
-}
+  /* Simplify table on mobile */
+  .att-table th:nth-child(3),
+  .att-table td:nth-child(3),
+  .att-table th:nth-child(4),
+  .att-table td:nth-child(4){display:none;}
 
-/* Risk alert */
-.risk-alert {
-  background:rgba(192,57,43,0.08);
-  border:1px solid rgba(192,57,43,0.25);
-  border-left:3px solid var(--red);
-  padding:18px 24px;
-  margin-bottom:16px;
-  font-size:13px;
-  color:rgba(255,255,255,0.7);
-}
-.risk-alert strong { color:#e74c3c; }
+  .grade-row{gap:10px;}
+  .grade-letter{font-size:20px;width:28px;}
 
-@media (max-width:900px) {
-  .hero-kpi-row { grid-template-columns:1fr 1fr; }
-  .two-col, .three-col { grid-template-columns:1fr; }
-  .sem-cards { grid-template-columns:1fr 1fr 1fr; }
-  .section-header { grid-template-columns:1fr; }
-  .att-summary-grid { grid-template-columns:1fr 1fr; }
+  .insight-panel{padding:16px;}
+  .verdict-block{padding:20px 16px;}
+  .section{padding:40px 5%;}
 }
 </style>
 </head>
 <body>
-
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
@@ -542,7 +268,7 @@ nav {
     <a href="#grades">Grades</a>
     <a href="#attendance">Attendance</a>
     <a href="#insights">Insights</a>
-    <a href="index.html" style="color:var(--accent); border:1px solid rgba(200,169,110,0.3); padding:8px 16px;">← Portfolio</a>
+    <a href="main.html" class="nav-back">← Portfolio</a>
   </div>
 </nav>
 
@@ -551,468 +277,276 @@ nav {
   <div class="hero-bg-text">DATA</div>
   <div class="hero-eyebrow">Academic Performance Dashboard · 2023–2026</div>
   <h1>Madhav's<br><em>Academic</em><br>Analytics</h1>
-  <p class="hero-sub">
-    A data-driven portrait of 5 semesters — tracking SGPA trajectories, attendance patterns, course-level performance, and the honest story behind the numbers.
-  </p>
-
+  <p class="hero-sub">A data-driven portrait of 5 semesters — tracking SGPA trajectories, attendance patterns, and the honest story behind the numbers.</p>
   <div class="hero-kpi-row">
-    <div class="kpi">
-      <div class="kpi-val">7.85</div>
-      <div class="kpi-label">Current CGPA</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-val">5</div>
-      <div class="kpi-label">Semesters Completed</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-val">42</div>
-      <div class="kpi-label">Courses Tracked</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-val">87%</div>
-      <div class="kpi-label">Avg Attendance (S1–S4)</div>
-    </div>
+    <div class="kpi"><div class="kpi-val">7.85</div><div class="kpi-label">Current CGPA</div></div>
+    <div class="kpi"><div class="kpi-val">5</div><div class="kpi-label">Semesters Done</div></div>
+    <div class="kpi"><div class="kpi-val">42</div><div class="kpi-label">Courses Tracked</div></div>
+    <div class="kpi"><div class="kpi-val">87%</div><div class="kpi-label">Avg Attendance S1–S4</div></div>
   </div>
 </section>
 
-<!-- ─── SECTION 1: SGPA JOURNEY ─── -->
+<!-- ─── GRADES ─── -->
 <section class="section" id="grades">
   <div class="section-header reveal">
-    <div class="section-label-block">
+    <div>
       <div class="section-num">01 — SGPA Journey</div>
       <div class="section-title">Semester<br><em>Grades</em></div>
     </div>
     <div class="section-insight">
-      Five semesters of academic performance, each shaped by different course loads, projects, and phases of focus. The SGPA tells only part of the story — the commentary fills in the rest.
-      <div class="insight-callout">
-        <strong>Current CGPA: 7.85</strong> — A consistent performer who hit his stride early with a strong S1 debut, navigated a challenging S3 dip, and is steadily rebuilding. The trajectory matters as much as the number.
-      </div>
+      Five semesters shaped by different course loads, projects, and phases of focus. SGPA tells part of the story — the commentary fills the rest.
+      <div class="insight-callout"><strong>Current CGPA: 7.85</strong> — Consistent performer who peaked in S2, navigated a project-heavy S3–S4 dip, and is steadily rebuilding. The trajectory matters as much as the number.</div>
     </div>
   </div>
 
-  <!-- SGPA Cards -->
+  <!-- SEM CARDS -->
   <div class="sem-cards reveal">
     <div class="sem-card">
-      <div class="sem-card-num">Semester 01 · 2023-24 Odd</div>
+      <div class="sem-card-num">S1 · 2023-24 Odd</div>
       <div class="sem-card-sgpa high">7.85</div>
       <div class="sem-card-label">SGPA · 8 Courses</div>
       <div class="sem-card-bar"><div class="sem-card-bar-fill" style="width:0" data-w="89.2%"></div></div>
-      <div style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.35); line-height:1.6; font-family:'Space Mono',monospace;">
-        Strong debut. Perfect attendance across all courses.
-      </div>
+      <div class="sem-card-note">Strong debut. 100% attendance.</div>
     </div>
     <div class="sem-card">
-      <div class="sem-card-num">Semester 02 · 2023-24 Even</div>
+      <div class="sem-card-num">S2 · 2023-24 Even</div>
       <div class="sem-card-sgpa high">8.48</div>
       <div class="sem-card-label">SGPA · 7 Courses</div>
       <div class="sem-card-bar"><div class="sem-card-bar-fill" style="width:0" data-w="96.4%"></div></div>
-      <div style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.35); line-height:1.6; font-family:'Space Mono',monospace;">
-        Peak performance. Best semester yet.
-      </div>
+      <div class="sem-card-note">Peak performance. Best semester.</div>
     </div>
     <div class="sem-card">
-      <div class="sem-card-num">Semester 03 · 2024-25 Odd</div>
+      <div class="sem-card-num">S3 · 2024-25 Odd</div>
       <div class="sem-card-sgpa low">7.70</div>
       <div class="sem-card-label">SGPA · 9 Courses</div>
       <div class="sem-card-bar"><div class="sem-card-bar-fill" style="width:0" data-w="87.5%"></div></div>
-      <div style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.35); line-height:1.6; font-family:'Space Mono',monospace;">
-        Heavier load + side projects. A notable dip.
-      </div>
+      <div class="sem-card-note">Heavier load + side projects.</div>
     </div>
     <div class="sem-card">
-      <div class="sem-card-num">Semester 04 · 2024-25 Even</div>
+      <div class="sem-card-num">S4 · 2024-25 Even</div>
       <div class="sem-card-sgpa low">7.55</div>
       <div class="sem-card-label">SGPA · 9 Courses</div>
       <div class="sem-card-bar"><div class="sem-card-bar-fill" style="width:0" data-w="85.8%"></div></div>
-      <div style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.35); line-height:1.6; font-family:'Space Mono',monospace;">
-        Hackathon season. Building over books.
-      </div>
+      <div class="sem-card-note">Hackathon season. Building > books.</div>
     </div>
     <div class="sem-card">
-      <div class="sem-card-num">Semester 05 · 2025-26 Odd</div>
+      <div class="sem-card-num">S5 · 2025-26 Odd</div>
       <div class="sem-card-sgpa mid">7.67</div>
       <div class="sem-card-label">SGPA · 7 Courses</div>
       <div class="sem-card-bar"><div class="sem-card-bar-fill" style="width:0" data-w="87.2%"></div></div>
-      <div style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.35); line-height:1.6; font-family:'Space Mono',monospace;">
-        Recovery begins. Upward signal visible.
-      </div>
+      <div class="sem-card-note">Recovery begins. Upward signal.</div>
     </div>
   </div>
 
-  <!-- Charts Row 1 -->
-  <div class="two-col reveal" style="margin-top:36px;">
+  <!-- Charts -->
+  <div class="two-col reveal" style="margin-top:28px;">
     <div class="chart-wrap">
       <div class="chart-label">SGPA Trend — Semester Over Semester</div>
       <canvas id="sgpaChart"></canvas>
     </div>
     <div class="chart-wrap">
-      <div class="chart-label">SGPA vs CGPA Accumulation</div>
+      <div class="chart-label">SGPA vs Cumulative CGPA</div>
       <canvas id="cgpaChart"></canvas>
     </div>
   </div>
 
-  <!-- Grade Distribution -->
-  <div class="two-col reveal" style="margin-top:24px;">
+  <div class="two-col reveal" style="margin-top:20px;">
     <div class="chart-wrap">
       <div class="chart-label">Grade Distribution — All 5 Semesters</div>
       <canvas id="gradeDistChart"></canvas>
     </div>
-    <div style="padding:0;">
-      <div class="chart-label" style="color:var(--accent-dark); font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:20px;">Grade Breakdown by Letter</div>
-
-      <!-- Grade bars -->
-      <div class="grade-row">
-        <div class="grade-letter grade-A-plus">A+</div>
-        <div style="flex:1;">
-          <div style="display:flex;justify-content:space-between; margin-bottom:6px;">
-            <span style="font-size:11px; color:rgba(255,255,255,0.6);">Elements of Computing S1, Foundations Heritage</span>
-          </div>
-          <div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0; background:#4caf7a;" data-w="18%"></div></div>
-        </div>
-        <div class="grade-count">2 courses</div>
-      </div>
-      <div class="grade-row">
-        <div class="grade-letter grade-A">A</div>
-        <div style="flex:1;">
-          <div style="margin-bottom:6px;"><span style="font-size:11px; color:rgba(255,255,255,0.6);">Math S2, OOP Java, DSA 1, Glimpses India, Comm & IoT, Soft Skills II</span></div>
-          <div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0; background:#81c784;" data-w="55%"></div></div>
-        </div>
-        <div class="grade-count">6 courses</div>
-      </div>
-      <div class="grade-row">
-        <div class="grade-letter grade-B-plus">B+</div>
-        <div style="flex:1;">
-          <div style="margin-bottom:6px;"><span style="font-size:11px; color:rgba(255,255,255,0.6);">Math S1, Physics, ECS-2, UIDesign, Math S3, Fundamentals AI, Comp Networks, Python, Bio S1, Upanishads, ML, AI Robotics, FLA, DBMS, DL, Cloud Computing</span></div>
-          <div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0; background:var(--accent);" data-w="100%"></div></div>
-        </div>
-        <div class="grade-count">16 courses</div>
-      </div>
-      <div class="grade-row">
-        <div class="grade-letter grade-B">B</div>
-        <div style="flex:1;">
-          <div style="margin-bottom:6px;"><span style="font-size:11px; color:rgba(255,255,255,0.6);">PS&C, Discrete Math, Elec Engg, OS, DSA 2, Prob Reasoning, Intro Cloud, Robotic OS, Math S4, DAA, Bio S2, Strategic Lessons</span></div>
-          <div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0; background:#e0c070;" data-w="75%"></div></div>
-        </div>
-        <div class="grade-count">12 courses</div>
-      </div>
-      <div class="grade-row">
-        <div class="grade-letter grade-C">C</div>
-        <div style="flex:1;">
-          <div style="margin-bottom:6px;"><span style="font-size:11px; color:rgba(255,255,255,0.6);">Technical Communication (S1)</span></div>
-          <div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0; background:var(--amber);" data-w="9%"></div></div>
-        </div>
-        <div class="grade-count">1 course</div>
-      </div>
-      <div class="grade-row">
-        <div class="grade-letter grade-P">P</div>
-        <div style="flex:1;">
-          <div style="margin-bottom:6px;"><span style="font-size:11px; color:rgba(255,255,255,0.35);">Leadership Lessons Ramayana, Environmental Science (pass-credit)</span></div>
-          <div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0; background:rgba(255,255,255,0.25);" data-w="18%"></div></div>
-        </div>
-        <div class="grade-count">2 courses</div>
-      </div>
-
-      <div class="insight-callout" style="margin-top:24px;">
-        <strong>B+ dominates</strong> — 16 out of 39 graded courses land in B+. Strong depth across technical subjects. The single C in Technical Communication (S1) was an early outlier — never repeated.
-      </div>
+    <div>
+      <div class="chart-label" style="color:var(--accent-dark);margin-bottom:16px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;">Grade Breakdown by Letter</div>
+      <div class="grade-row"><div class="grade-letter grade-A-plus">A+</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">ECS-1, Foundations Heritage</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:#4caf7a;" data-w="18%"></div></div></div><div class="grade-count">2 courses</div></div>
+      <div class="grade-row"><div class="grade-letter grade-A">A</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">Math S2, OOP Java, DSA 1, Glimpses India, Comm & IoT, Soft Skills II</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:#81c784;" data-w="55%"></div></div></div><div class="grade-count">6 courses</div></div>
+      <div class="grade-row"><div class="grade-letter grade-B-plus">B+</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">Math S1, Physics, ECS-2, UIDesign, Math S3, Fund AI, Comp Networks, Python, Bio S1, Upanishads, ML, AI Robotics, FLA, DBMS, DL, Cloud</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:var(--accent);" data-w="100%"></div></div></div><div class="grade-count">16 courses</div></div>
+      <div class="grade-row"><div class="grade-letter grade-B">B</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">PS&C, Discrete Math, Elec Engg, OS, DSA 2, Prob Reasoning, Robotic OS, Math S4, DAA, Bio S2, Strategic Lessons</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:#e0c070;" data-w="75%"></div></div></div><div class="grade-count">12 courses</div></div>
+      <div class="grade-row"><div class="grade-letter grade-C">C</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">Technical Communication (S1) — never repeated</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:var(--amber);" data-w="9%"></div></div></div><div class="grade-count">1 course</div></div>
+      <div class="grade-row"><div class="grade-letter grade-P">P</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.3);margin-bottom:4px;">Leadership Lessons Ramayana, Environmental Science</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:rgba(255,255,255,.25);" data-w="18%"></div></div></div><div class="grade-count">2 courses</div></div>
+      <div class="insight-callout" style="margin-top:20px;"><strong>B+ dominates</strong> — 16 of 39 graded courses. Strong technical depth. Single C in S1 was an early outlier — never repeated again.</div>
     </div>
   </div>
 
-  <!-- Per-Semester Course Detail -->
-  <div style="margin-top:48px;" class="reveal">
-    <div class="chart-label" style="color:var(--accent-dark); font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:20px;">Course-Level Grades by Semester</div>
+  <!-- Grade bars per sem -->
+  <div style="margin-top:40px;" class="reveal">
+    <div class="chart-label" style="color:var(--accent-dark);margin-bottom:16px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;">Course-Level Grades by Semester</div>
     <div class="sem-tabs">
-      <div class="sem-tab active" onclick="showGradeSem(1, this)">S1</div>
-      <div class="sem-tab" onclick="showGradeSem(2, this)">S2</div>
-      <div class="sem-tab" onclick="showGradeSem(3, this)">S3</div>
-      <div class="sem-tab" onclick="showGradeSem(4, this)">S4</div>
-      <div class="sem-tab" onclick="showGradeSem(5, this)">S5</div>
+      <div class="sem-tab active" onclick="showGradeSem(1,this)">S1</div>
+      <div class="sem-tab" onclick="showGradeSem(2,this)">S2</div>
+      <div class="sem-tab" onclick="showGradeSem(3,this)">S3</div>
+      <div class="sem-tab" onclick="showGradeSem(4,this)">S4</div>
+      <div class="sem-tab" onclick="showGradeSem(5,this)">S5</div>
     </div>
-
-    <!-- S1 -->
-    <div id="grades-s1" class="sem-content active">
-      <div class="chart-wrap">
-        <canvas id="gradeBarS1"></canvas>
-      </div>
-      <div class="insight-callout" style="margin-top:16px;">
-        <strong>Semester 1 — SGPA: 7.85</strong> — A solid debut for an engineering student. Madhav secured A+ in two courses right out of the gate. The lone C in Technical Communication pulled the average down slightly. Perfect attendance across all 8 courses signals a committed start. "Madhav came in strong — a student who understood the weight of what lay ahead."
-      </div>
-    </div>
-
-    <!-- S2 -->
-    <div id="grades-s2" class="sem-content">
-      <div class="chart-wrap">
-        <canvas id="gradeBarS2"></canvas>
-      </div>
-      <div class="insight-callout" style="margin-top:16px;">
-        <strong>Semester 2 — SGPA: 8.48</strong> — Best semester in the record. All courses in the A/A+ range except two B+s and one B. Core CS subjects (OOP, DSA, ECS) all yielded A. "This is when Madhav locked in — possibly the most academically focused phase of these 5 semesters."
-      </div>
-    </div>
-
-    <!-- S3 -->
-    <div id="grades-s3" class="sem-content">
-      <div class="chart-wrap">
-        <canvas id="gradeBarS3"></canvas>
-      </div>
-      <div class="insight-callout" style="margin-top:16px;">
-        <strong>Semester 3 — SGPA: 7.70</strong> — The load intensified. 9 courses including OS, DSA 2, Python, Networks, and Fundamentals of AI. Attendance dropped in some courses (Upanishads: 75%, Strategic Lessons: 62.5%). "Madhav was clearly pulled in multiple directions — the hackathon circuit likely started here. The grades reflect a student beginning to invest in projects beyond the classroom."
-      </div>
-    </div>
-
-    <!-- S4 -->
-    <div id="grades-s4" class="sem-content">
-      <div class="chart-wrap">
-        <canvas id="gradeBarS4"></canvas>
-      </div>
-      <div class="insight-callout" style="margin-top:16px;">
-        <strong>Semester 4 — SGPA: 7.55</strong> — The lowest SGPA in 5 semesters. But context matters: this is when IIT Madras Road Safety Hackathon and Urban Vision Hackathon were happening. Machine Learning got a B+, which is respectable given everything else running in parallel. "The dip wasn't from disengagement — it was from over-engagement. Madhav was building real things."
-      </div>
-    </div>
-
-    <!-- S5 -->
-    <div id="grades-s5" class="sem-content">
-      <div class="chart-wrap">
-        <canvas id="gradeBarS5"></canvas>
-      </div>
-      <div class="insight-callout" style="margin-top:16px;">
-        <strong>Semester 5 — SGPA: 7.67</strong> — A cautious recovery. Deep Learning hit B+, and Database Management and FLA also landed B+. The only B grades are in Probabilistic Reasoning, Cloud Computing, and Robotic OS. "S5 shows Madhav recalibrating — still building projects, but beginning to close the academic gap."
-      </div>
-    </div>
+    <div id="grades-s1" class="sem-content active"><div class="chart-wrap"><canvas id="gradeBarS1"></canvas></div><div class="insight-callout" style="margin-top:12px;"><strong>S1 — SGPA: 7.85</strong> — Solid debut. A+ in ECS-1 and Foundations Heritage. Single C in Technical Communication. Perfect 100% attendance across all 8 courses. "Madhav came in strong and disciplined."</div></div>
+    <div id="grades-s2" class="sem-content"><div class="chart-wrap"><canvas id="gradeBarS2"></canvas></div><div class="insight-callout" style="margin-top:12px;"><strong>S2 — SGPA: 8.48</strong> — Best semester. OOP Java, DSA 1, Glimpses India all scored A. "This is Madhav locked in — possibly his most academically focused phase."</div></div>
+    <div id="grades-s3" class="sem-content"><div class="chart-wrap"><canvas id="gradeBarS3"></canvas></div><div class="insight-callout" style="margin-top:12px;"><strong>S3 — SGPA: 7.70</strong> — 9 courses including OS, DSA 2, Python, Networks, Fundamentals of AI. Attendance dropped in some courses. "Madhav was clearly pulled in multiple directions — hackathon circuit likely started here."</div></div>
+    <div id="grades-s4" class="sem-content"><div class="chart-wrap"><canvas id="gradeBarS4"></canvas></div><div class="insight-callout" style="margin-top:12px;"><strong>S4 — SGPA: 7.55</strong> — Lowest SGPA. But this is when IIT Madras Road Safety Hackathon and Urban Vision Hackathon were happening. Machine Learning got B+. "The dip wasn't disengagement — it was over-engagement. Madhav was building real things."</div></div>
+    <div id="grades-s5" class="sem-content"><div class="chart-wrap"><canvas id="gradeBarS5"></canvas></div><div class="insight-callout" style="margin-top:12px;"><strong>S5 — SGPA: 7.67</strong> — Cautious recovery. Deep Learning B+, DBMS B+, FLA B+. "S5 shows Madhav recalibrating — still building, but beginning to close the academic gap."</div></div>
   </div>
 </section>
 
-<!-- ─── SECTION 2: ATTENDANCE ─── -->
+<!-- ─── ATTENDANCE ─── -->
 <section class="section" id="attendance">
   <div class="section-header reveal">
-    <div class="section-label-block">
+    <div>
       <div class="section-num">02 — Attendance Analysis</div>
       <div class="section-title">Class<br><em>Presence</em></div>
     </div>
     <div class="section-insight">
-      Tracking every class across S1–S5. The minimum required is 75%. Green means committed. Amber means watch out. Red means a story happened.
-      <div class="insight-callout">
-        <strong>S1 was flawless — 100% across every subject.</strong> As semesters progressed and projects mounted, attendance naturally reflected where Madhav's attention was being pulled. Some dips are strategic. Some need watching.
-      </div>
+      Tracking every class across S1–S5. Minimum required: 75%. Green = committed. Amber = watch. Red = a story happened.
+      <div class="insight-callout"><strong>S1 was flawless — 100% across every subject.</strong> As semesters progressed and projects mounted, attendance reflected where attention was being pulled.</div>
     </div>
   </div>
 
-  <!-- Summary Row -->
   <div class="att-summary-grid reveal">
-    <div class="att-sum-cell">
-      <div class="att-sum-val" style="color:var(--green-light);">100%</div>
-      <div class="att-sum-label">S1 Average</div>
-    </div>
-    <div class="att-sum-cell">
-      <div class="att-sum-val" style="color:var(--green-light);">92.6%</div>
-      <div class="att-sum-label">S2 Average</div>
-    </div>
-    <div class="att-sum-cell">
-      <div class="att-sum-val" style="color:var(--amber);">79.3%</div>
-      <div class="att-sum-label">S3 Average</div>
-    </div>
-    <div class="att-sum-cell">
-      <div class="att-sum-val" style="color:var(--accent);">87.1%</div>
-      <div class="att-sum-label">S4 Average</div>
-    </div>
-    <div class="att-sum-cell">
-      <div class="att-sum-val" style="color:var(--accent);">83.3%</div>
-      <div class="att-sum-label">S5 Average</div>
-    </div>
+    <div class="att-sum-cell"><div class="att-sum-val" style="color:var(--green-light);">100%</div><div class="att-sum-label">S1 Average</div></div>
+    <div class="att-sum-cell"><div class="att-sum-val" style="color:var(--green-light);">92.6%</div><div class="att-sum-label">S2 Average</div></div>
+    <div class="att-sum-cell"><div class="att-sum-val" style="color:var(--amber);">79.3%</div><div class="att-sum-label">S3 Average</div></div>
+    <div class="att-sum-cell"><div class="att-sum-val" style="color:var(--accent);">87.1%</div><div class="att-sum-label">S4 Average</div></div>
+    <div class="att-sum-cell"><div class="att-sum-val" style="color:var(--accent);">83.3%</div><div class="att-sum-label">S5 Average</div></div>
   </div>
 
-  <!-- Attendance Chart -->
   <div class="full-col reveal">
     <div class="chart-wrap">
-      <div class="chart-label">Semester-Wise Attendance Average vs 75% Threshold</div>
-      <canvas id="attTrendChart" style="max-height:280px;"></canvas>
+      <div class="chart-label">Attendance Trend vs 75% Minimum Threshold</div>
+      <canvas id="attTrendChart" style="max-height:260px;"></canvas>
     </div>
   </div>
 
-  <div class="two-col reveal" style="margin-top:24px;">
-    <div class="chart-wrap">
-      <div class="chart-label">Attendance Distribution — % Buckets</div>
-      <canvas id="attDistChart" style="max-height:300px;"></canvas>
-    </div>
-    <div class="chart-wrap">
-      <div class="chart-label">At-Risk Courses vs Safe Courses Per Semester</div>
-      <canvas id="riskChart" style="max-height:300px;"></canvas>
-    </div>
+  <div class="two-col reveal" style="margin-top:20px;">
+    <div class="chart-wrap"><div class="chart-label">Attendance Distribution — % Buckets</div><canvas id="attDistChart" style="max-height:280px;"></canvas></div>
+    <div class="chart-wrap"><div class="chart-label">At-Risk vs Safe Courses Per Semester</div><canvas id="riskChart" style="max-height:280px;"></canvas></div>
   </div>
 
-  <!-- Detailed Tables per Semester -->
-  <div style="margin-top:48px;" class="reveal">
-    <div class="chart-label" style="color:var(--accent-dark); font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:20px;">Course-Level Attendance Detail</div>
-
+  <!-- Detailed per-sem tables -->
+  <div style="margin-top:40px;" class="reveal">
+    <div class="chart-label" style="color:var(--accent-dark);margin-bottom:16px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;">Course-Level Attendance Detail</div>
     <div class="sem-tabs">
-      <div class="sem-tab active" onclick="showAttSem(1, this)">S1</div>
-      <div class="sem-tab" onclick="showAttSem(2, this)">S2</div>
-      <div class="sem-tab" onclick="showAttSem(3, this)">S3</div>
-      <div class="sem-tab" onclick="showAttSem(4, this)">S4</div>
-      <div class="sem-tab" onclick="showAttSem(5, this)">S5</div>
+      <div class="sem-tab active" onclick="showAttSem(1,this)">S1</div>
+      <div class="sem-tab" onclick="showAttSem(2,this)">S2</div>
+      <div class="sem-tab" onclick="showAttSem(3,this)">S3</div>
+      <div class="sem-tab" onclick="showAttSem(4,this)">S4</div>
+      <div class="sem-tab" onclick="showAttSem(5,this)">S5</div>
     </div>
 
-    <!-- S1 -->
     <div id="att-s1" class="sem-content active">
-      <div class="insight-callout" style="margin-bottom:16px;">
-        🟢 <strong>"Madhav is perfectly sincere here."</strong> 100% attendance across all 8 courses. This is a student who showed up — every single time. No dips, no absences recorded. A disciplined entry into university life.
-      </div>
+      <div class="insight-callout" style="margin-bottom:14px;">🟢 <strong>"Perfectly sincere here."</strong> 100% across all 8 courses. No absences. A disciplined entry into university life.</div>
+      <div style="overflow-x:auto;">
       <table class="att-table">
-        <tr><th>Course Code</th><th>Course Name</th><th>Classes</th><th>Attended</th><th>%</th><th style="width:120px;">Bar</th><th>Status</th></tr>
-        <tr><td>19ENG111</td><td class="course-name">Technical Communication</td><td>35</td><td>35</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22ADM101</td><td class="course-name">Foundations of Indian Heritage</td><td>14</td><td>14</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE101</td><td class="course-name">Problem Solving & C Programming</td><td>53</td><td>53</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE102</td><td class="course-name">Elements of Computing Systems 1</td><td>41</td><td>41</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AVP103</td><td class="course-name">Mastery Over Mind</td><td>20</td><td>20</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22MAT110</td><td class="course-name">Mathematics for Computing 1</td><td>46</td><td>46</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22MAT121</td><td class="course-name">Discrete Mathematics</td><td>36</td><td>36</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22PHY106</td><td class="course-name">Computational Physics</td><td>43</td><td>43</td><td><span class="att-pct perfect">100%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:100%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-      </table>
+        <tr><th>Code</th><th>Course Name</th><th>%</th><th class="hide-mobile">Status</th></tr>
+        <tr><td>19ENG111</td><td class="course-name">Technical Communication</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22ADM101</td><td class="course-name">Foundations of Indian Heritage</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE101</td><td class="course-name">Problem Solving & C Programming</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE102</td><td class="course-name">Elements of Computing Systems 1</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AVP103</td><td class="course-name">Mastery Over Mind</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22MAT110</td><td class="course-name">Mathematics for Computing 1</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22MAT121</td><td class="course-name">Discrete Mathematics</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22PHY106</td><td class="course-name">Computational Physics</td><td><span class="att-pct perfect">100%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+      </table></div>
     </div>
 
-    <!-- S2 -->
     <div id="att-s2" class="sem-content">
-      <div class="insight-callout" style="margin-bottom:16px;">
-        🟢 <strong>"Still highly committed, but human."</strong> S2 saw the first attendance dips — Glimpses of Glorious India at 86.21% was the lowest. Core technical courses (DSA, OOP, ECS, UIDesign) all remained above 91%. Overall average stayed excellent at 92.6%.
-      </div>
+      <div class="insight-callout" style="margin-bottom:14px;">🟢 <strong>"Still highly committed, but human."</strong> First attendance dips — Glimpses of India at 86.21%. Core technical courses all above 91%. Average 92.6%.</div>
+      <div style="overflow-x:auto;">
       <table class="att-table">
-        <tr><th>Course Code</th><th>Course Name</th><th>Classes</th><th>Attended</th><th>%</th><th style="width:120px;">Bar</th><th>Status</th></tr>
-        <tr><td>22ADM111</td><td class="course-name">Glimpses of Glorious India</td><td>29</td><td>25</td><td><span class="att-pct good">86.21%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:86.21%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE111</td><td class="course-name">Object Oriented Programming in Java</td><td>67</td><td>61</td><td><span class="att-pct good">91.04%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:91.04%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE112</td><td class="course-name">Data Structures & Algorithms 1</td><td>74</td><td>69</td><td><span class="att-pct good">93.24%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:93.24%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE113</td><td class="course-name">Elements of Computing Systems 2</td><td>60</td><td>55</td><td><span class="att-pct good">91.67%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:91.67%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE114</td><td class="course-name">Intro to Electrical & Electronics Engg</td><td>56</td><td>53</td><td><span class="att-pct good">94.64%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:94.64%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE115</td><td class="course-name">User Interface Design</td><td>44</td><td>41</td><td><span class="att-pct good">93.18%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:93.18%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22MAT122</td><td class="course-name">Mathematics for Computing 2</td><td>74</td><td>70</td><td><span class="att-pct good">94.59%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:94.59%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-      </table>
+        <tr><th>Code</th><th>Course Name</th><th>%</th><th class="hide-mobile">Status</th></tr>
+        <tr><td>22ADM111</td><td class="course-name">Glimpses of Glorious India</td><td><span class="att-pct good">86.21%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE111</td><td class="course-name">Object Oriented Programming in Java</td><td><span class="att-pct good">91.04%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE112</td><td class="course-name">Data Structures & Algorithms 1</td><td><span class="att-pct good">93.24%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE113</td><td class="course-name">Elements of Computing Systems 2</td><td><span class="att-pct good">91.67%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE114</td><td class="course-name">Intro to Electrical & Electronics Engg</td><td><span class="att-pct good">94.64%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE115</td><td class="course-name">User Interface Design</td><td><span class="att-pct good">93.18%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22MAT122</td><td class="course-name">Mathematics for Computing 2</td><td><span class="att-pct good">94.59%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+      </table></div>
     </div>
 
-    <!-- S3 -->
     <div id="att-s3" class="sem-content">
-      <div class="risk-alert">⚠ <strong>S3 has 2 courses below 80%.</strong> Strategic Lessons from Mahabharata: 62.5% (below 75% threshold) and Upanishads at 75% (borderline). This is the semester where Madhav's attention split between academics and external work.
-      </div>
-      <div class="insight-callout" style="margin-bottom:16px;">
-        🟡 <strong>"Madhav deviated here — something bigger was pulling his focus."</strong> S3 coincides with increasing hackathon activity and research beginnings. Strategic Lessons (62.5%) crossed the danger line. Fundamentals of AI (76.6%) and Python (76.92%) stayed just above the wire. A concerning pattern, but one rooted in purpose.
-      </div>
+      <div class="risk-alert">⚠ <strong>S3 has 1 course below 75%.</strong> Strategic Lessons: 62.5% — below minimum threshold.</div>
+      <div class="insight-callout" style="margin-bottom:14px;">🟡 <strong>"Madhav deviated here."</strong> Coincides with hackathon activity and research beginnings. Strategic Lessons (62.5%) crossed the danger line. Fundamentals of AI (76.6%) and Python (76.92%) stayed just above the wire.</div>
+      <div style="overflow-x:auto;">
       <table class="att-table">
-        <tr><th>Course Code</th><th>Course Name</th><th>Classes</th><th>Attended</th><th>%</th><th style="width:120px;">Bar</th><th>Status</th></tr>
-        <tr><td>19HUM243</td><td class="course-name">The Message of the Upanishads</td><td>20</td><td>15</td><td><span class="att-pct warn">75.0%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:75%"></div></div></td><td><span class="badge badge-warn">Borderline</span></td></tr>
-        <tr><td>22ADM201</td><td class="course-name">Strategic Lessons from Mahabharata</td><td>17</td><td>12</td><td><span class="att-pct danger">62.5%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill danger" style="width:62.5%"></div></div></td><td><span class="badge badge-danger">⚠ Below 75%</span></td></tr>
-        <tr><td>22AIE201</td><td class="course-name">Fundamentals of AI</td><td>47</td><td>36</td><td><span class="att-pct warn">76.6%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:76.6%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE202</td><td class="course-name">Operating Systems</td><td>52</td><td>42</td><td><span class="att-pct warn">80.77%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:80.77%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE203</td><td class="course-name">Data Structures & Algorithms 2</td><td>38</td><td>33</td><td><span class="att-pct good">86.84%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:86.84%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE204</td><td class="course-name">Introduction to Computer Networks</td><td>62</td><td>51</td><td><span class="att-pct warn">82.26%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:82.26%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE205</td><td class="course-name">Introduction to Python</td><td>39</td><td>30</td><td><span class="att-pct warn">76.92%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:76.92%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22BIO201</td><td class="course-name">Intelligence of Biological Systems 1</td><td>30</td><td>23</td><td><span class="att-pct warn">76.67%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:76.67%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22MAT220</td><td class="course-name">Mathematics for Computing 3</td><td>59</td><td>47</td><td><span class="att-pct warn">79.66%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:79.66%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-      </table>
+        <tr><th>Code</th><th>Course Name</th><th>%</th><th class="hide-mobile">Status</th></tr>
+        <tr><td>19HUM243</td><td class="course-name">The Message of the Upanishads</td><td><span class="att-pct warn">75.0%</span></td><td class="hide-mobile"><span class="badge badge-warn">Borderline</span></td></tr>
+        <tr><td>22ADM201</td><td class="course-name">Strategic Lessons from Mahabharata</td><td><span class="att-pct danger">62.5%</span></td><td class="hide-mobile"><span class="badge badge-danger">⚠ Below 75%</span></td></tr>
+        <tr><td>22AIE201</td><td class="course-name">Fundamentals of AI</td><td><span class="att-pct warn">76.6%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE202</td><td class="course-name">Operating Systems</td><td><span class="att-pct warn">80.77%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE203</td><td class="course-name">Data Structures & Algorithms 2</td><td><span class="att-pct good">86.84%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE204</td><td class="course-name">Introduction to Computer Networks</td><td><span class="att-pct warn">82.26%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE205</td><td class="course-name">Introduction to Python</td><td><span class="att-pct warn">76.92%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22BIO201</td><td class="course-name">Intelligence of Biological Systems 1</td><td><span class="att-pct warn">76.67%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22MAT220</td><td class="course-name">Mathematics for Computing 3</td><td><span class="att-pct warn">79.66%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+      </table></div>
     </div>
 
-    <!-- S4 -->
     <div id="att-s4" class="sem-content">
-      <div class="insight-callout" style="margin-bottom:16px;">
-        🟡 <strong>"Recovering attendance, still selective."</strong> S4 shows improvement over S3 in several areas. Env Science (77.78%), Leadership IAM (77.78%), and AI Robotics (78.05%) sit low but safe. Machine Learning (91.67%) and Math S4 (95%) are strong — Madhav prioritised what mattered most to his trajectory.
-      </div>
+      <div class="insight-callout" style="margin-bottom:14px;">🟡 <strong>"Recovering, still selective."</strong> Machine Learning (91.67%) and Math S4 (95%) are strong — Madhav prioritised what mattered most. No courses dropped below 75%.</div>
+      <div style="overflow-x:auto;">
       <table class="att-table">
-        <tr><th>Course Code</th><th>Course Name</th><th>Classes</th><th>Attended</th><th>%</th><th style="width:120px;">Bar</th><th>Status</th></tr>
-        <tr><td>19ENV300</td><td class="course-name">Environmental Science</td><td>9</td><td>7</td><td><span class="att-pct warn">77.78%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:77.78%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>19SSK211</td><td class="course-name">Soft Skills I</td><td>33</td><td>29</td><td><span class="att-pct good">87.88%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:87.88%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22ADM211</td><td class="course-name">Leadership Lessons from Ramayana</td><td>19</td><td>16</td><td><span class="att-pct warn">84.21%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:84.21%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE211</td><td class="course-name">Introduction to Communication & IoT</td><td>46</td><td>43</td><td><span class="att-pct good">93.48%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:93.48%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE212</td><td class="course-name">Design and Analysis of Algorithms</td><td>55</td><td>51</td><td><span class="att-pct good">92.73%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:92.73%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE213</td><td class="course-name">Machine Learning</td><td>48</td><td>44</td><td><span class="att-pct good">91.67%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:91.67%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE214</td><td class="course-name">Introduction to AI Robotics</td><td>41</td><td>32</td><td><span class="att-pct warn">78.05%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:78.05%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22BIO211</td><td class="course-name">Intelligence of Biological Systems 2</td><td>50</td><td>46</td><td><span class="att-pct good">92.0%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:92%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22MAT230</td><td class="course-name">Mathematics for Computing 4</td><td>40</td><td>38</td><td><span class="att-pct good">95.0%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:95%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-      </table>
+        <tr><th>Code</th><th>Course Name</th><th>%</th><th class="hide-mobile">Status</th></tr>
+        <tr><td>19ENV300</td><td class="course-name">Environmental Science</td><td><span class="att-pct warn">77.78%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>19SSK211</td><td class="course-name">Soft Skills I</td><td><span class="att-pct good">87.88%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22ADM211</td><td class="course-name">Leadership Lessons from Ramayana</td><td><span class="att-pct warn">84.21%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE211</td><td class="course-name">Introduction to Communication & IoT</td><td><span class="att-pct good">93.48%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE212</td><td class="course-name">Design and Analysis of Algorithms</td><td><span class="att-pct good">92.73%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE213</td><td class="course-name">Machine Learning</td><td><span class="att-pct good">91.67%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE214</td><td class="course-name">Introduction to AI Robotics</td><td><span class="att-pct warn">78.05%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22BIO211</td><td class="course-name">Intelligence of Biological Systems 2</td><td><span class="att-pct good">92.0%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22MAT230</td><td class="course-name">Mathematics for Computing 4</td><td><span class="att-pct perfect">95.0%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+      </table></div>
     </div>
 
-    <!-- S5 -->
     <div id="att-s5" class="sem-content">
-      <div class="insight-callout" style="margin-bottom:16px;">
-        🟡 <strong>"S5 — selective engagement, thesis-level focus."</strong> Soft Skills II (75%) is borderline. Deep Learning (96.83%) is the star — Madhav clearly invests where it matters most to his AI trajectory. No courses dropped below 75% this time, showing awareness and correction from S3's dip.
-      </div>
+      <div class="insight-callout" style="margin-bottom:14px;">🟡 <strong>"Selective engagement, thesis-level focus."</strong> Deep Learning at 96.83% — Madhav clearly invests where it matters most. No courses below 75%, showing correction from S3.</div>
+      <div style="overflow-x:auto;">
       <table class="att-table">
-        <tr><th>Course Code</th><th>Course Name</th><th>Classes</th><th>Attended</th><th>%</th><th style="width:120px;">Bar</th><th>Status</th></tr>
-        <tr><td>19SSK301</td><td class="course-name">Soft Skills II</td><td>36</td><td>27</td><td><span class="att-pct warn">75.0%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:75%"></div></div></td><td><span class="badge badge-warn">Borderline</span></td></tr>
-        <tr><td>22AIE301</td><td class="course-name">Probabilistic Reasoning</td><td>47</td><td>42</td><td><span class="att-pct good">89.36%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:89.36%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE302</td><td class="course-name">Formal Language and Automata</td><td>33</td><td>26</td><td><span class="att-pct warn">78.79%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:78.79%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE303</td><td class="course-name">Database Management Systems</td><td>57</td><td>52</td><td><span class="att-pct good">91.23%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:91.23%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE304</td><td class="course-name">Deep Learning</td><td>63</td><td>61</td><td><span class="att-pct perfect">96.83%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill perfect" style="width:96.83%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE305</td><td class="course-name">Introduction to Cloud Computing</td><td>48</td><td>39</td><td><span class="att-pct warn">81.25%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill warn" style="width:81.25%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-        <tr><td>22AIE442</td><td class="course-name">Robotic Operating Systems & Robot Simulation</td><td>60</td><td>52</td><td><span class="att-pct good">86.67%</span></td><td class="att-bar-cell"><div class="att-mini-bar"><div class="att-mini-fill good" style="width:86.67%"></div></div></td><td><span class="badge badge-safe">Safe</span></td></tr>
-      </table>
+        <tr><th>Code</th><th>Course Name</th><th>%</th><th class="hide-mobile">Status</th></tr>
+        <tr><td>19SSK301</td><td class="course-name">Soft Skills II</td><td><span class="att-pct warn">75.0%</span></td><td class="hide-mobile"><span class="badge badge-warn">Borderline</span></td></tr>
+        <tr><td>22AIE301</td><td class="course-name">Probabilistic Reasoning</td><td><span class="att-pct good">89.36%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE302</td><td class="course-name">Formal Language and Automata</td><td><span class="att-pct warn">78.79%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE303</td><td class="course-name">Database Management Systems</td><td><span class="att-pct good">91.23%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE304</td><td class="course-name">Deep Learning</td><td><span class="att-pct perfect">96.83%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE305</td><td class="course-name">Introduction to Cloud Computing</td><td><span class="att-pct warn">81.25%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+        <tr><td>22AIE442</td><td class="course-name">Robotic Operating Systems</td><td><span class="att-pct good">86.67%</span></td><td class="hide-mobile"><span class="badge badge-safe">Safe</span></td></tr>
+      </table></div>
     </div>
   </div>
 </section>
 
-<!-- ─── SECTION 3: INSIGHTS ─── -->
+<!-- ─── INSIGHTS ─── -->
 <section class="section" id="insights">
   <div class="section-header reveal">
-    <div class="section-label-block">
+    <div>
       <div class="section-num">03 — Analyst's Reading</div>
       <div class="section-title">The Full<br><em>Picture</em></div>
     </div>
-    <div class="section-insight">
-      Data without interpretation is just numbers. Here's what the complete academic record actually says about Madhav Yalamarthi as a student and builder.
-    </div>
+    <div class="section-insight">Data without interpretation is just numbers. Here's what the complete academic record actually says about Madhav Yalamarthi.</div>
   </div>
 
   <div class="two-col reveal">
     <div class="chart-wrap">
       <div class="chart-label">Attendance vs SGPA Correlation</div>
-      <canvas id="corrChart" style="max-height:320px;"></canvas>
+      <canvas id="corrChart" style="max-height:300px;"></canvas>
     </div>
-    <div style="display:flex; flex-direction:column; gap:16px;">
-
-      <div style="padding:28px; border:1px solid rgba(200,169,110,0.15); background:rgba(255,255,255,0.02);">
-        <div style="font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:12px;">01 — The S1 Promise</div>
-        <div style="font-family:'DM Serif Display',serif; font-size:20px; margin-bottom:10px;">100% Attendance · 7.85 SGPA</div>
-        <div style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.7;">"Madhav arrived with full commitment. Perfect attendance isn't just a metric — it's a statement of intent. The grades backed it up."</div>
-      </div>
-
-      <div style="padding:28px; border:1px solid rgba(200,169,110,0.15); background:rgba(255,255,255,0.02);">
-        <div style="font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase; color:var(--green-light); margin-bottom:12px;">02 — The S2 Peak</div>
-        <div style="font-family:'DM Serif Display',serif; font-size:20px; margin-bottom:10px;">92.6% Attendance · 8.48 SGPA</div>
-        <div style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.7;">"Peak academic performance. All core CS courses in A/A+. This is Madhav operating at his classroom best — before the real world got loud."</div>
-      </div>
-
-      <div style="padding:28px; border:1px solid rgba(200,169,110,0.15); background:rgba(255,255,255,0.02);">
-        <div style="font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase; color:var(--amber); margin-bottom:12px;">03 — The S3–S4 Diversion</div>
-        <div style="font-family:'DM Serif Display',serif; font-size:20px; margin-bottom:10px;">79% & 87% Att · 7.70 & 7.55 SGPA</div>
-        <div style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.7;">"Two national hackathon placements, 3 research projects, an IIT Madras win. The grades dipped because Madhav was building things that don't appear in the gradebook — yet."</div>
-      </div>
-
-      <div style="padding:28px; border:1px solid rgba(200,169,110,0.15); background:rgba(255,255,255,0.02);">
-        <div style="font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase; color:var(--blue); margin-bottom:12px;">04 — The S5 Signal</div>
-        <div style="font-family:'DM Serif Display',serif; font-size:20px; margin-bottom:10px;">83% Attendance · 7.67 SGPA</div>
-        <div style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.7;">"A cautious uptick. Deep Learning at 96.83% attendance and B+ grade. The student who knows where he's going is starting to realign with where he needs to be."</div>
-      </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--accent);">01 — The S1 Promise</div><div class="insight-panel-title">100% Attendance · 7.85 SGPA</div><div class="insight-panel-text">"Madhav arrived with full commitment. Perfect attendance isn't just a metric — it's a statement of intent."</div></div>
+      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--green-light);">02 — The S2 Peak</div><div class="insight-panel-title">92.6% Attendance · 8.48 SGPA</div><div class="insight-panel-text">"Peak academic performance. All core CS courses in A/A+. Before the real world got loud."</div></div>
+      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--amber);">03 — The S3–S4 Diversion</div><div class="insight-panel-title">79% & 87% Att · 7.70 & 7.55 SGPA</div><div class="insight-panel-text">"Two national hackathon placements, 3 research projects, an IIT Madras win. The grades dipped because Madhav was building things that don't appear in the gradebook — yet."</div></div>
+      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--blue);">04 — The S5 Signal</div><div class="insight-panel-title">83% Attendance · 7.67 SGPA</div><div class="insight-panel-text">"Deep Learning at 96.83% attendance and B+. The student who knows where he's going is starting to realign."</div></div>
     </div>
   </div>
 
-  <!-- Radar chart -->
-  <div class="two-col reveal" style="margin-top:24px;">
-    <div class="chart-wrap">
-      <div class="chart-label">SGPA Radar — Semester Profile</div>
-      <canvas id="radarChart" style="max-height:360px;"></canvas>
-    </div>
-    <div class="chart-wrap">
-      <div class="chart-label">Academic Domain Performance (Grade Points by Subject Area)</div>
-      <canvas id="domainChart" style="max-height:360px;"></canvas>
-    </div>
+  <div class="two-col reveal" style="margin-top:20px;">
+    <div class="chart-wrap"><div class="chart-label">SGPA Radar — Semester Profile</div><canvas id="radarChart" style="max-height:340px;"></canvas></div>
+    <div class="chart-wrap"><div class="chart-label">Academic Domain Performance (Avg Grade Points)</div><canvas id="domainChart" style="max-height:340px;"></canvas></div>
   </div>
 
-  <!-- Final verdict -->
-  <div class="reveal" style="margin-top:48px; padding:48px; border:1px solid rgba(200,169,110,0.2); background:rgba(200,169,110,0.04); position:relative; overflow:hidden;">
-    <div style="position:absolute; top:20px; right:30px; font-family:'DM Serif Display',serif; font-size:180px; color:rgba(200,169,110,0.04); font-style:italic; line-height:1; pointer-events:none;">7.85</div>
-    <div style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:20px;">Final Analysis</div>
-    <div style="font-family:'DM Serif Display',serif; font-size:clamp(24px,3vw,40px); line-height:1.2; max-width:640px; margin-bottom:24px;">
-      A 7.85 CGPA from an AI engineer who also <em style="color:var(--accent);">won national hackathons, published research, and shipped production systems</em> — is a different kind of 7.85.
-    </div>
-    <div style="font-size:14px; color:rgba(255,255,255,0.5); line-height:1.8; max-width:620px;">
-      The data shows a student who arrived with discipline, peaked early, then deliberately traded some academic points for real-world experience. S3 and S4's dips aren't red flags — they're timestamps on when things like the IIT Madras win and the IISc Top 5 finish happened. S5's recovery arc is the most important signal: Madhav is recalibrating, not retreating. The CGPA trajectory says this story isn't finished — and the best chapters may still be ahead.
-    </div>
-    <div style="margin-top:32px; display:flex; gap:16px; flex-wrap:wrap;">
+  <!-- Final Verdict -->
+  <div class="verdict-block reveal">
+    <div class="verdict-bg">7.85</div>
+    <div class="verdict-label">Final Analysis</div>
+    <div class="verdict-title">A 7.85 CGPA from an AI engineer who also <em style="color:var(--accent);">won national hackathons, published research, and shipped production systems</em> — is a different kind of 7.85.</div>
+    <div class="verdict-body">The data shows a student who arrived with discipline, peaked early, then deliberately traded some academic points for real-world experience. S3 and S4's dips aren't red flags — they're timestamps on when the IIT Madras win and the IISc Top 5 finish happened. S5's recovery arc is the most important signal: Madhav is recalibrating, not retreating. The best chapters may still be ahead.</div>
+    <div class="stat-pills">
       <div class="stat-pill"><span class="stat-pill-val">8.48</span><span class="stat-pill-label">Peak SGPA (S2)</span></div>
       <div class="stat-pill"><span class="stat-pill-val">7.55</span><span class="stat-pill-label">Lowest SGPA (S4)</span></div>
       <div class="stat-pill"><span class="stat-pill-val">0.93</span><span class="stat-pill-label">SGPA Spread</span></div>
@@ -1021,500 +555,103 @@ nav {
   </div>
 </section>
 
-<!-- FOOTER -->
 <div class="analytics-footer">
   <div class="footer-text">Madhav Yalamarthi · Academic Analytics · 2023–2026</div>
-  <a href="index.html" class="back-btn">← Back to Portfolio</a>
+  <a href="main.html" class="back-btn">← Back to Portfolio</a>
 </div>
 
 <script>
-// ─── CURSOR ───
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
-function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
-animRing();
+// Cursor
+if(window.matchMedia('(pointer:fine)').matches){
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  (function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+}
 
-// ─── REVEAL ───
-const obs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
-},{threshold:0.06, rootMargin:'0px 0px -40px 0px'});
+// Reveal
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.06,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// ─── SEM CARD BARS ───
-const cardBarObs = new IntersectionObserver(entries=>{
+// Bar fills triggered on scroll
+const fillObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
-      e.target.querySelectorAll('.sem-card-bar-fill').forEach(bar=>{
-        setTimeout(()=>{bar.style.width=bar.dataset.w;},200);
-      });
-      cardBarObs.unobserve(e.target);
+      e.target.querySelectorAll('[data-w]').forEach(el=>{setTimeout(()=>{el.style.width=el.dataset.w;},200);});
+      e.target.querySelectorAll('.grade-bar-fill[data-w]').forEach(el=>{setTimeout(()=>{el.style.width=el.dataset.w;},300);});
+      fillObs.unobserve(e.target);
     }
   });
-},{threshold:0.2});
-document.querySelectorAll('.sem-cards').forEach(el=>cardBarObs.observe(el));
+},{threshold:.1});
+document.querySelectorAll('.sem-cards,.grade-row').forEach(el=>fillObs.observe(el));
 
-// ─── GRADE BARS ───
-const gradeBarObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.querySelectorAll('.grade-bar-fill').forEach(bar=>{
-        setTimeout(()=>{bar.style.width=bar.dataset.w;},300);
-      });
-      gradeBarObs.unobserve(e.target);
-    }
-  });
-},{threshold:0.1});
-document.querySelectorAll('.grade-row').forEach(el=>{
-  if(el.querySelector('.grade-bar-fill')) gradeBarObs.observe(el);
-});
-
-// ─── TAB FUNCTIONS ───
-function showGradeSem(n, el) {
+// Tab functions
+function showGradeSem(n,el){
   document.querySelectorAll('#grades .sem-content').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('#grades .sem-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('grades-s'+n).classList.add('active');
   el.classList.add('active');
-  // Re-render bar chart for that semester
   renderGradeBar(n);
 }
-
-function showAttSem(n, el) {
+function showAttSem(n,el){
   document.querySelectorAll('#attendance .sem-content').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('#attendance .sem-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('att-s'+n).classList.add('active');
   el.classList.add('active');
 }
 
-// ─── CHART DEFAULTS ───
-Chart.defaults.color = 'rgba(255,255,255,0.4)';
-Chart.defaults.borderColor = 'rgba(200,169,110,0.1)';
-Chart.defaults.font.family = "'Space Mono', monospace";
-Chart.defaults.font.size = 10;
+// Chart defaults
+Chart.defaults.color='rgba(255,255,255,0.4)';
+Chart.defaults.borderColor='rgba(200,169,110,0.1)';
+Chart.defaults.font.family="'Space Mono', monospace";
+Chart.defaults.font.size=10;
 
-const ACCENT = '#c8a96e';
-const ACCENT_DARK = '#9a7a45';
-const GREEN = '#4caf7a';
-const AMBER = '#e08f3a';
-const RED = '#c0392b';
-const BLUE = '#4a90c4';
-const PAPER = '#f5f0e8';
+const A=t=>(t||'rgba(200,169,110,1)'),ACCENT='#c8a96e',GREEN='#4caf7a',AMBER='#e08f3a',RED='#c0392b',BLUE='#4a90c4';
 
-// ─── SGPA TREND ───
-new Chart(document.getElementById('sgpaChart'), {
-  type: 'line',
-  data: {
-    labels: ['S1 (23-Odd)', 'S2 (23-Even)', 'S3 (24-Odd)', 'S4 (24-Even)', 'S5 (25-Odd)'],
-    datasets: [{
-      label: 'SGPA',
-      data: [7.85, 8.48, 7.70, 7.55, 7.67],
-      borderColor: ACCENT,
-      backgroundColor: 'rgba(200,169,110,0.08)',
-      pointBackgroundColor: [GREEN, GREEN, AMBER, RED, AMBER],
-      pointRadius: 7,
-      pointHoverRadius: 10,
-      fill: true,
-      tension: 0.4,
-      borderWidth: 2.5,
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          afterLabel: ctx => {
-            const c=['Strong debut 💪','Peak semester 🏆','Hackathon pull 🔨','Building mode 🚀','Recovery arc ↗'];
-            return c[ctx.dataIndex];
-          }
-        }
-      }
-    },
-    scales: {
-      y: { min: 7.0, max: 9.0, grid: { color: 'rgba(200,169,110,0.07)' },
-        ticks: { callback: v => v.toFixed(2) }
-      },
-      x: { grid: { display: false } }
-    }
-  }
-});
+// SGPA Trend
+new Chart(document.getElementById('sgpaChart'),{type:'line',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'SGPA',data:[7.85,8.48,7.70,7.55,7.67],borderColor:ACCENT,backgroundColor:'rgba(200,169,110,0.08)',pointBackgroundColor:[GREEN,GREEN,AMBER,RED,AMBER],pointRadius:7,fill:true,tension:.4,borderWidth:2.5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:7,max:9,grid:{color:'rgba(200,169,110,0.07)'},ticks:{callback:v=>v.toFixed(2)}},x:{grid:{display:false}}}}});
 
-// ─── CGPA ACCUMULATION ───
-new Chart(document.getElementById('cgpaChart'), {
-  type: 'bar',
-  data: {
-    labels: ['S1','S2','S3','S4','S5'],
-    datasets: [
-      {
-        label: 'SGPA',
-        data: [7.85, 8.48, 7.70, 7.55, 7.67],
-        backgroundColor: 'rgba(200,169,110,0.25)',
-        borderColor: ACCENT,
-        borderWidth: 1.5,
-        type: 'bar',
-      },
-      {
-        label: 'CGPA (Cumulative)',
-        data: [7.85, 8.165, 8.01, 7.895, 7.85],
-        borderColor: GREEN,
-        backgroundColor: 'rgba(76,175,122,0.05)',
-        pointBackgroundColor: GREEN,
-        pointRadius: 5,
-        fill: false,
-        tension: 0.3,
-        borderWidth: 2,
-        type: 'line',
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { labels: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } } } },
-    scales: {
-      y: { min: 7.0, max: 9.0, grid: { color: 'rgba(200,169,110,0.07)' } },
-      x: { grid: { display: false } }
-    }
-  }
-});
+// CGPA
+new Chart(document.getElementById('cgpaChart'),{type:'bar',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'SGPA',data:[7.85,8.48,7.70,7.55,7.67],backgroundColor:'rgba(200,169,110,0.25)',borderColor:ACCENT,borderWidth:1.5,type:'bar'},{label:'CGPA Cumulative',data:[7.85,8.165,8.01,7.895,7.85],borderColor:GREEN,backgroundColor:'rgba(76,175,122,0.05)',pointBackgroundColor:GREEN,pointRadius:5,fill:false,tension:.3,borderWidth:2,type:'line'}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{min:7,max:9,grid:{color:'rgba(200,169,110,0.07)'}},x:{grid:{display:false}}}}});
 
-// ─── GRADE DISTRIBUTION DOUGHNUT ───
-new Chart(document.getElementById('gradeDistChart'), {
-  type: 'doughnut',
-  data: {
-    labels: ['A+', 'A', 'B+', 'B', 'C', 'P'],
-    datasets: [{
-      data: [2, 6, 16, 12, 1, 2],
-      backgroundColor: ['#4caf7a','#81c784', ACCENT,'#e0c070', AMBER,'rgba(255,255,255,0.2)'],
-      borderColor: 'rgba(10,10,10,0.5)',
-      borderWidth: 2,
-      hoverOffset: 8,
-    }]
-  },
-  options: {
-    responsive: true,
-    cutout: '65%',
-    plugins: {
-      legend: {
-        position: 'bottom',
-        labels: { color: 'rgba(255,255,255,0.45)', padding: 12, font:{size:9} }
-      },
-      tooltip: {
-        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} courses` }
-      }
-    }
-  }
-});
+// Grade Dist Doughnut
+new Chart(document.getElementById('gradeDistChart'),{type:'doughnut',data:{labels:['A+','A','B+','B','C','P'],datasets:[{data:[2,6,16,12,1,2],backgroundColor:['#4caf7a','#81c784',ACCENT,'#e0c070',AMBER,'rgba(255,255,255,0.2)'],borderColor:'rgba(10,10,10,0.5)',borderWidth:2,hoverOffset:8}]},options:{responsive:true,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:'rgba(255,255,255,0.45)',padding:10,font:{size:9}}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} courses`}}}}});
 
-// ─── GRADE BAR CHARTS per semester ───
-const semGradeData = {
-  1: {
-    labels: ['Math S1','Physics','PS&C','ECS-1','Mastery Mind','Disc Math','Foundations Heritage','Tech Comm'],
-    grades: ['B+','B+','B','A+','A','B','A+','C'],
-    points: [7,7,6,10,8,6,10,5]
-  },
-  2: {
-    labels: ['Math S2','OOP Java','DSA 1','ECS-2','Elec Engg','UI Design','Glimpses India'],
-    grades: ['A','A','A','B+','B','B+','A'],
-    points: [8,8,8,7,6,7,8]
-  },
-  3: {
-    labels: ['Math S3','Fund AI','OS','DSA 2','Comp Networks','Python','Bio Sys 1','Upanishads','Strategic Lessons'],
-    grades: ['B+','B+','B','B','B+','B+','B+','B+','B'],
-    points: [7,7,6,6,7,7,7,7,6]
-  },
-  4: {
-    labels: ['Math S4','Comm & IoT','DAA','Machine Learning','AI Robotics','Bio Sys 2','Leadership','Env Science','Soft Skills I'],
-    grades: ['B','A','B','B+','B+','B','P','P','B+'],
-    points: [6,8,6,7,7,6,4,4,7]
-  },
-  5: {
-    labels: ['Prob Reasoning','FLA','DBMS','Deep Learning','Cloud Computing','Robotic OS','Soft Skills II'],
-    grades: ['B','B+','B+','B+','B','B','A'],
-    points: [6,7,7,7,6,6,8]
-  }
+// Grade bar data
+const semGD={
+  1:{labels:['Math S1','Physics','PS&C','ECS-1','Mastery Mind','Disc Math','Foundations Heritage','Tech Comm'],grades:['B+','B+','B','A+','A','B','A+','C'],points:[7,7,6,10,8,6,10,5]},
+  2:{labels:['Math S2','OOP Java','DSA 1','ECS-2','Elec Engg','UI Design','Glimpses India'],grades:['A','A','A','B+','B','B+','A'],points:[8,8,8,7,6,7,8]},
+  3:{labels:['Math S3','Fund AI','OS','DSA 2','Comp Networks','Python','Bio Sys 1','Upanishads','Strategic Lessons'],grades:['B+','B+','B','B','B+','B+','B+','B+','B'],points:[7,7,6,6,7,7,7,7,6]},
+  4:{labels:['Math S4','Comm & IoT','DAA','Machine Learning','AI Robotics','Bio Sys 2','Leadership','Env Science','Soft Skills I'],grades:['B','A','B','B+','B+','B','P','P','B+'],points:[6,8,6,7,7,6,4,4,7]},
+  5:{labels:['Prob Reasoning','FLA','DBMS','Deep Learning','Cloud Computing','Robotic OS','Soft Skills II'],grades:['B','B+','B+','B+','B','B','A'],points:[6,7,7,7,6,6,8]}
 };
-
-const gradeColor = {'A+':'#4caf7a','A':'#81c784','B+':ACCENT,'B':'#e0c070','C':AMBER,'P':'rgba(255,255,255,0.25)'};
-
-const gradeCharts = {};
-
-function renderGradeBar(sem) {
-  const d = semGradeData[sem];
-  const canvasId = 'gradeBarS'+sem;
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
-  if (gradeCharts[sem]) { gradeCharts[sem].destroy(); }
-  gradeCharts[sem] = new Chart(canvas, {
-    type: 'bar',
-    data: {
-      labels: d.labels,
-      datasets: [{
-        label: 'Grade Points',
-        data: d.points,
-        backgroundColor: d.grades.map(g=>gradeColor[g]+'88'),
-        borderColor: d.grades.map(g=>gradeColor[g]),
-        borderWidth: 1.5,
-        borderRadius: 2,
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => ` Grade: ${d.grades[ctx.dataIndex]} (${ctx.raw} pts)`
-          }
-        }
-      },
-      scales: {
-        x: {
-          min: 0, max: 10,
-          grid: { color: 'rgba(200,169,110,0.07)' },
-          ticks: { callback: v => ['O','A+','A','B+','B','C','P'][Math.round(v/10*6)] || v }
-        },
-        y: { grid: { display: false }, ticks: { font: { size: 9 } } }
-      }
-    }
-  });
+const gColor={'A+':'#4caf7a','A':'#81c784','B+':ACCENT,'B':'#e0c070','C':AMBER,'P':'rgba(255,255,255,0.25)'};
+const gCharts={};
+function renderGradeBar(sem){
+  const d=semGD[sem],c=document.getElementById('gradeBarS'+sem);
+  if(!c)return;
+  if(gCharts[sem]){gCharts[sem].destroy();}
+  gCharts[sem]=new Chart(c,{type:'bar',data:{labels:d.labels,datasets:[{label:'Grade Points',data:d.points,backgroundColor:d.grades.map(g=>gColor[g]+'88'),borderColor:d.grades.map(g=>gColor[g]),borderWidth:1.5,borderRadius:2}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` Grade: ${d.grades[ctx.dataIndex]} (${ctx.raw} pts)`}}},scales:{x:{min:0,max:10,grid:{color:'rgba(200,169,110,0.07)'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
 }
-
-// Render all grade bar charts up front
 [1,2,3,4,5].forEach(renderGradeBar);
 
-// ─── ATTENDANCE TREND ───
-new Chart(document.getElementById('attTrendChart'), {
-  type: 'line',
-  data: {
-    labels: ['S1', 'S2', 'S3', 'S4', 'S5'],
-    datasets: [
-      {
-        label: 'Avg Attendance %',
-        data: [100, 92.6, 79.3, 87.1, 83.3],
-        borderColor: ACCENT,
-        backgroundColor: 'rgba(200,169,110,0.07)',
-        pointBackgroundColor: [GREEN, GREEN, AMBER, ACCENT, ACCENT],
-        pointRadius: 8,
-        fill: true,
-        tension: 0.35,
-        borderWidth: 2.5,
-      },
-      {
-        label: '75% Minimum',
-        data: [75, 75, 75, 75, 75],
-        borderColor: RED,
-        borderDash: [6, 4],
-        borderWidth: 1.5,
-        pointRadius: 0,
-        fill: false,
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { labels: { color: 'rgba(255,255,255,0.4)', font:{ size:9 } } },
-      tooltip: {
-        callbacks: {
-          afterLabel: ctx => {
-            if(ctx.datasetIndex===0){
-              const notes=['Perfect. Absolutely flawless.','Excellent. Slight dip in soft courses.','Caution zone. Projects pulling focus.','Recovered. Selective but strategic.','Stable. Deep Learning prioritised.'];
-              return notes[ctx.dataIndex];
-            }
-          }
-        }
-      }
-    },
-    scales: {
-      y: { min: 55, max: 105, grid:{ color:'rgba(200,169,110,0.07)' },
-        ticks:{ callback: v=>v+'%' }
-      },
-      x: { grid:{ display:false } }
-    }
-  }
-});
+// Attendance Trend
+new Chart(document.getElementById('attTrendChart'),{type:'line',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'Avg Attendance %',data:[100,92.6,79.3,87.1,83.3],borderColor:ACCENT,backgroundColor:'rgba(200,169,110,0.07)',pointBackgroundColor:[GREEN,GREEN,AMBER,ACCENT,ACCENT],pointRadius:8,fill:true,tension:.35,borderWidth:2.5},{label:'75% Minimum',data:[75,75,75,75,75],borderColor:RED,borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{min:55,max:105,grid:{color:'rgba(200,169,110,0.07)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
 
-// ─── ATTENDANCE DISTRIBUTION ───
-new Chart(document.getElementById('attDistChart'), {
-  type: 'bar',
-  data: {
-    labels: ['100% (Perfect)', '90-99%', '80-89%', '75-79%', '<75% (Below Min)'],
-    datasets: [{
-      label: 'Number of Courses',
-      data: [8, 16, 8, 7, 1],
-      backgroundColor: [GREEN, '#4caf7a88', ACCENT+'88', AMBER+'88', RED+'aa'],
-      borderColor: [GREEN, GREEN, ACCENT, AMBER, RED],
-      borderWidth: 1.5,
-      borderRadius: 2,
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend:{ display:false } },
-    scales: {
-      y: { grid:{ color:'rgba(200,169,110,0.07)' }, ticks:{ callback:v=>v+' courses' } },
-      x: { grid:{ display:false } }
-    }
-  }
-});
+// Att Dist
+new Chart(document.getElementById('attDistChart'),{type:'bar',data:{labels:['100%','90-99%','80-89%','75-79%','<75%'],datasets:[{label:'Courses',data:[8,16,8,7,1],backgroundColor:[GREEN,GREEN+'88',ACCENT+'88',AMBER+'88',RED+'aa'],borderColor:[GREEN,GREEN,ACCENT,AMBER,RED],borderWidth:1.5,borderRadius:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(200,169,110,0.07)'}},x:{grid:{display:false}}}}});
 
-// ─── RISK CHART ───
-new Chart(document.getElementById('riskChart'), {
-  type: 'bar',
-  data: {
-    labels: ['S1','S2','S3','S4','S5'],
-    datasets: [
-      {
-        label: 'Safe (≥85%)',
-        data: [8, 6, 2, 5, 4],
-        backgroundColor: GREEN+'88',
-        borderColor: GREEN,
-        borderWidth: 1.5,
-        borderRadius: 2,
-        stack: 'stack'
-      },
-      {
-        label: 'Watch (75–84%)',
-        data: [0, 1, 6, 4, 3],
-        backgroundColor: AMBER+'88',
-        borderColor: AMBER,
-        borderWidth: 1.5,
-        borderRadius: 2,
-        stack: 'stack'
-      },
-      {
-        label: 'At-Risk (<75%)',
-        data: [0, 0, 1, 0, 0],
-        backgroundColor: RED+'aa',
-        borderColor: RED,
-        borderWidth: 1.5,
-        borderRadius: 2,
-        stack: 'stack'
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend:{ labels:{ color:'rgba(255,255,255,0.4)', font:{size:9} } } },
-    scales: {
-      y: { stacked:true, grid:{ color:'rgba(200,169,110,0.07)' } },
-      x: { stacked:true, grid:{ display:false } }
-    }
-  }
-});
+// Risk chart
+new Chart(document.getElementById('riskChart'),{type:'bar',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'Safe (≥85%)',data:[8,6,2,5,4],backgroundColor:GREEN+'88',borderColor:GREEN,borderWidth:1.5,borderRadius:2,stack:'s'},{label:'Watch (75-84%)',data:[0,1,6,4,3],backgroundColor:AMBER+'88',borderColor:AMBER,borderWidth:1.5,borderRadius:2,stack:'s'},{label:'At-Risk (<75%)',data:[0,0,1,0,0],backgroundColor:RED+'aa',borderColor:RED,borderWidth:1.5,borderRadius:2,stack:'s'}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{stacked:true,grid:{color:'rgba(200,169,110,0.07)'}},x:{stacked:true,grid:{display:false}}}}});
 
-// ─── CORRELATION SCATTER ───
-new Chart(document.getElementById('corrChart'), {
-  type: 'scatter',
-  data: {
-    datasets: [{
-      label: 'Semester Performance',
-      data: [
-        {x:100, y:7.85, sem:'S1'},
-        {x:92.6, y:8.48, sem:'S2'},
-        {x:79.3, y:7.70, sem:'S3'},
-        {x:87.1, y:7.55, sem:'S4'},
-        {x:83.3, y:7.67, sem:'S5'},
-      ],
-      backgroundColor: [GREEN+'cc', GREEN+'cc', AMBER+'cc', RED+'cc', ACCENT+'cc'],
-      borderColor: [GREEN, GREEN, AMBER, RED, ACCENT],
-      borderWidth: 2,
-      pointRadius: 14,
-      pointHoverRadius: 18,
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => ` ${ctx.raw.sem}: Att ${ctx.raw.x}% | SGPA ${ctx.raw.y}`
-        }
-      }
-    },
-    scales: {
-      x: { min: 70, max: 105, title:{ display:true, text:'Attendance %', color:'rgba(255,255,255,0.35)' }, grid:{ color:'rgba(200,169,110,0.07)' } },
-      y: { min: 7.0, max: 9.0, title:{ display:true, text:'SGPA', color:'rgba(255,255,255,0.35)' }, grid:{ color:'rgba(200,169,110,0.07)' } }
-    }
-  }
-});
+// Correlation scatter
+new Chart(document.getElementById('corrChart'),{type:'scatter',data:{datasets:[{label:'Semester',data:[{x:100,y:7.85,s:'S1'},{x:92.6,y:8.48,s:'S2'},{x:79.3,y:7.70,s:'S3'},{x:87.1,y:7.55,s:'S4'},{x:83.3,y:7.67,s:'S5'}],backgroundColor:[GREEN+'cc',GREEN+'cc',AMBER+'cc',RED+'cc',ACCENT+'cc'],borderColor:[GREEN,GREEN,AMBER,RED,ACCENT],borderWidth:2,pointRadius:14}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw.s}: Att ${ctx.raw.x}% | SGPA ${ctx.raw.y}`}}},scales:{x:{min:70,max:105,title:{display:true,text:'Attendance %',color:'rgba(255,255,255,0.35)'},grid:{color:'rgba(200,169,110,0.07)'}},y:{min:7,max:9,title:{display:true,text:'SGPA',color:'rgba(255,255,255,0.35)'},grid:{color:'rgba(200,169,110,0.07)'}}}}});
 
-// ─── RADAR ───
-new Chart(document.getElementById('radarChart'), {
-  type: 'radar',
-  data: {
-    labels: ['SGPA Score', 'Attendance', 'Course Load', 'Grade Consistency', 'Technical Subjects', 'Recovery Trend'],
-    datasets: [
-      {
-        label: 'S1',
-        data: [7.85, 10, 8, 8.5, 8, 8],
-        borderColor: GREEN, backgroundColor: GREEN+'15', borderWidth: 1.5, pointRadius: 3,
-      },
-      {
-        label: 'S2',
-        data: [8.48, 9.26, 7, 9, 9, 8.5],
-        borderColor: ACCENT, backgroundColor: ACCENT+'15', borderWidth: 1.5, pointRadius: 3,
-      },
-      {
-        label: 'S3',
-        data: [7.70, 7.93, 9, 7.5, 8, 7],
-        borderColor: AMBER, backgroundColor: AMBER+'15', borderWidth: 1.5, pointRadius: 3,
-      },
-      {
-        label: 'S4',
-        data: [7.55, 8.71, 9, 7, 8.5, 7.5],
-        borderColor: RED, backgroundColor: RED+'10', borderWidth: 1.5, pointRadius: 3,
-      },
-      {
-        label: 'S5',
-        data: [7.67, 8.33, 7, 7.5, 8.5, 8.5],
-        borderColor: BLUE, backgroundColor: BLUE+'15', borderWidth: 1.5, pointRadius: 3,
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      r: {
-        min: 0, max: 10,
-        grid:{ color:'rgba(200,169,110,0.08)' },
-        angleLines:{ color:'rgba(200,169,110,0.08)' },
-        ticks:{ display:false },
-        pointLabels:{ color:'rgba(255,255,255,0.45)', font:{size:9} }
-      }
-    },
-    plugins: { legend:{ labels:{ color:'rgba(255,255,255,0.4)', font:{size:9} } } }
-  }
-});
+// Radar
+new Chart(document.getElementById('radarChart'),{type:'radar',data:{labels:['SGPA Score','Attendance','Course Load','Grade Consistency','Technical Subjects','Recovery Trend'],datasets:[{label:'S1',data:[7.85,10,8,8.5,8,8],borderColor:GREEN,backgroundColor:GREEN+'15',borderWidth:1.5,pointRadius:3},{label:'S2',data:[8.48,9.26,7,9,9,8.5],borderColor:ACCENT,backgroundColor:ACCENT+'15',borderWidth:1.5,pointRadius:3},{label:'S3',data:[7.70,7.93,9,7.5,8,7],borderColor:AMBER,backgroundColor:AMBER+'15',borderWidth:1.5,pointRadius:3},{label:'S4',data:[7.55,8.71,9,7,8.5,7.5],borderColor:RED,backgroundColor:RED+'10',borderWidth:1.5,pointRadius:3},{label:'S5',data:[7.67,8.33,7,7.5,8.5,8.5],borderColor:BLUE,backgroundColor:BLUE+'15',borderWidth:1.5,pointRadius:3}]},options:{responsive:true,scales:{r:{min:0,max:10,grid:{color:'rgba(200,169,110,0.08)'},angleLines:{color:'rgba(200,169,110,0.08)'},ticks:{display:false},pointLabels:{color:'rgba(255,255,255,0.45)',font:{size:9}}}},plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}}}});
 
-// ─── DOMAIN CHART ───
-new Chart(document.getElementById('domainChart'), {
-  type: 'bar',
-  data: {
-    labels: ['AI & ML Subjects', 'Mathematics', 'Core CS (OOP/DSA/OS)', 'Physics/Bio', 'Soft Skills / Elective', 'Admin / Heritage'],
-    datasets: [{
-      label: 'Avg Grade Points',
-      data: [7.1, 6.8, 7.3, 7.0, 6.8, 7.4],
-      backgroundColor: [ACCENT+'88', ACCENT+'66', GREEN+'88', BLUE+'88', AMBER+'66', ACCENT+'44'],
-      borderColor: [ACCENT, ACCENT, GREEN, BLUE, AMBER, ACCENT],
-      borderWidth: 1.5,
-      borderRadius: 2,
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true,
-    plugins: { legend:{ display:false } },
-    scales: {
-      x: { min:6, max:8, grid:{ color:'rgba(200,169,110,0.07)' } },
-      y: { grid:{ display:false }, ticks:{ font:{size:9} } }
-    }
-  }
-});
+// Domain
+new Chart(document.getElementById('domainChart'),{type:'bar',data:{labels:['AI & ML','Mathematics','Core CS','Physics/Bio','Soft Skills','Admin/Heritage'],datasets:[{label:'Avg Grade Points',data:[7.1,6.8,7.3,7.0,6.8,7.4],backgroundColor:[ACCENT+'88',ACCENT+'66',GREEN+'88',BLUE+'88',AMBER+'66',ACCENT+'44'],borderColor:[ACCENT,ACCENT,GREEN,BLUE,AMBER,ACCENT],borderWidth:1.5,borderRadius:2}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{min:6,max:8,grid:{color:'rgba(200,169,110,0.07)'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
 </script>
 </body>
 </html>
