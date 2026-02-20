@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madhav Yalamarthi — AI Engineer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --ink: #0a0a0a;
+    --paper: #f5f0e8;
+    --accent: #c8a96e;
+    --accent-dark: #9a7a45;
+    --muted: #6b6560;
+    --line: rgba(10,10,10,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Syne', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    cursor: none;
+}
+
+/* ─── NOISE ─── */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ─── CURSOR ─── */
+.cursor {
+    width: 10px; height: 10px;
+    background: var(--ink);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .3s, height .3s, background .3s;
+}
+.cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    opacity: 0.45;
+    transition: opacity .3s;
+}
+
+/* ─── GRID BACKGROUND ─── */
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 80px 80px;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+/* ─── LAYOUT ─── */
+.page {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+/* ─── LEFT PANEL ─── */
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 52px 7% 52px;
+    border-right: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+}
+
+.top-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+}
+.logo em { font-style: italic; color: var(--accent-dark); }
+
+.year-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+}
+
+/* Center content */
+.hero-center {
+    padding: 0;
+}
+
+.eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp .7s .3s forwards;
+}
+
+h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 6vw, 82px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    opacity: 0;
+    animation: fadeUp .8s .45s forwards;
+}
+
+h1 em {
+    font-style: italic;
+    color: var(--accent-dark);
+}
+
+/* Role cycling */
+.role-outer {
+    height: 42px;
+    overflow: hidden;
+    margin: 28px 0 36px;
+    opacity: 0;
+    animation: fadeUp .7s .6s forwards;
+}
+
+.role-track {
+    display: flex;
+    flex-direction: column;
+    transition: transform .65s cubic-bezier(.76,0,.24,1);
+}
+
+.role-item {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+}
+
+.role-item.active { color: var(--ink); }
+
+.enter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: none;
+    padding: 0;
+    opacity: 0;
+    animation: fadeUp .7s .75s forwards;
+}
+
+.enter-btn-box {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    padding: 16px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background .35s;
+}
+
+.enter-btn-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-dark);
+    transform: translateX(-100%);
+    transition: transform .4s ease;
+}
+
+.enter-btn:hover .enter-btn-box::before { transform: translateX(0); }
+
+.enter-btn-box span { position: relative; z-index: 1; }
+
+.enter-arrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform .3s, color .3s;
+}
+
+.enter-btn:hover .enter-arrow {
+    transform: translateX(8px);
+    color: var(--accent-dark);
+}
+
+/* Bottom row */
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.status-dot-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeIn .8s 1.1s forwards;
+}
+
+.status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74,222,128,.6);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,100% { opacity: 1; box-shadow: 0 0 8px rgba(74,222,128,.6); }
+    50% { opacity: 0.5; box-shadow: 0 0 14px rgba(74,222,128,.3); }
+}
+
+.status-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.seq-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeIn .8s 1.2s forwards;
+}
+
+/* ─── RIGHT PANEL ─── */
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 52px 7% 52px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Large decorative number */
+.deco-num {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 28vw;
+    line-height: 1;
+    color: rgba(10,10,10,0.04);
+    font-style: italic;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.right-top {
+    display: flex;
+    justify-content: flex-end;
+    opacity: 0;
+    animation: fadeIn .8s .4s forwards;
+}
+
+.right-top-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+/* Right center — tag stack */
+.tag-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    z-index: 2;
+    padding-left: 10%;
+}
+
+.tag-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    transform: translateX(20px);
+    animation: slideIn .6s forwards;
+}
+
+.tag-line:nth-child(1) { animation-delay: .6s; }
+.tag-line:nth-child(2) { animation-delay: .75s; }
+.tag-line:nth-child(3) { animation-delay: .9s; }
+.tag-line:nth-child(4) { animation-delay: 1.05s; }
+.tag-line:nth-child(5) { animation-delay: 1.2s; }
+
+.tag-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--accent-dark);
+    letter-spacing: 0.1em;
+    width: 24px;
+}
+
+.tag-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(20px, 2.6vw, 34px);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1;
+    position: relative;
+}
+
+.tag-text::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent-dark);
+    transition: width .4s ease;
+}
+
+.tag-line:hover .tag-text::after { width: 100%; }
+.tag-line:hover .tag-text { color: var(--accent-dark); }
+
+/* Right bottom */
+.right-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn .8s 1.3s forwards;
+}
+
+.divider-line {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+}
+
+.right-bottom-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: right;
+}
+
+/* ─── TICKER ─── */
+.ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--ink);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.ticker-inner {
+    display: inline-flex;
+    gap: 48px;
+    animation: ticker 25s linear infinite;
+}
+
+.ticker-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+}
+.ticker-item b { color: var(--accent); font-weight: 400; }
+
+@keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ─── TRANSITIONS ─── */
+.page-transition {
+    position: fixed;
+    inset: 0;
+    background: var(--ink);
+    z-index: 1000;
+    transform: translateY(100%);
+    transition: transform .7s cubic-bezier(.76,0,.24,1);
+}
+
+.page-transition.active { transform: translateY(0); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+    .page { grid-template-columns: 1fr; overflow-y: auto; height: auto; }
+    .left, .right { min-height: 50vh; padding: 40px 6%; }
+    .right { border-top: 1px solid var(--line); }
+    h1 { font-size: 48px; }
+    .deco-num { font-size: 40vw; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="grid-bg"></div>
+
+<div class="page-transition" id="transition"></div>
+
+<main class="page">
+
+    <!-- LEFT -->
+    <div class="left">
+        <div class="top-label">
+            <div class="logo">M<em>.</em>Y</div>
+            <div class="year-tag">2026</div>
+        </div>
+
+        <div class="hero-center">
+            <div class="eyebrow">Architect of Digital Intelligence</div>
+
+            <h1>Madhav<br><em>Yalamarthi</em></h1>
+
+            <div class="role-outer">
+                <div class="role-track" id="roleTrack">
+                    <div class="role-item active">AI Engineer</div>
+                    <div class="role-item">Software Developer</div>
+                    <div class="role-item">ML Practitioner</div>
+                    <div class="role-item">Full Stack Architect</div>
+                    <div class="role-item">Data Scientist</div>
+                    <div class="role-item">AI Engineer</div>
+                </div>
+            </div>
+
+            <button class="enter-btn" id="enterBtn">
+                <div class="enter-btn-box"><span>Enter Portfolio</span></div>
+                <div class="enter-arrow">&#8594;</div>
+            </button>
+        </div>
+
+        <div class="bottom-row">
+            <div class="status-dot-wrap">
+                <div class="status-dot"></div>
+                <div class="status-text">Available for opportunities</div>
+            </div>
+            <div class="seq-label">Sequence Init // 01</div>
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+        <div class="deco-num">M</div>
+
+        <div class="right-top">
+            <div class="right-top-label">Technical Profile — 2026</div>
+        </div>
+
+        <div class="tag-stack">
+            <div class="tag-line">
+                <div class="tag-num">01</div>
+                <div class="tag-text">Python</div>
+            </div>
+            <div class="tag-line">
+                <div class="tag-num">02</div>
+                <div class="tag-text">Machine Learning</div>
+            </div>
+            <div class="tag-line">
+                <div class="tag-num">03</div>
+                <div class="tag-text">Deep Learning</div>
+            </div>
+            <div class="tag-line">
+                <div class="tag-num">04</div>
+                <div class="tag-text">System Design</div>
+            </div>
+            <div class="tag-line">
+                <div class="tag-num">05</div>
+                <div class="tag-text">Full Stack</div>
+            </div>
+        </div>
+
+        <div class="right-bottom">
+            <div class="divider-line"></div>
+            <div class="right-bottom-text">
+                Building intelligent systems<br>with purpose and precision
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- TICKER -->
+<div class="ticker">
+    <div class="ticker-inner">
+        <span class="ticker-item">AI Engineering <b>*</b></span>
+        <span class="ticker-item">Machine Learning <b>*</b></span>
+        <span class="ticker-item">Deep Learning <b>*</b></span>
+        <span class="ticker-item">Computer Vision <b>*</b></span>
+        <span class="ticker-item">Data Science <b>*</b></span>
+        <span class="ticker-item">System Architecture <b>*</b></span>
+        <span class="ticker-item">Neural Networks <b>*</b></span>
+        <span class="ticker-item">Full Stack Dev <b>*</b></span>
+        <span class="ticker-item">AI Engineering <b>*</b></span>
+        <span class="ticker-item">Machine Learning <b>*</b></span>
+        <span class="ticker-item">Deep Learning <b>*</b></span>
+        <span class="ticker-item">Computer Vision <b>*</b></span>
+        <span class="ticker-item">Data Science <b>*</b></span>
+        <span class="ticker-item">System Architecture <b>*</b></span>
+        <span class="ticker-item">Neural Networks <b>*</b></span>
+        <span class="ticker-item">Full Stack Dev <b>*</b></span>
+    </div>
+</div>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+});
+
+(function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+})();
+
+document.querySelectorAll('button, a, .tag-line').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursor.style.width = '18px'; cursor.style.height = '18px';
+        cursor.style.background = 'var(--accent-dark)';
+    });
+    el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px'; cursor.style.height = '10px';
+        cursor.style.background = 'var(--ink)';
+    });
+});
+
+// Role cycling
+const track = document.getElementById('roleTrack');
+const total = track.children.length - 1;
+let idx = 0;
+
+setInterval(() => {
+    idx++;
+    track.style.transform = `translateY(-${idx * 42}px)`;
+
+    if (idx === total) {
+        setTimeout(() => {
+            track.style.transition = 'none';
+            track.style.transform = 'translateY(0)';
+            idx = 0;
+            setTimeout(() => {
+                track.style.transition = 'transform .65s cubic-bezier(.76,0,.24,1)';
+            }, 50);
+        }, 650);
+    }
+}, 2800);
+
+// Enter transition
+document.getElementById('enterBtn').addEventListener('click', () => {
+    const t = document.getElementById('transition');
+    t.classList.add('active');
+    setTimeout(() => {
+        window.location.href = 'main.html';
+    }, 700);
+});
+</script>
+</body>
+</html>

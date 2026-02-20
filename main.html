@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madhav Yalamarthi — AI Engineer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --ink: #0a0a0a;
+    --paper: #f5f0e8;
+    --accent: #c8a96e;
+    --accent-dark: #9a7a45;
+    --muted: #6b6560;
+    --line: rgba(10,10,10,0.12);
+    --red: #c0392b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Syne', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+}
+
+/* ─── CURSOR ─── */
+.cursor {
+    width: 10px;
+    height: 10px;
+    background: var(--ink);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s, height 0.3s, background 0.3s;
+}
+.cursor-ring {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+    opacity: 0.5;
+}
+body:hover .cursor { opacity: 1; }
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+}
+
+/* ─── NAV ─── */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 6%;
+    mix-blend-mode: multiply;
+}
+
+.logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+}
+
+.logo span {
+    color: var(--accent-dark);
+    font-style: italic;
+}
+
+.nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent-dark);
+    transition: width 0.3s;
+}
+
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+
+/* ─── HERO ─── */
+.hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-left {
+    padding: 160px 6% 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-right: 1px solid var(--line);
+    position: relative;
+}
+
+.hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.hero-left h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(56px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s forwards;
+}
+
+.hero-left h1 em {
+    font-style: italic;
+    color: var(--accent-dark);
+}
+
+.hero-divider {
+    width: 48px;
+    height: 2px;
+    background: var(--accent);
+    margin: 36px 0 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+}
+
+.hero-tagline {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 380px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+}
+
+.hero-bottom-row {
+    margin-top: 60px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.75s forwards;
+}
+
+.cta-btn {
+    display: inline-block;
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    padding: 14px 28px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.cta-btn:hover {
+    background: var(--accent-dark);
+    transform: translateY(-2px);
+}
+
+.scroll-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.scroll-hint::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 32px;
+    background: var(--muted);
+    animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(0.6); }
+}
+
+/* Hero right */
+.hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-image-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 0;
+}
+
+.profile-pic {
+    width: 75%;
+    max-width: 380px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    filter: grayscale(15%) contrast(1.05);
+    opacity: 0;
+    animation: fadeIn 1.2s 0.6s forwards;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-right-bg {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 39px,
+        var(--line) 39px,
+        var(--line) 40px
+    );
+    opacity: 0.5;
+}
+
+.hero-right-number {
+    position: absolute;
+    top: 160px;
+    right: 6%;
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px;
+    color: rgba(10,10,10,0.04);
+    line-height: 1;
+    font-style: italic;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-tags {
+    position: absolute;
+    top: 48px;
+    left: 6%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 3;
+}
+
+.tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    background: var(--paper);
+    opacity: 0;
+    animation: fadeIn 0.6s forwards;
+}
+
+.tag:nth-child(1) { animation-delay: 0.8s; }
+.tag:nth-child(2) { animation-delay: 1.0s; }
+.tag:nth-child(3) { animation-delay: 1.2s; }
+.tag:nth-child(4) { animation-delay: 1.4s; }
+
+/* ─── ABOUT ─── */
+#about {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+}
+
+.section-label {
+    padding: 80px 6%;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+}
+
+.section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-dark);
+    letter-spacing: 0.15em;
+}
+
+.section-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.section-heading em { font-style: italic; color: var(--accent-dark); }
+
+.section-content {
+    padding: 80px 7%;
+}
+
+.about-text {
+    font-size: 18px;
+    line-height: 1.75;
+    color: #2a2520;
+    max-width: 640px;
+}
+
+.about-text p + p { margin-top: 24px; }
+
+.about-text strong {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 64px;
+    border-top: 1px solid var(--line);
+}
+
+.stat {
+    padding: 32px 0;
+    border-right: 1px solid var(--line);
+}
+.stat:last-child { border-right: none; }
+
+.stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+/* ─── SKILLS ─── */
+#skills {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 80px 7%;
+    gap: 0;
+}
+
+.skill-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    padding-right: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.skill-item:nth-child(even) {
+    padding-left: 32px;
+    padding-right: 0;
+    border-right: none;
+}
+
+.skill-item:nth-last-child(-n+2) { border-bottom: none; }
+
+.skill-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+}
+
+.skill-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.skill-bar-wrap {
+    width: 80px;
+    height: 2px;
+    background: var(--line);
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-bar {
+    height: 100%;
+    background: var(--accent-dark);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s ease;
+}
+
+.skill-item:hover .skill-name { color: var(--accent-dark); }
+
+/* ─── PROJECTS ─── */
+#projects {
+    border-bottom: 1px solid var(--line);
+}
+
+.projects-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+}
+
+.projects-list {
+    padding: 0 6%;
+}
+
+.project-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--line);
+    cursor: none;
+    transition: 0.3s;
+    position: relative;
+}
+
+.project-row::after {
+    content: '';
+    position: absolute;
+    left: -6%;
+    right: -6%;
+    bottom: -1px;
+    height: 0;
+    background: var(--ink);
+    transition: height 0.4s ease;
+    z-index: 0;
+}
+
+.project-row:hover::after { height: 100%; bottom: 0; }
+
+.project-row:hover .project-num,
+.project-row:hover .project-name,
+.project-row:hover .project-desc,
+.project-row:hover .project-tech { color: var(--paper); }
+
+.project-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-dark);
+    letter-spacing: 0.1em;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.project-body { position: relative; z-index: 1; }
+
+.project-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    transition: color 0.3s;
+    line-height: 1.2;
+}
+
+.project-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    transition: color 0.3s;
+    line-height: 1.5;
+}
+
+.project-tech {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+    text-align: right;
+}
+
+.project-row:last-child { border-bottom: none; }
+
+/* Coming soon project */
+.project-row.coming {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+/* ─── MINOR PROJECTS ─── */
+#minor-projects {
+    border-bottom: 1px solid var(--line);
+}
+
+.minor-projects-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+}
+
+.minor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 60px 6%;
+    gap: 0;
+}
+
+.minor-card {
+    padding: 36px 28px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.minor-card:nth-child(3n) { border-right: none; }
+.minor-card:nth-last-child(-n+3) { border-bottom: none; }
+
+.minor-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(.76,0,.24,1);
+    z-index: 0;
+}
+
+.minor-card:hover::before { transform: translateY(0); }
+
+.minor-card:hover .minor-card-num,
+.minor-card:hover .minor-card-name,
+.minor-card:hover .minor-card-desc,
+.minor-card:hover .minor-card-stack { color: var(--paper); }
+
+.minor-card:hover .minor-card-tag { background: rgba(255,255,255,0.1); color: var(--accent); }
+
+.minor-card-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.minor-card-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.minor-card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.minor-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 16px;
+}
+
+.minor-card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    border: 1px solid var(--line);
+    padding: 4px 9px;
+    transition: 0.3s;
+}
+
+.minor-card-stack {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.minor-card-type {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.minor-card:hover .minor-card-type { color: rgba(255,255,255,0.4); }
+
+/* SSR card — spans full row */
+.minor-card.ssr-card {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-bottom: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.ssr-left { position: relative; z-index: 1; }
+.ssr-right { position: relative; z-index: 1; }
+
+.ssr-team {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.ssr-member {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+    transition: 0.3s;
+}
+
+.minor-card:hover .ssr-member { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); }
+
+.ssr-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 0;
+    border: 1px solid var(--line);
+}
+
+.ssr-stat {
+    padding: 20px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: border-color 0.3s;
+}
+
+.ssr-stat:nth-child(2n) { border-right: none; }
+.ssr-stat:nth-last-child(-n+2) { border-bottom: none; }
+
+.minor-card:hover .ssr-stat { border-color: rgba(255,255,255,0.15); }
+
+.ssr-stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    letter-spacing: -0.03em;
+    transition: color 0.3s;
+}
+
+.ssr-stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-top: 4px;
+    transition: color 0.3s;
+}
+
+.minor-card:hover .ssr-stat-num { color: var(--paper); }
+.minor-card:hover .ssr-stat-label { color: rgba(255,255,255,0.45); }
+
+@media (max-width: 900px) {
+    .minor-grid { grid-template-columns: 1fr 1fr; }
+    .minor-card:nth-child(3n) { border-right: 1px solid var(--line); }
+    .minor-card:nth-child(2n) { border-right: none; }
+    .minor-card.ssr-card { grid-template-columns: 1fr; }
+    .minor-projects-header { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .minor-grid { grid-template-columns: 1fr; }
+    .minor-card { border-right: none; }
+}
+
+/* ─── RESEARCH ─── */
+#research {
+    border-bottom: 1px solid var(--line);
+}
+
+.research-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+}
+
+.research-list {
+    padding: 0 6%;
+}
+
+.research-row {
+    padding: 48px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 56px 1fr 220px;
+    gap: 36px;
+    align-items: start;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.research-row:last-child { border-bottom: none; }
+
+.research-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(.76,0,.24,1);
+    z-index: 0;
+}
+
+.research-row:hover::before { transform: translateX(0); }
+
+.research-row:hover .research-num,
+.research-row:hover .research-title,
+.research-row:hover .research-abstract,
+.research-row:hover .research-domain,
+.research-row:hover .research-stack-item { color: var(--paper); }
+
+.research-row:hover .research-badge,
+.research-row:hover .research-metric-val { color: var(--accent); }
+
+.research-row:hover .research-metric-label { color: rgba(255,255,255,0.45); }
+
+.research-row:hover .research-divider { background: rgba(255,255,255,0.15); }
+
+.research-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+    padding-top: 6px;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.research-body { position: relative; z-index: 1; }
+
+.research-title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.research-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(18px, 2vw, 24px);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    transition: color 0.3s;
+    flex: 1;
+    min-width: 200px;
+}
+
+.research-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    border: 1px solid var(--accent);
+    padding: 5px 10px;
+    white-space: nowrap;
+    margin-top: 4px;
+    transition: color 0.3s;
+    flex-shrink: 0;
+}
+
+.research-badge.in-progress {
+    color: #e08f3a;
+    border-color: #e08f3a;
+    animation: pulseBadge 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseBadge {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.research-domain {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 14px;
+    transition: color 0.3s;
+}
+
+.research-abstract {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 640px;
+    transition: color 0.3s;
+}
+
+.research-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 18px;
+}
+
+.research-stack-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 4px 9px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.research-row:hover .research-stack-item { border-color: rgba(255,255,255,0.15); }
+
+.research-meta {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 4px;
+}
+
+.research-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    transition: border-color 0.3s;
+}
+
+.research-row:hover .research-metrics { border-color: rgba(255,255,255,0.15); }
+
+.research-metric {
+    padding: 14px 12px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: border-color 0.3s;
+}
+
+.research-metric:nth-child(2n) { border-right: none; }
+.research-metric:nth-last-child(-n+2) { border-bottom: none; }
+.research-row:hover .research-metric { border-color: rgba(255,255,255,0.1); }
+
+.research-metric-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--accent-dark);
+    transition: color 0.3s;
+    line-height: 1;
+}
+
+.research-metric-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-top: 4px;
+    transition: color 0.3s;
+}
+
+.research-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 16px 0;
+    transition: background 0.3s;
+}
+
+.research-course {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.6;
+    transition: color 0.3s;
+}
+
+.research-row:hover .research-course { color: rgba(255,255,255,0.4); }
+
+/* In-progress banner at bottom */
+.research-in-progress-banner {
+    padding: 28px 6%;
+    background: rgba(224, 143, 58, 0.06);
+    border-top: 1px solid rgba(224, 143, 58, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.rip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e08f3a;
+    flex-shrink: 0;
+    animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(224,143,58,0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(224,143,58,0); }
+}
+
+.rip-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #e08f3a;
+}
+
+.rip-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+    font-style: italic;
+}
+
+@media (max-width: 900px) {
+    .research-header { grid-template-columns: 1fr; }
+    .research-row { grid-template-columns: 40px 1fr; }
+    .research-meta { display: none; }
+}
+
+/* ─── ACHIEVEMENTS ─── */
+#achievements {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+}
+
+.achievements-list {
+    padding: 80px 7%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.achievement-item {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 24px;
+    align-items: start;
+    transition: 0.3s;
+}
+
+.achievement-item:last-child { border-bottom: none; }
+
+.achievement-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-top: 8px;
+    transition: transform 0.3s;
+}
+
+.achievement-item:hover .achievement-dot { transform: scale(1.8); }
+
+.achievement-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+}
+
+.achievement-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+/* ─── CONTACT ─── */
+#contact {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+    min-height: 400px;
+}
+
+.contact-body {
+    padding: 80px 7%;
+}
+
+.contact-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    max-width: 480px;
+    margin-bottom: 48px;
+}
+
+.contact-headline em { font-style: italic; color: var(--accent-dark); }
+
+.contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.contact-link {
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 14px 24px;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: 0;
+}
+
+.contact-link:hover::before { transform: translateX(0); }
+
+.contact-link:hover { color: var(--paper); }
+
+.contact-link span { position: relative; z-index: 1; }
+
+/* ─── FOOTER ─── */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 6%;
+    border-top: 1px solid var(--line);
+}
+
+.footer-left {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--muted);
+}
+
+.footer-right {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* ─── HORIZONTAL TICKER ─── */
+.ticker {
+    background: var(--ink);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ticker-inner {
+    display: inline-flex;
+    animation: ticker 30s linear infinite;
+    gap: 60px;
+}
+
+.ticker-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+}
+
+.ticker-item span { color: var(--accent); margin-right: 60px; }
+
+@keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 50vh; }
+    .hero-left { padding: 120px 6% 60px; }
+
+    #about, #skills, #achievements, #contact {
+        grid-template-columns: 1fr;
+    }
+
+    .section-label {
+        padding: 48px 6% 32px;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .about-stats { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid var(--line); }
+
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-item:nth-child(even) { border-right: none; padding-left: 0; }
+    .skill-item { border-right: none; }
+
+    .project-row { grid-template-columns: 60px 1fr; }
+    .project-tech { display: none; }
+
+    nav { padding: 18px 5%; }
+    .nav-links { gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">M<span>.</span>Y</div>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#minor-projects">Minor</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-left">
+        <div class="hero-eyebrow">Available for opportunities — 2026</div>
+        <h1>
+            Madhav<br>
+            <em>Yalamarthi</em>
+        </h1>
+        <div class="hero-divider"></div>
+        <p class="hero-tagline">
+            AI Engineer and Software Developer designing intelligent systems — where machine learning meets scalable architecture.
+        </p>
+        <div class="hero-bottom-row">
+            <a href="#projects" class="cta-btn">View Work</a>
+            <div class="scroll-hint">Scroll</div>
+        </div>
+    </div>
+
+    <div class="hero-right">
+        <div class="hero-right-bg"></div>
+        <div class="hero-right-number">01</div>
+
+        <div class="hero-tags">
+            <div class="tag">AI Engineer</div>
+            <div class="tag">Software Developer</div>
+            <div class="tag">Machine Learning</div>
+            <div class="tag">Open to Work</div>
+        </div>
+
+        <div class="hero-image-wrap">
+            <img src="Madhav.jpeg" class="profile-pic" alt="Madhav Yalamarthi">
+        </div>
+    </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+    <div class="ticker-inner">
+        <span class="ticker-item">Python <span>*</span></span>
+        <span class="ticker-item">Machine Learning <span>*</span></span>
+        <span class="ticker-item">Deep Learning <span>*</span></span>
+        <span class="ticker-item">Computer Vision <span>*</span></span>
+        <span class="ticker-item">System Design <span>*</span></span>
+        <span class="ticker-item">Full Stack <span>*</span></span>
+        <span class="ticker-item">AI Development <span>*</span></span>
+        <span class="ticker-item">Data Science <span>*</span></span>
+        <span class="ticker-item">Java <span>*</span></span>
+        <span class="ticker-item">Neural Networks <span>*</span></span>
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item">Python <span>*</span></span>
+        <span class="ticker-item">Machine Learning <span>*</span></span>
+        <span class="ticker-item">Deep Learning <span>*</span></span>
+        <span class="ticker-item">Computer Vision <span>*</span></span>
+        <span class="ticker-item">System Design <span>*</span></span>
+        <span class="ticker-item">Full Stack <span>*</span></span>
+        <span class="ticker-item">AI Development <span>*</span></span>
+        <span class="ticker-item">Data Science <span>*</span></span>
+        <span class="ticker-item">Java <span>*</span></span>
+        <span class="ticker-item">Neural Networks <span>*</span></span>
+    </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+    <div class="section-label reveal">
+        <div class="section-num">02</div>
+        <div class="section-heading">Who<br><em>I Am</em></div>
+    </div>
+    <div class="section-content">
+        <div class="about-text reveal">
+            <p>
+                I am an <strong>AI-focused software developer</strong> with a deep interest in building intelligent systems and scalable applications. My work sits at the intersection of machine learning, data-driven insight, and production-grade software engineering.
+            </p>
+            <p>
+                I have built projects spanning <strong>computer vision, recommendation systems, and intelligent automation</strong> — each designed to solve real problems with measurable impact. I think carefully about architecture, not just algorithms.
+            </p>
+            <p>
+                Driven by curiosity and a commitment to craft, I build technology that is purposeful, performant, and built to last.
+            </p>
+        </div>
+
+        <div class="about-stats reveal">
+            <div class="stat">
+                <div class="stat-num">3+</div>
+                <div class="stat-label">Years Building</div>
+            </div>
+            <div class="stat" style="padding-left: 40px;">
+                <div class="stat-num">10+</div>
+                <div class="stat-label">Projects Shipped</div>
+            </div>
+            <div class="stat" style="padding-left: 40px;">
+                <div class="stat-num">AI</div>
+                <div class="stat-label">Primary Focus</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+    <div class="section-label reveal">
+        <div class="section-num">03</div>
+        <div class="section-heading">Technical<br><em>Arsenal</em></div>
+    </div>
+
+    <div class="skills-grid">
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">Python</div>
+                <div class="skill-tag">Primary Language</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.95"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">Machine Learning</div>
+                <div class="skill-tag">Core Expertise</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.90"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">Deep Learning</div>
+                <div class="skill-tag">Neural Networks</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.85"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">Data Science</div>
+                <div class="skill-tag">Analytics & Insights</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.88"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">System Design</div>
+                <div class="skill-tag">Architecture</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.80"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">Web Development</div>
+                <div class="skill-tag">Full Stack</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.82"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">Java</div>
+                <div class="skill-tag">OOP & Backend</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.78"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-item reveal">
+            <div>
+                <div class="skill-name">AI Development</div>
+                <div class="skill-tag">End-to-End Systems</div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar" style="--w:0.92"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+    <div class="projects-header">
+        <div class="section-label reveal">
+            <div class="section-num">04</div>
+            <div class="section-heading">Innovation<br><em>Lab</em></div>
+        </div>
+        <div class="section-content" style="padding-top: 80px; padding-bottom: 0;">
+            <p class="reveal" style="color: var(--muted); font-size: 14px; max-width: 400px; line-height: 1.7;">
+                A selection of intelligent systems and software solutions built to solve real-world problems at scale.
+            </p>
+        </div>
+    </div>
+
+    <div class="projects-list">
+        <div class="project-row reveal" onclick="window.open('https://github.com/Madhav2246','_blank')">
+            <div class="project-num">01</div>
+            <div class="project-body">
+                <div class="project-name">Advanced Face Biometric System</div>
+                <div class="project-desc">Enterprise-grade real-time biometric platform — face recognition, 7-class emotion analysis, liveness detection, and audit logging. Consent-first architecture with AI-generated emotion-aware quotes via Gemini API.</div>
+            </div>
+            <div class="project-tech">Python · Flask<br>OpenCV · dlib<br>TensorFlow · Gemini</div>
+        </div>
+
+        <div class="project-row reveal" onclick="window.open('https://github.com/Madhav2246','_blank')">
+            <div class="project-num">02</div>
+            <div class="project-body">
+                <div class="project-name">Hand Gesture & ISL Recognition</div>
+                <div class="project-desc">L4 enterprise-grade platform combining custom hand gesture recognition with Indian Sign Language detection. 2500+ lines across 10 modular components — Singleton, Factory, Observer, and MVC design patterns throughout.</div>
+            </div>
+            <div class="project-tech">Python · MediaPipe<br>TensorFlow · GUI<br>2500+ LOC</div>
+        </div>
+
+        <div class="project-row reveal" onclick="window.open('https://github.com/Madhav2246','_blank')">
+            <div class="project-num">03</div>
+            <div class="project-body">
+                <div class="project-name">AI Coding Assistant — VS Code Extension</div>
+                <div class="project-desc">VS Code extension delivering AI-powered real-time code autocompletion and natural language code summarization, integrated directly into the developer workflow via the Gemini API.</div>
+            </div>
+            <div class="project-tech">JavaScript · VS Code API<br>Gemini API</div>
+        </div>
+
+        <div class="project-row reveal" onclick="window.open('https://github.com/Madhav2246','_blank')">
+            <div class="project-num">04</div>
+            <div class="project-body">
+                <div class="project-name">Shakti — AI Educational Chatbot</div>
+                <div class="project-desc">Multilingual AI chatbot supporting 10 languages with dual text/voice interaction. Covers Physics, Chemistry, Biology, Math, and English — with dynamic quizzes, personalized learning roadmaps, and OLabs integration. Built for students, educators, and accessibility.</div>
+            </div>
+            <div class="project-tech">Python · NLP · ML<br>Voice I/O · OLabs<br>10 Languages</div>
+        </div>
+
+        <div class="project-row reveal" onclick="window.open('https://github.com/Madhav2246','_blank')">
+            <div class="project-num">05</div>
+            <div class="project-body">
+                <div class="project-name">Chemical Buddy</div>
+                <div class="project-desc">AI chemistry study assistant with PDF document analysis, natural language Q&A, unit conversion, and Google image search integration. Built on LangChain, FAISS vector search, and Google Generative AI for rich, context-aware answers.</div>
+            </div>
+            <div class="project-tech">Python · Streamlit<br>LangChain · FAISS<br>Google Generative AI</div>
+        </div>
+
+        <div class="project-row reveal" onclick="window.open('https://github.com/Madhav2246','_blank')">
+            <div class="project-num">06</div>
+            <div class="project-body">
+                <div class="project-name">AI Road Safety Intelligence System</div>
+                <div class="project-desc">Full-stack platform automating end-to-end road safety audit analysis — NLP extraction of interventions from PDFs, IRC clause mapping via TF-IDF semantic similarity, SOR/CPWD/GeM cost estimation, analytics dashboards, and a RAG-based AI chatbot. Won 2nd place nationally at IIT Madras CoERS Hackathon 2025.</div>
+            </div>
+            <div class="project-tech">React · Python<br>spaCy · TF-IDF<br>RAG · IRC Standards</div>
+        </div>
+    </div>
+</section>
+
+<!-- MINOR PROJECTS -->
+<section id="minor-projects">
+    <div class="minor-projects-header">
+        <div class="section-label reveal">
+            <div class="section-num">05</div>
+            <div class="section-heading">Minor<br><em>Projects</em></div>
+        </div>
+        <div class="section-content" style="padding-top: 80px; padding-bottom: 0;">
+            <p class="reveal" style="color: var(--muted); font-size: 14px; max-width: 420px; line-height: 1.7;">
+                Academic explorations, research prototypes, and experiments that shaped the foundation of my engineering craft.
+            </p>
+        </div>
+    </div>
+
+    <div class="minor-grid">
+
+        <!-- 1. Weather App K8s -->
+        <a class="minor-card reveal" href="https://github.com/Madhav2246" target="_blank">
+            <div class="minor-card-type">DevOps</div>
+            <div class="minor-card-num">M — 01</div>
+            <div class="minor-card-name">Weather App<br>with Kubernetes</div>
+            <div class="minor-card-desc">Flask-based weather application containerized with Docker and orchestrated via Kubernetes. Full K8s deployment with configmaps, secrets, ingress, and frontend/backend deployments.</div>
+            <div class="minor-card-tags">
+                <span class="minor-card-tag">K8s</span>
+                <span class="minor-card-tag">Docker</span>
+                <span class="minor-card-tag">DevOps</span>
+            </div>
+            <div class="minor-card-stack">Python · Flask · Kubernetes · Nginx</div>
+        </a>
+
+        <!-- 2. Weather App Docker -->
+        <a class="minor-card reveal" href="https://github.com/Madhav2246" target="_blank">
+            <div class="minor-card-type">Cloud</div>
+            <div class="minor-card-num">M — 02</div>
+            <div class="minor-card-name">Weather App<br>Dockerized</div>
+            <div class="minor-card-desc">Containerized weather application with Docker and docker-compose. Fetches real-time weather data via API, packaged for consistent deployment across environments.</div>
+            <div class="minor-card-tags">
+                <span class="minor-card-tag">Docker</span>
+                <span class="minor-card-tag">API</span>
+                <span class="minor-card-tag">Python</span>
+            </div>
+            <div class="minor-card-stack">Python · Flask · Docker Compose</div>
+        </a>
+
+        <!-- 3. OOP Music Player -->
+        <a class="minor-card reveal" href="https://github.com/Madhav2246/OopsProject-Musicplayer" target="_blank">
+            <div class="minor-card-type">OOP</div>
+            <div class="minor-card-num">M — 03</div>
+            <div class="minor-card-name">Music Player<br>OOP in Java</div>
+            <div class="minor-card-desc">Java-based music player built with core OOP principles. Structured across Album, Songs, and Main modules — encapsulation, inheritance, and polymorphism applied throughout.</div>
+            <div class="minor-card-tags">
+                <span class="minor-card-tag">OOP</span>
+                <span class="minor-card-tag">Java</span>
+            </div>
+            <div class="minor-card-stack">Java · OOP Architecture</div>
+        </a>
+
+        <!-- 4. MNIST -->
+        <a class="minor-card reveal" href="https://github.com/Madhav2246/Mini-Project-MNISTHandwritten" target="_blank">
+            <div class="minor-card-type">ML</div>
+            <div class="minor-card-num">M — 04</div>
+            <div class="minor-card-name">MNIST Handwritten<br>Classification</div>
+            <div class="minor-card-desc">Classical ML and deep learning models applied to the MNIST dataset for handwritten digit recognition. Multiple algorithms benchmarked and compared across accuracy metrics.</div>
+            <div class="minor-card-tags">
+                <span class="minor-card-tag">Classification</span>
+                <span class="minor-card-tag">ML</span>
+                <span class="minor-card-tag">Research</span>
+            </div>
+            <div class="minor-card-stack">Python · Scikit-learn · Jupyter</div>
+        </a>
+
+        <!-- 5. Movie Recommendation -->
+        <a class="minor-card reveal" href="https://github.com/Madhav2246" target="_blank">
+            <div class="minor-card-type">ML · GUI</div>
+            <div class="minor-card-num">M — 05</div>
+            <div class="minor-card-name">Movie Recommendation<br>System</div>
+            <div class="minor-card-desc">KMeans clustering groups similar genres to recommend movies by title or genre. Includes Elbow Method for optimal cluster selection, built on the IMDB dataset with a Tkinter GUI.</div>
+            <div class="minor-card-tags">
+                <span class="minor-card-tag">KMeans</span>
+                <span class="minor-card-tag">Clustering</span>
+                <span class="minor-card-tag">GUI</span>
+            </div>
+            <div class="minor-card-stack">Python · Scikit-learn · Tkinter · Pandas</div>
+        </a>
+
+        <!-- 6. Travel Website -->
+        <a class="minor-card reveal" href="https://github.com/Madhav2246/UID-travelwebsite" target="_blank">
+            <div class="minor-card-type">Web</div>
+            <div class="minor-card-num">M — 06</div>
+            <div class="minor-card-name">Travel Website<br>UI/UX Design</div>
+            <div class="minor-card-desc">Multi-page travel platform built with pure HTML, CSS, and JavaScript. Covers booking forms, devotional services, adventure packages, payment flow, and destination pages.</div>
+            <div class="minor-card-tags">
+                <span class="minor-card-tag">HTML</span>
+                <span class="minor-card-tag">CSS</span>
+                <span class="minor-card-tag">UI/UX</span>
+            </div>
+            <div class="minor-card-stack">HTML · CSS · JavaScript</div>
+        </a>
+
+        <!-- SSR — Community Story Bank spanning full row -->
+        <a class="minor-card ssr-card reveal" href="https://www.youtube.com/@ashrithvenkat5507" target="_blank">
+            <div class="ssr-left">
+                <div class="minor-card-num">SSR — Community Initiative</div>
+                <div class="minor-card-name" style="font-size: 28px;">Community Story Bank<br><em style="font-style:italic; color: var(--accent-dark);">Preserving Local Heritage</em></div>
+                <div class="minor-card-desc" style="font-size: 13px; max-width: 480px; margin-top: 14px;">
+                    An Amrita Vishwa Vidyapeetham SSR initiative. Recorded oral histories from elders of Vallikkavu and nearby villages, added English subtitles, and built a Community Story Wall. Videos published on YouTube with auto-generated multilingual subtitles for global accessibility. Led a 6-member team as Project Coordinator.
+                </div>
+                <div class="minor-card-tags" style="margin-top: 20px;">
+                    <span class="minor-card-tag">SSR</span>
+                    <span class="minor-card-tag">Cultural Preservation</span>
+                    <span class="minor-card-tag">Team Lead</span>
+                    <span class="minor-card-tag">YouTube</span>
+                    <span class="minor-card-tag">Amrita Vishwa Vidyapeetham</span>
+                </div>
+                <div class="ssr-team" style="margin-top: 16px;">
+                    <span class="ssr-member">Y Madhav — Leader</span>
+                    <span class="ssr-member">P Sai Hruthik</span>
+                    <span class="ssr-member">N Vaibhav</span>
+                    <span class="ssr-member">W Ashrith</span>
+                    <span class="ssr-member">Abhimanyu TK</span>
+                    <span class="ssr-member">Swagathchandran S</span>
+                </div>
+            </div>
+            <div class="ssr-right">
+                <div class="ssr-stats">
+                    <div class="ssr-stat">
+                        <div class="ssr-stat-num">41</div>
+                        <div class="ssr-stat-label">Total Hours</div>
+                    </div>
+                    <div class="ssr-stat">
+                        <div class="ssr-stat-num">6</div>
+                        <div class="ssr-stat-label">Team Members</div>
+                    </div>
+                    <div class="ssr-stat">
+                        <div class="ssr-stat-num">10+</div>
+                        <div class="ssr-stat-label">Elders Interviewed</div>
+                    </div>
+                    <div class="ssr-stat">
+                        <div class="ssr-stat-num">YT</div>
+                        <div class="ssr-stat-label">Published Live</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); position: relative; z-index: 1; transition: color 0.3s;" class="minor-card-stack">
+                    Video Production · Subtitle Editing · Community Outreach · Web Platform
+                </div>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<!-- RESEARCH PROJECTS -->
+<section id="research">
+    <div class="research-header">
+        <div class="section-label reveal">
+            <div class="section-num">06</div>
+            <div class="section-heading">Research<br><em>Projects</em></div>
+        </div>
+        <div class="section-content" style="padding-top: 80px; padding-bottom: 0;">
+            <p class="reveal" style="color: var(--muted); font-size: 14px; max-width: 440px; line-height: 1.7;">
+                Unpublished research at the frontier of AI, bioinformatics, and continual learning — each addressing an open problem in applied machine intelligence.
+            </p>
+        </div>
+    </div>
+
+    <div class="research-list">
+
+        <!-- R1: Toxicity Prediction -->
+        <div class="research-row reveal">
+            <div class="research-num">R — 01</div>
+            <div class="research-body">
+                <div class="research-title-row">
+                    <div class="research-title">Multi-Stage Toxicity Prediction for Drug Discovery Using Fingerprints, GNNs & Knowledge Graph Neural Networks</div>
+                    <div class="research-badge in-progress">In Progress</div>
+                </div>
+                <div class="research-domain">Drug Discovery · Cheminformatics · Graph ML</div>
+                <div class="research-abstract">
+                    A five-stage cooperative learning pipeline addressing extreme label sparsity in molecular toxicity prediction (&lt;0.5% labeled). Integrates Morgan fingerprint initialization, molecular similarity graph propagation, Graph Isomorphism Networks (GIN), data-driven Knowledge Graph construction from embeddings, and ensemble fusion. Validated on 79,002 molecules from ZINC, ChEMBL, and Tox21. Outperforms any single-stage approach in ROC-AUC and prediction stability.
+                </div>
+                <div class="research-tags">
+                    <span class="research-stack-item">PyTorch Geometric</span>
+                    <span class="research-stack-item">RDKit</span>
+                    <span class="research-stack-item">GIN</span>
+                    <span class="research-stack-item">UMAP</span>
+                    <span class="research-stack-item">Tox21</span>
+                    <span class="research-stack-item">Label Propagation</span>
+                    <span class="research-stack-item">BRICS/Murcko</span>
+                </div>
+            </div>
+            <div class="research-meta">
+                <div class="research-metrics">
+                    <div class="research-metric">
+                        <div class="research-metric-val">0.71</div>
+                        <div class="research-metric-label">Stage I AUC</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">79K</div>
+                        <div class="research-metric-label">Molecules</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">5</div>
+                        <div class="research-metric-label">Pipeline Stages</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">&lt;0.5%</div>
+                        <div class="research-metric-label">Label Coverage</div>
+                    </div>
+                </div>
+                <div class="research-divider"></div>
+                <div class="research-course">Deep Learning<br>Term Project<br>24AIE304</div>
+            </div>
+        </div>
+
+        <!-- R2: Gamete Dominance -->
+        <div class="research-row reveal">
+            <div class="research-num">R — 02</div>
+            <div class="research-body">
+                <div class="research-title-row">
+                    <div class="research-title">Predicting Dominant Gamete Contribution in Fertilization Using Genomic & Phenotypic Characteristics</div>
+                    <div class="research-badge in-progress">In Progress</div>
+                </div>
+                <div class="research-domain">Bioinformatics · Reproductive AI · Genomics</div>
+                <div class="research-abstract">
+                    A novel hybrid AI-bioinformatics pipeline predicting whether the male or female gamete dominantly contributes to successful fertilization. Integrates WHO semen phenotypic data, SHBG codon-based synthetic SNPs, and female oocyte transcriptomic profiles (GSE107746). Gene Ontology enrichment via g:Profiler provides biological grounding. Random Forest achieves 92% accuracy (ROC-AUC 0.94). SHAP analysis reveals female gene expression — particularly BMP15, GDF9, ZP3 — as the primary dominance driver.
+                </div>
+                <div class="research-tags">
+                    <span class="research-stack-item">Random Forest</span>
+                    <span class="research-stack-item">XGBoost</span>
+                    <span class="research-stack-item">SHAP</span>
+                    <span class="research-stack-item">Gene Ontology</span>
+                    <span class="research-stack-item">g:Profiler</span>
+                    <span class="research-stack-item">GSE107746</span>
+                    <span class="research-stack-item">TGF-β Signaling</span>
+                </div>
+            </div>
+            <div class="research-meta">
+                <div class="research-metrics">
+                    <div class="research-metric">
+                        <div class="research-metric-val">0.94</div>
+                        <div class="research-metric-label">ROC-AUC (RF)</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">92%</div>
+                        <div class="research-metric-label">Accuracy</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">4</div>
+                        <div class="research-metric-label">Models Compared</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">GO</div>
+                        <div class="research-metric-label">Enrichment</div>
+                    </div>
+                </div>
+                <div class="research-divider"></div>
+                <div class="research-course">Bioinformatics<br>Research Study<br>Unpublished</div>
+            </div>
+        </div>
+
+        <!-- R3: Continual Learning HAT -->
+        <div class="research-row reveal">
+            <div class="research-num">R — 03</div>
+            <div class="research-body">
+                <div class="research-title-row">
+                    <div class="research-title">Continual Learning on CIFAR-100 via Hard Attention to Task (HAT) with Memory-Aware Replay & EWC</div>
+                    <div class="research-badge in-progress">In Progress</div>
+                </div>
+                <div class="research-domain">Continual Learning · Catastrophic Forgetting · Computer Vision</div>
+                <div class="research-abstract">
+                    A research evolution tracking the progression from naive RoutedMLP (26% on Split-CIFAR-100) through CNN dynamic routing (41%), ResNet18 pretrained backbone (49%), to a full HAT architecture achieving 58.86% accuracy. HAT introduces task-specific sigmoid attention gates over ResNet18 features, combined with EWC regularization and episodic memory replay, enabling selective attention to task-relevant neurons and significant retention over five incremental tasks.
+                </div>
+                <div class="research-tags">
+                    <span class="research-stack-item">PyTorch</span>
+                    <span class="research-stack-item">ResNet18</span>
+                    <span class="research-stack-item">HAT</span>
+                    <span class="research-stack-item">EWC</span>
+                    <span class="research-stack-item">Episodic Replay</span>
+                    <span class="research-stack-item">CIFAR-100</span>
+                    <span class="research-stack-item">Task-Incremental</span>
+                </div>
+            </div>
+            <div class="research-meta">
+                <div class="research-metrics">
+                    <div class="research-metric">
+                        <div class="research-metric-val">58.86</div>
+                        <div class="research-metric-label">Final Accuracy %</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">-30.5</div>
+                        <div class="research-metric-label">BWT</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">60.53</div>
+                        <div class="research-metric-label">FWT</div>
+                    </div>
+                    <div class="research-metric">
+                        <div class="research-metric-val">5</div>
+                        <div class="research-metric-label">Task Splits</div>
+                    </div>
+                </div>
+                <div class="research-divider"></div>
+                <div class="research-course">Continual Learning<br>Research Study<br>Unpublished</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- In-progress banner -->
+    <div class="research-in-progress-banner">
+        <div class="rip-dot"></div>
+        <div class="rip-text">3 Active Research Tracks — Not Yet Published</div>
+        <div class="rip-sub">Manuscripts under preparation · Results subject to update</div>
+    </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+    <div class="section-label reveal">
+        <div class="section-num">07</div>
+        <div class="section-heading">Milestones &amp;<br><em>Recognition</em></div>
+    </div>
+
+    <div class="achievements-list">
+
+        <!-- Hackathon 1: Road Safety — 2nd Place -->
+        <div class="achievement-item reveal" style="display: grid; grid-template-columns: 20px 1fr auto; gap: 24px; align-items: start;">
+            <div class="achievement-dot" style="background: #c8a96e;"></div>
+            <div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px;">
+                    <div class="achievement-title">National Road Safety Hackathon 2025</div>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 4px 10px;">2nd Place</span>
+                </div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 8px;">CoERS · RBG Labs · IIT Madras · Theme: AI in Road Safety</div>
+                <div class="achievement-sub">Built an AI-Powered Road Safety Intelligence System — a full-stack platform that automates end-to-end analysis of road safety audit PDFs, extracts interventions using hybrid NLP, maps them to IRC standards via TF-IDF semantic matching, and estimates material costs from SOR/CPWD/GeM datasets. Integrated a RAG-based AI chatbot for contextual engineering insights. Competed against teams nationwide; finished 2nd in a ₹90K prize pool competition organized by IIT Madras' MoRTH-funded Centre of Excellence for Road Safety.</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;">
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">React</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Python</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">spaCy</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">TF-IDF</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">RAG</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">IRC Standards</span>
+                </div>
+                <div style="margin-top: 10px;">
+                    <a href="#" style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent);">[ Link Placeholder ]</a>
+                </div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0;">
+                <div style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: -0.04em; color: var(--ink); line-height: 1;">2nd</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">National</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);">2025</div>
+            </div>
+        </div>
+
+        <!-- Hackathon 2: Urban Vision — Top 5 -->
+        <div class="achievement-item reveal" style="display: grid; grid-template-columns: 20px 1fr auto; gap: 24px; align-items: start;">
+            <div class="achievement-dot"></div>
+            <div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px;">
+                    <div class="achievement-title">Urban Vision Hackathon 2025</div>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 4px 10px;">Top 5</span>
+                </div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 8px;">IISc Bengaluru · AIRAWAT Mobility · IIT Jammu · Ministry of Education · Bengaluru Traffic Police</div>
+                <div class="achievement-sub">A national research-oriented AI hackathon (May–June 2025) to build India's largest open-source traffic image dataset and train vehicle detection models for Bengaluru's Safe City cameras. Phase 1 involved gamified image annotation (Traffic Quest) contributing to the UVH-26 dataset — 26,646 high-resolution images, 1.8M bounding boxes across 14 Indian vehicle classes. Top 20 teams competed in-person at IISc to train YOLOv11/RT-DETR models. Finished in the Top 5 nationally among 565+ participants.</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;">
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Computer Vision</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">YOLOv11</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">RT-DETR</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Dataset Annotation</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Urban Mobility AI</span>
+                </div>
+                <div style="margin-top: 10px;">
+                    <a href="https://airawat-mobility.github.io/hack/" target="_blank" style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent);">airawat-mobility.github.io/hack</a>
+                </div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0;">
+                <div style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: -0.04em; color: var(--ink); line-height: 1;">T5</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">National</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);">2025</div>
+            </div>
+        </div>
+
+        <!-- Hackathon 3: InnovateK12 — 10th Place -->
+        <div class="achievement-item reveal" style="display: grid; grid-template-columns: 20px 1fr auto; gap: 24px; align-items: start;">
+            <div class="achievement-dot"></div>
+            <div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px;">
+                    <div class="achievement-title">InnovateK12 Hackathon</div>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); background: rgba(200,169,110,0.2); border: 1px solid var(--accent); padding: 4px 10px;">10th Place</span>
+                </div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 8px;">EdTech Innovation · K-12 Education Technology</div>
+                <div class="achievement-sub">Chemical Buddy — an AI-powered chemistry study assistant — secured 10th place. The platform enables natural language chemistry Q&A, PDF document analysis, unit conversions, and image search via Google Custom Search API. Built with LangChain, FAISS vector search, and Google Generative AI on a Streamlit frontend, designed to make chemistry accessible and interactive for students worldwide.</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;">
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">LangChain</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">FAISS</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Streamlit</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Google Gen AI</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">EdTech</span>
+                </div>
+                <div style="margin-top: 10px;">
+                    <a href="#" style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent);">[ Link Placeholder ]</a>
+                </div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0;">
+                <div style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: -0.04em; color: var(--ink); line-height: 1;">10th</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">InnovateK12</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);">2025</div>
+            </div>
+        </div>
+
+        <!-- Other achievements -->
+        <div class="achievement-item reveal">
+            <div class="achievement-dot"></div>
+            <div>
+                <div class="achievement-title">Certifications & Credentials</div>
+                <div class="achievement-sub" style="margin-top: 8px;">Industry-recognized completions across ML, deep learning, and applied AI.</div>
+                <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line);">
+
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_finally-completed-my-internship-activity-7193820013395386368-hK1O" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">1Stop AI · Internship</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px; transition: color 0.3s;">Personify AI Internship</div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; transition: color 0.3s;">Completion Certificate →</div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089692466032640-Ncyi" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">Kaggle · ML</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Intermediate Machine Learning</div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Completion Certificate →</div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089886687391745-KCPK" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">Kaggle · ML</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Intro to Machine Learning</div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Completion Certificate →</div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226836128476061698-QG4Y" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">DataCamp · Unsupervised</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Unsupervised Learning in Python</div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Statement of Accomplishment →</div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226834970542059521-YGYQ" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">DataCamp · Supervised</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Supervised Learning in Python</div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Statement of Accomplishment →</div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7227588051055558657-12wr" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">DataCamp · Deep Learning</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Intro to Deep Learning</div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Statement of Accomplishment →</div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_value-health-hackathon-on-genai-activity-7281993405998448640-cAil" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); grid-column: 1 / -1; transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">Value Health · GenAI Hackathon</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Value Health Hackathon on GenAI — Appreciation Certificate</div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Certificate of Appreciation →</div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div class="achievement-item reveal">
+            <div class="achievement-dot"></div>
+            <div>
+                <div class="achievement-title">Technical Leadership</div>
+                <div class="achievement-sub">Led engineering and research teams — from SSR community projects to multi-disciplinary AI systems — delivering production-ready outcomes under academic and competitive settings.</div>
+                <div style="margin-top: 16px; padding: 18px; border: 1px solid var(--line); position: relative; overflow: hidden; transition: background 0.3s;" onmouseenter="this.style.background='rgba(10,10,10,0.04)'" onmouseleave="this.style.background='transparent'">
+                    <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 6px;">Workshop Organiser · ACM Collaboration</div>
+                    <div style="font-family: 'DM Serif Display', serif; font-size: 18px; letter-spacing: -0.02em; margin-bottom: 8px;">ML360: Mastering the Basics of Machine Learning</div>
+                    <div style="font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 12px;">Organised and delivered a comprehensive ML fundamentals workshop for students in collaboration with ACM Student Chapter at Amrita Vishwa Vidyapeetham. Covered core ML concepts, hands-on demonstrations, and guided learners from theory to practice.</div>
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_ml360-mentorship-ai-activity-7299994477874618368--Vly" target="_blank" style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent);">View Workshop Post →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memberships -->
+        <div class="achievement-item reveal">
+            <div class="achievement-dot"></div>
+            <div>
+                <div class="achievement-title">Memberships & Community</div>
+                <div style="margin-top: 16px; padding: 22px; border: 1px solid var(--line); display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start;">
+                    <div style="font-family: 'DM Serif Display', serif; font-size: 36px; letter-spacing: -0.04em; line-height: 1; color: var(--ink);">ACM</div>
+                    <div>
+                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 5px;">Ex-Mentor · SIG AI · Amrita Vishwa Vidyapeetham</div>
+                        <div style="font-family: 'DM Serif Display', serif; font-size: 17px; letter-spacing: -0.02em; margin-bottom: 8px;">ACM Student Chapter — SIG AI</div>
+                        <div style="font-size: 13px; color: var(--muted); line-height: 1.7;">Served as Mentor in the Special Interest Group on Artificial Intelligence at Amrita's ACM Student Chapter. Contributed across multiple dimensions — organising ML workshops, mentoring students through AI projects, co-ordinating hackathon teams, and fostering a collaborative learning culture around applied AI and software engineering.</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;">
+                            <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Workshops</span>
+                            <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Mentorship</span>
+                            <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Hackathons</span>
+                            <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">AI Projects</span>
+                            <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Community Building</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <div class="section-label reveal">
+        <div class="section-num">08</div>
+        <div class="section-heading">Get<br><em>In Touch</em></div>
+    </div>
+
+    <div class="contact-body">
+        <div class="contact-headline reveal">
+            Let's build something <em>intelligent</em> together.
+        </div>
+        <div class="contact-links reveal">
+            <a href="https://www.linkedin.com/in/yalamarthi-madhav-1776a9287/" target="_blank" class="contact-link"><span>LinkedIn</span></a>
+            <a href="https://github.com/Madhav2246/" target="_blank" class="contact-link"><span>GitHub</span></a>
+            <a href="https://www.instagram.com/madhav_yalamarthi" target="_blank" class="contact-link"><span>Instagram</span></a>
+            <a href="mailto:yalamarthi.sriram123@gmail.com" class="contact-link"><span>Email</span></a>
+            <a href="tel:+919949795982" class="contact-link"><span>+91 99497 95982</span></a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-left">Madhav Yalamarthi</div>
+    <div class="footer-right">Built with precision — 2026</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+});
+
+function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursor.style.width = '20px';
+        cursor.style.height = '20px';
+        cursor.style.background = 'var(--accent-dark)';
+    });
+    el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px';
+        cursor.style.height = '10px';
+        cursor.style.background = 'var(--ink)';
+    });
+});
+
+// Scroll reveal — each element tracked individually so delay is per-element not per-batch
+let revealIndex = 0;
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = (revealIndex % 4 * 0.1) + 's';
+            entry.target.classList.add('visible');
+            revealIndex++;
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Skill bars on scroll
+const barObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.skill-bar').forEach(bar => {
+                const w = parseFloat(bar.style.getPropertyValue('--w'));
+                bar.style.transform = `scaleX(${w})`;
+            });
+            barObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.skills-grid').forEach(el => barObserver.observe(el));
+</script>
+</body>
+</html>
