@@ -98,7 +98,7 @@ nav {
 
 .nav-links {
     display: flex;
-    gap: 36px;
+    gap: 28px;
     list-style: none;
 }
 
@@ -106,7 +106,7 @@ nav {
     text-decoration: none;
     color: var(--muted);
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     transition: color 0.3s;
@@ -214,6 +214,17 @@ nav {
 .cta-btn:hover {
     background: var(--accent-dark);
     transform: translateY(-2px);
+}
+
+.cta-btn.secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+}
+
+.cta-btn.secondary:hover {
+    background: var(--ink);
+    color: var(--paper);
 }
 
 .scroll-hint {
@@ -324,6 +335,146 @@ nav {
 .tag:nth-child(2) { animation-delay: 1.0s; }
 .tag:nth-child(3) { animation-delay: 1.2s; }
 .tag:nth-child(4) { animation-delay: 1.4s; }
+
+/* ─── EDUCATION ─── */
+#education {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid var(--line);
+}
+
+.education-list {
+    padding: 80px 7%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.edu-item {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: start;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.edu-item:last-child { border-bottom: none; }
+
+.edu-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(.76,0,.24,1);
+    z-index: 0;
+}
+
+.edu-item:hover::before { transform: translateX(0); }
+
+.edu-item:hover .edu-year,
+.edu-item:hover .edu-institution,
+.edu-item:hover .edu-degree,
+.edu-item:hover .edu-location,
+.edu-item:hover .edu-grade-label,
+.edu-item:hover .edu-grade-val { color: rgba(255,255,255,0.85); }
+
+.edu-item:hover .edu-dot { background: var(--accent); }
+
+.edu-dot-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding-top: 6px;
+    position: relative;
+    z-index: 1;
+}
+
+.edu-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-dark);
+    border-radius: 50%;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+
+.edu-body { position: relative; z-index: 1; }
+
+.edu-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+}
+
+.edu-institution {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 4px;
+    transition: color 0.3s;
+}
+
+.edu-degree {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 12px;
+    transition: color 0.3s;
+    line-height: 1.4;
+}
+
+.edu-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.edu-location {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.3s;
+}
+
+.edu-grade {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    border: 1px solid var(--line);
+    padding: 5px 12px;
+    background: rgba(200,169,110,0.06);
+}
+
+.edu-grade-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--accent-dark);
+    transition: color 0.3s;
+}
+
+.edu-grade-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    transition: color 0.3s;
+}
 
 /* ─── ABOUT ─── */
 #about {
@@ -563,12 +714,6 @@ nav {
 
 .project-row:last-child { border-bottom: none; }
 
-/* Coming soon project */
-.project-row.coming {
-    opacity: 0.45;
-    pointer-events: none;
-}
-
 /* ─── MINOR PROJECTS ─── */
 #minor-projects {
     border-bottom: 1px solid var(--line);
@@ -701,7 +846,7 @@ nav {
 
 .minor-card:hover .minor-card-type { color: rgba(255,255,255,0.4); }
 
-/* SSR card — spans full row */
+/* SSR card */
 .minor-card.ssr-card {
     grid-column: 1 / -1;
     border-right: none;
@@ -838,7 +983,6 @@ nav {
 .research-row:hover .research-metric-val { color: var(--accent); }
 
 .research-row:hover .research-metric-label { color: rgba(255,255,255,0.45); }
-
 .research-row:hover .research-divider { background: rgba(255,255,255,0.15); }
 
 .research-num {
@@ -1004,7 +1148,6 @@ nav {
 
 .research-row:hover .research-course { color: rgba(255,255,255,0.4); }
 
-/* In-progress banner at bottom */
 .research-in-progress-banner {
     padding: 28px 6%;
     background: rgba(224, 143, 58, 0.06);
@@ -1100,6 +1243,79 @@ nav {
     line-height: 1.5;
 }
 
+/* ─── CERTIFICATIONS FIX ─── */
+.cert-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+}
+
+.cert-card {
+    text-decoration: none;
+    display: block;
+    padding: 18px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.cert-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(.76,0,.24,1);
+    z-index: 0;
+}
+
+.cert-card:hover::before { transform: translateY(0); }
+
+.cert-card:nth-child(2n) { border-right: none; }
+.cert-card:nth-last-child(-n+2) { border-bottom: none; }
+.cert-card.full-width { grid-column: 1 / -1; border-right: none; border-bottom: none; }
+
+.cert-provider {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.cert-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    margin-top: 5px;
+    color: var(--ink);
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.cert-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.cert-card:hover .cert-provider { color: var(--accent); }
+.cert-card:hover .cert-title { color: var(--paper); }
+.cert-card:hover .cert-link { color: rgba(255,255,255,0.5); }
+
 /* ─── CONTACT ─── */
 #contact {
     display: grid;
@@ -1154,9 +1370,7 @@ nav {
 }
 
 .contact-link:hover::before { transform: translateX(0); }
-
 .contact-link:hover { color: var(--paper); }
-
 .contact-link span { position: relative; z-index: 1; }
 
 /* ─── FOOTER ─── */
@@ -1236,13 +1450,32 @@ footer {
     transform: none;
 }
 
+/* Achievement learn more btn */
+.learn-more-btn {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    padding: 8px 18px;
+    text-decoration: none;
+    transition: background 0.3s;
+    position: relative;
+    z-index: 2;
+}
+
+.learn-more-btn:hover { background: var(--accent-dark); }
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; }
     .hero-right { min-height: 50vh; }
     .hero-left { padding: 120px 6% 60px; }
 
-    #about, #skills, #achievements, #contact {
+    #about, #skills, #achievements, #contact, #education {
         grid-template-columns: 1fr;
     }
 
@@ -1263,7 +1496,12 @@ footer {
     .project-tech { display: none; }
 
     nav { padding: 18px 5%; }
-    .nav-links { gap: 20px; }
+    .nav-links { gap: 16px; }
+
+    #education .section-label { border-right: none; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .cert-card { border-right: none; }
+    .cert-card:nth-child(2n) { border-right: none; }
 }
 </style>
 </head>
@@ -1277,6 +1515,7 @@ footer {
 <nav>
     <div class="logo">M<span>.</span>Y</div>
     <ul class="nav-links">
+        <li><a href="#education">Education</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
@@ -1284,6 +1523,7 @@ footer {
         <li><a href="#research">Research</a></li>
         <li><a href="#achievements">Achievements</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="Analysis.html" style="color: var(--accent-dark); font-weight: 700;">Analytics ↗</a></li>
     </ul>
 </nav>
 
@@ -1301,6 +1541,7 @@ footer {
         </p>
         <div class="hero-bottom-row">
             <a href="#projects" class="cta-btn">View Work</a>
+            <a href="Analysis.html" class="cta-btn secondary">Academic Analytics ↗</a>
             <div class="scroll-hint">Scroll</div>
         </div>
     </div>
@@ -1335,7 +1576,6 @@ footer {
         <span class="ticker-item">Data Science <span>*</span></span>
         <span class="ticker-item">Java <span>*</span></span>
         <span class="ticker-item">Neural Networks <span>*</span></span>
-        <!-- duplicate for seamless loop -->
         <span class="ticker-item">Python <span>*</span></span>
         <span class="ticker-item">Machine Learning <span>*</span></span>
         <span class="ticker-item">Deep Learning <span>*</span></span>
@@ -1349,10 +1589,81 @@ footer {
     </div>
 </div>
 
+<!-- EDUCATION -->
+<section id="education">
+    <div class="section-label reveal">
+        <div class="section-num">02</div>
+        <div class="section-heading">Academic<br><em>Journey</em></div>
+        <div style="margin-top: 24px;">
+            <a href="Analysis.html" style="display: inline-block; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 10px 16px; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='var(--accent-dark)'" onmouseout="this.style.background='var(--ink)'">View Analytics ↗</a>
+        </div>
+    </div>
+    <div class="education-list">
+
+        <!-- Amrita -->
+        <div class="edu-item reveal">
+            <div class="edu-dot-wrap">
+                <div class="edu-dot"></div>
+            </div>
+            <div class="edu-body">
+                <div class="edu-year">2023 — 2027</div>
+                <div class="edu-institution">Amrita Vishwa Vidyapeetham</div>
+                <div class="edu-degree">Bachelor of Technology in Computer Science (AI Specialization)</div>
+                <div class="edu-meta">
+                    <div class="edu-location">Kollam, India</div>
+                    <div class="edu-grade">
+                        <span class="edu-grade-val">8.01</span>
+                        <span class="edu-grade-label">CGPA / 10.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Narayana Junior College -->
+        <div class="edu-item reveal">
+            <div class="edu-dot-wrap">
+                <div class="edu-dot"></div>
+            </div>
+            <div class="edu-body">
+                <div class="edu-year">2021 — 2023</div>
+                <div class="edu-institution">Narayana Junior College</div>
+                <div class="edu-degree">Higher Secondary Education — Mathematics, Physics, Chemistry</div>
+                <div class="edu-meta">
+                    <div class="edu-location">Telangana, India</div>
+                    <div class="edu-grade">
+                        <span class="edu-grade-val">94.7%</span>
+                        <span class="edu-grade-label">State Board · 9.7 CGPA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resonance School -->
+        <div class="edu-item reveal">
+            <div class="edu-dot-wrap">
+                <div class="edu-dot"></div>
+            </div>
+            <div class="edu-body">
+                <div class="edu-year">Until 2021</div>
+                <div class="edu-institution">Resonance School</div>
+                <div class="edu-degree">Secondary School Education — 10th Class (CBSE)</div>
+                <div class="edu-meta">
+                    <div class="edu-location">Telangana, India</div>
+                    <div class="edu-grade">
+                        <span class="edu-grade-val">10.0</span>
+                        <span class="edu-grade-label">CGPA / 10.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
     <div class="section-label reveal">
-        <div class="section-num">02</div>
+        <div class="section-num">03</div>
         <div class="section-heading">Who<br><em>I Am</em></div>
     </div>
     <div class="section-content">
@@ -1388,7 +1699,7 @@ footer {
 <!-- SKILLS -->
 <section id="skills">
     <div class="section-label reveal">
-        <div class="section-num">03</div>
+        <div class="section-num">04</div>
         <div class="section-heading">Technical<br><em>Arsenal</em></div>
     </div>
 
@@ -1397,72 +1708,56 @@ footer {
             <div>
                 <div class="skill-name">Python</div>
                 <div class="skill-tag">Primary Language</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.95"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.95"></div></div>
             </div>
         </div>
         <div class="skill-item reveal">
             <div>
                 <div class="skill-name">Machine Learning</div>
                 <div class="skill-tag">Core Expertise</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.90"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.90"></div></div>
             </div>
         </div>
         <div class="skill-item reveal">
             <div>
                 <div class="skill-name">Deep Learning</div>
                 <div class="skill-tag">Neural Networks</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.85"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.85"></div></div>
             </div>
         </div>
         <div class="skill-item reveal">
             <div>
                 <div class="skill-name">Data Science</div>
                 <div class="skill-tag">Analytics & Insights</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.88"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.88"></div></div>
             </div>
         </div>
         <div class="skill-item reveal">
             <div>
                 <div class="skill-name">System Design</div>
                 <div class="skill-tag">Architecture</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.80"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.80"></div></div>
             </div>
         </div>
         <div class="skill-item reveal">
             <div>
                 <div class="skill-name">Web Development</div>
                 <div class="skill-tag">Full Stack</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.82"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.82"></div></div>
             </div>
         </div>
         <div class="skill-item reveal">
             <div>
                 <div class="skill-name">Java</div>
                 <div class="skill-tag">OOP & Backend</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.78"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.78"></div></div>
             </div>
         </div>
         <div class="skill-item reveal">
             <div>
                 <div class="skill-name">AI Development</div>
                 <div class="skill-tag">End-to-End Systems</div>
-                <div class="skill-bar-wrap">
-                    <div class="skill-bar" style="--w:0.92"></div>
-                </div>
+                <div class="skill-bar-wrap"><div class="skill-bar" style="--w:0.92"></div></div>
             </div>
         </div>
     </div>
@@ -1472,7 +1767,7 @@ footer {
 <section id="projects">
     <div class="projects-header">
         <div class="section-label reveal">
-            <div class="section-num">04</div>
+            <div class="section-num">05</div>
             <div class="section-heading">Innovation<br><em>Lab</em></div>
         </div>
         <div class="section-content" style="padding-top: 80px; padding-bottom: 0;">
@@ -1536,6 +1831,16 @@ footer {
             </div>
             <div class="project-tech">React · Python<br>spaCy · TF-IDF<br>RAG · IRC Standards</div>
         </div>
+
+        <!-- NEW: Trade Insights Bot -->
+        <div class="project-row reveal" onclick="window.open('https://github.com/Madhav2246/My_Applications/tree/main/Trade_insights_bot','_blank')">
+            <div class="project-num">07</div>
+            <div class="project-body">
+                <div class="project-name">Trade Insights Bot <em style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--accent-dark); font-style: normal; vertical-align: middle; margin-left: 8px;">Ultimate Edition</em></div>
+                <div class="project-desc">Multi-agent AI-powered trading assistant delivering real-time insights, portfolio analytics, news sentiment analysis, strategy backtesting, and market intelligence. LLM-powered (Mixtral-8x7B via Together.xyz) with Streamlit frontend + FastAPI backend. Features Sharpe Ratio, Volatility, Drawdown analysis, DuckDuckGo news sentiment, and side-by-side strategy comparison.</div>
+            </div>
+            <div class="project-tech">Streamlit · FastAPI<br>yFinance · TA-Lib<br>Mixtral-8x7B · QuantStats</div>
+        </div>
     </div>
 </section>
 
@@ -1543,7 +1848,7 @@ footer {
 <section id="minor-projects">
     <div class="minor-projects-header">
         <div class="section-label reveal">
-            <div class="section-num">05</div>
+            <div class="section-num">06</div>
             <div class="section-heading">Minor<br><em>Projects</em></div>
         </div>
         <div class="section-content" style="padding-top: 80px; padding-bottom: 0;">
@@ -1554,91 +1859,61 @@ footer {
     </div>
 
     <div class="minor-grid">
-
-        <!-- 1. Weather App K8s -->
         <a class="minor-card reveal" href="https://github.com/Madhav2246" target="_blank">
             <div class="minor-card-type">DevOps</div>
             <div class="minor-card-num">M — 01</div>
             <div class="minor-card-name">Weather App<br>with Kubernetes</div>
             <div class="minor-card-desc">Flask-based weather application containerized with Docker and orchestrated via Kubernetes. Full K8s deployment with configmaps, secrets, ingress, and frontend/backend deployments.</div>
-            <div class="minor-card-tags">
-                <span class="minor-card-tag">K8s</span>
-                <span class="minor-card-tag">Docker</span>
-                <span class="minor-card-tag">DevOps</span>
-            </div>
+            <div class="minor-card-tags"><span class="minor-card-tag">K8s</span><span class="minor-card-tag">Docker</span><span class="minor-card-tag">DevOps</span></div>
             <div class="minor-card-stack">Python · Flask · Kubernetes · Nginx</div>
         </a>
 
-        <!-- 2. Weather App Docker -->
         <a class="minor-card reveal" href="https://github.com/Madhav2246" target="_blank">
             <div class="minor-card-type">Cloud</div>
             <div class="minor-card-num">M — 02</div>
             <div class="minor-card-name">Weather App<br>Dockerized</div>
             <div class="minor-card-desc">Containerized weather application with Docker and docker-compose. Fetches real-time weather data via API, packaged for consistent deployment across environments.</div>
-            <div class="minor-card-tags">
-                <span class="minor-card-tag">Docker</span>
-                <span class="minor-card-tag">API</span>
-                <span class="minor-card-tag">Python</span>
-            </div>
+            <div class="minor-card-tags"><span class="minor-card-tag">Docker</span><span class="minor-card-tag">API</span><span class="minor-card-tag">Python</span></div>
             <div class="minor-card-stack">Python · Flask · Docker Compose</div>
         </a>
 
-        <!-- 3. OOP Music Player -->
         <a class="minor-card reveal" href="https://github.com/Madhav2246/OopsProject-Musicplayer" target="_blank">
             <div class="minor-card-type">OOP</div>
             <div class="minor-card-num">M — 03</div>
             <div class="minor-card-name">Music Player<br>OOP in Java</div>
             <div class="minor-card-desc">Java-based music player built with core OOP principles. Structured across Album, Songs, and Main modules — encapsulation, inheritance, and polymorphism applied throughout.</div>
-            <div class="minor-card-tags">
-                <span class="minor-card-tag">OOP</span>
-                <span class="minor-card-tag">Java</span>
-            </div>
+            <div class="minor-card-tags"><span class="minor-card-tag">OOP</span><span class="minor-card-tag">Java</span></div>
             <div class="minor-card-stack">Java · OOP Architecture</div>
         </a>
 
-        <!-- 4. MNIST -->
         <a class="minor-card reveal" href="https://github.com/Madhav2246/Mini-Project-MNISTHandwritten" target="_blank">
             <div class="minor-card-type">ML</div>
             <div class="minor-card-num">M — 04</div>
             <div class="minor-card-name">MNIST Handwritten<br>Classification</div>
             <div class="minor-card-desc">Classical ML and deep learning models applied to the MNIST dataset for handwritten digit recognition. Multiple algorithms benchmarked and compared across accuracy metrics.</div>
-            <div class="minor-card-tags">
-                <span class="minor-card-tag">Classification</span>
-                <span class="minor-card-tag">ML</span>
-                <span class="minor-card-tag">Research</span>
-            </div>
+            <div class="minor-card-tags"><span class="minor-card-tag">Classification</span><span class="minor-card-tag">ML</span><span class="minor-card-tag">Research</span></div>
             <div class="minor-card-stack">Python · Scikit-learn · Jupyter</div>
         </a>
 
-        <!-- 5. Movie Recommendation -->
         <a class="minor-card reveal" href="https://github.com/Madhav2246" target="_blank">
             <div class="minor-card-type">ML · GUI</div>
             <div class="minor-card-num">M — 05</div>
             <div class="minor-card-name">Movie Recommendation<br>System</div>
             <div class="minor-card-desc">KMeans clustering groups similar genres to recommend movies by title or genre. Includes Elbow Method for optimal cluster selection, built on the IMDB dataset with a Tkinter GUI.</div>
-            <div class="minor-card-tags">
-                <span class="minor-card-tag">KMeans</span>
-                <span class="minor-card-tag">Clustering</span>
-                <span class="minor-card-tag">GUI</span>
-            </div>
+            <div class="minor-card-tags"><span class="minor-card-tag">KMeans</span><span class="minor-card-tag">Clustering</span><span class="minor-card-tag">GUI</span></div>
             <div class="minor-card-stack">Python · Scikit-learn · Tkinter · Pandas</div>
         </a>
 
-        <!-- 6. Travel Website -->
         <a class="minor-card reveal" href="https://github.com/Madhav2246/UID-travelwebsite" target="_blank">
             <div class="minor-card-type">Web</div>
             <div class="minor-card-num">M — 06</div>
             <div class="minor-card-name">Travel Website<br>UI/UX Design</div>
             <div class="minor-card-desc">Multi-page travel platform built with pure HTML, CSS, and JavaScript. Covers booking forms, devotional services, adventure packages, payment flow, and destination pages.</div>
-            <div class="minor-card-tags">
-                <span class="minor-card-tag">HTML</span>
-                <span class="minor-card-tag">CSS</span>
-                <span class="minor-card-tag">UI/UX</span>
-            </div>
+            <div class="minor-card-tags"><span class="minor-card-tag">HTML</span><span class="minor-card-tag">CSS</span><span class="minor-card-tag">UI/UX</span></div>
             <div class="minor-card-stack">HTML · CSS · JavaScript</div>
         </a>
 
-        <!-- SSR — Community Story Bank spanning full row -->
+        <!-- SSR -->
         <a class="minor-card ssr-card reveal" href="https://www.youtube.com/@ashrithvenkat5507" target="_blank">
             <div class="ssr-left">
                 <div class="minor-card-num">SSR — Community Initiative</div>
@@ -1664,29 +1939,16 @@ footer {
             </div>
             <div class="ssr-right">
                 <div class="ssr-stats">
-                    <div class="ssr-stat">
-                        <div class="ssr-stat-num">41</div>
-                        <div class="ssr-stat-label">Total Hours</div>
-                    </div>
-                    <div class="ssr-stat">
-                        <div class="ssr-stat-num">6</div>
-                        <div class="ssr-stat-label">Team Members</div>
-                    </div>
-                    <div class="ssr-stat">
-                        <div class="ssr-stat-num">10+</div>
-                        <div class="ssr-stat-label">Elders Interviewed</div>
-                    </div>
-                    <div class="ssr-stat">
-                        <div class="ssr-stat-num">YT</div>
-                        <div class="ssr-stat-label">Published Live</div>
-                    </div>
+                    <div class="ssr-stat"><div class="ssr-stat-num">41</div><div class="ssr-stat-label">Total Hours</div></div>
+                    <div class="ssr-stat"><div class="ssr-stat-num">6</div><div class="ssr-stat-label">Team Members</div></div>
+                    <div class="ssr-stat"><div class="ssr-stat-num">10+</div><div class="ssr-stat-label">Elders Interviewed</div></div>
+                    <div class="ssr-stat"><div class="ssr-stat-num">YT</div><div class="ssr-stat-label">Published Live</div></div>
                 </div>
                 <div style="margin-top: 20px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); position: relative; z-index: 1; transition: color 0.3s;" class="minor-card-stack">
                     Video Production · Subtitle Editing · Community Outreach · Web Platform
                 </div>
             </div>
         </a>
-
     </div>
 </section>
 
@@ -1694,7 +1956,7 @@ footer {
 <section id="research">
     <div class="research-header">
         <div class="section-label reveal">
-            <div class="section-num">06</div>
+            <div class="section-num">07</div>
             <div class="section-heading">Research<br><em>Projects</em></div>
         </div>
         <div class="section-content" style="padding-top: 80px; padding-bottom: 0;">
@@ -1705,8 +1967,6 @@ footer {
     </div>
 
     <div class="research-list">
-
-        <!-- R1: Toxicity Prediction -->
         <div class="research-row reveal">
             <div class="research-num">R — 01</div>
             <div class="research-body">
@@ -1730,29 +1990,16 @@ footer {
             </div>
             <div class="research-meta">
                 <div class="research-metrics">
-                    <div class="research-metric">
-                        <div class="research-metric-val">0.71</div>
-                        <div class="research-metric-label">Stage I AUC</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">79K</div>
-                        <div class="research-metric-label">Molecules</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">5</div>
-                        <div class="research-metric-label">Pipeline Stages</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">&lt;0.5%</div>
-                        <div class="research-metric-label">Label Coverage</div>
-                    </div>
+                    <div class="research-metric"><div class="research-metric-val">0.71</div><div class="research-metric-label">Stage I AUC</div></div>
+                    <div class="research-metric"><div class="research-metric-val">79K</div><div class="research-metric-label">Molecules</div></div>
+                    <div class="research-metric"><div class="research-metric-val">5</div><div class="research-metric-label">Pipeline Stages</div></div>
+                    <div class="research-metric"><div class="research-metric-val">&lt;0.5%</div><div class="research-metric-label">Label Coverage</div></div>
                 </div>
                 <div class="research-divider"></div>
                 <div class="research-course">Deep Learning<br>Term Project<br>24AIE304</div>
             </div>
         </div>
 
-        <!-- R2: Gamete Dominance -->
         <div class="research-row reveal">
             <div class="research-num">R — 02</div>
             <div class="research-body">
@@ -1776,29 +2023,16 @@ footer {
             </div>
             <div class="research-meta">
                 <div class="research-metrics">
-                    <div class="research-metric">
-                        <div class="research-metric-val">0.94</div>
-                        <div class="research-metric-label">ROC-AUC (RF)</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">92%</div>
-                        <div class="research-metric-label">Accuracy</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">4</div>
-                        <div class="research-metric-label">Models Compared</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">GO</div>
-                        <div class="research-metric-label">Enrichment</div>
-                    </div>
+                    <div class="research-metric"><div class="research-metric-val">0.94</div><div class="research-metric-label">ROC-AUC (RF)</div></div>
+                    <div class="research-metric"><div class="research-metric-val">92%</div><div class="research-metric-label">Accuracy</div></div>
+                    <div class="research-metric"><div class="research-metric-val">4</div><div class="research-metric-label">Models Compared</div></div>
+                    <div class="research-metric"><div class="research-metric-val">GO</div><div class="research-metric-label">Enrichment</div></div>
                 </div>
                 <div class="research-divider"></div>
                 <div class="research-course">Bioinformatics<br>Research Study<br>Unpublished</div>
             </div>
         </div>
 
-        <!-- R3: Continual Learning HAT -->
         <div class="research-row reveal">
             <div class="research-num">R — 03</div>
             <div class="research-body">
@@ -1822,31 +2056,17 @@ footer {
             </div>
             <div class="research-meta">
                 <div class="research-metrics">
-                    <div class="research-metric">
-                        <div class="research-metric-val">58.86</div>
-                        <div class="research-metric-label">Final Accuracy %</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">-30.5</div>
-                        <div class="research-metric-label">BWT</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">60.53</div>
-                        <div class="research-metric-label">FWT</div>
-                    </div>
-                    <div class="research-metric">
-                        <div class="research-metric-val">5</div>
-                        <div class="research-metric-label">Task Splits</div>
-                    </div>
+                    <div class="research-metric"><div class="research-metric-val">58.86</div><div class="research-metric-label">Final Accuracy %</div></div>
+                    <div class="research-metric"><div class="research-metric-val">-30.5</div><div class="research-metric-label">BWT</div></div>
+                    <div class="research-metric"><div class="research-metric-val">60.53</div><div class="research-metric-label">FWT</div></div>
+                    <div class="research-metric"><div class="research-metric-val">5</div><div class="research-metric-label">Task Splits</div></div>
                 </div>
                 <div class="research-divider"></div>
                 <div class="research-course">Continual Learning<br>Research Study<br>Unpublished</div>
             </div>
         </div>
-
     </div>
 
-    <!-- In-progress banner -->
     <div class="research-in-progress-banner">
         <div class="rip-dot"></div>
         <div class="rip-text">3 Active Research Tracks — Not Yet Published</div>
@@ -1857,7 +2077,7 @@ footer {
 <!-- ACHIEVEMENTS -->
 <section id="achievements">
     <div class="section-label reveal">
-        <div class="section-num">07</div>
+        <div class="section-num">08</div>
         <div class="section-heading">Milestones &amp;<br><em>Recognition</em></div>
     </div>
 
@@ -1881,9 +2101,7 @@ footer {
                     <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">RAG</span>
                     <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">IRC Standards</span>
                 </div>
-                <div style="margin-top: 10px;">
-                    <a href="#" style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent);">[ Link Placeholder ]</a>
-                </div>
+                <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_nationalroadsafetyhackathon2025-secondprize-activity-7420022549138395136-oiMI" target="_blank" class="learn-more-btn">Learn More ↗</a>
             </div>
             <div style="text-align: right; flex-shrink: 0;">
                 <div style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: -0.04em; color: var(--ink); line-height: 1;">2nd</div>
@@ -1909,9 +2127,7 @@ footer {
                     <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Dataset Annotation</span>
                     <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Urban Mobility AI</span>
                 </div>
-                <div style="margin-top: 10px;">
-                    <a href="https://airawat-mobility.github.io/hack/" target="_blank" style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent);">airawat-mobility.github.io/hack</a>
-                </div>
+                <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_urbanvisionhackathon2025-iiscbengaluru-airawatmobility-activity-7420033127819034625-rE9i" target="_blank" class="learn-more-btn">Learn More ↗</a>
             </div>
             <div style="text-align: right; flex-shrink: 0;">
                 <div style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: -0.04em; color: var(--ink); line-height: 1;">T5</div>
@@ -1937,9 +2153,7 @@ footer {
                     <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">Google Gen AI</span>
                     <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px;">EdTech</span>
                 </div>
-                <div style="margin-top: 10px;">
-                    <a href="#" style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent);">[ Link Placeholder ]</a>
-                </div>
+                <a href="https://devpost.com/software/chemical-buddy" target="_blank" class="learn-more-btn">Learn More ↗</a>
             </div>
             <div style="text-align: right; flex-shrink: 0;">
                 <div style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: -0.04em; color: var(--ink); line-height: 1;">10th</div>
@@ -1948,59 +2162,54 @@ footer {
             </div>
         </div>
 
-        <!-- Other achievements -->
+        <!-- Certifications -->
         <div class="achievement-item reveal">
             <div class="achievement-dot"></div>
             <div>
                 <div class="achievement-title">Certifications & Credentials</div>
                 <div class="achievement-sub" style="margin-top: 8px;">Industry-recognized completions across ML, deep learning, and applied AI.</div>
-                <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line);">
 
-                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_finally-completed-my-internship-activity-7193820013395386368-hK1O" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
-                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">1Stop AI · Internship</div>
-                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px; transition: color 0.3s;">Personify AI Internship</div>
-                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; transition: color 0.3s;">Completion Certificate →</div>
+                <div class="cert-grid">
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_finally-completed-my-internship-activity-7193820013395386368-hK1O" target="_blank" class="cert-card">
+                        <div class="cert-provider">1Stop AI · Internship</div>
+                        <div class="cert-title">Personify AI Internship</div>
+                        <div class="cert-link">Completion Certificate →</div>
                     </a>
-
-                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089692466032640-Ncyi" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
-                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">Kaggle · ML</div>
-                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Intermediate Machine Learning</div>
-                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Completion Certificate →</div>
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089692466032640-Ncyi" target="_blank" class="cert-card">
+                        <div class="cert-provider">Kaggle · ML</div>
+                        <div class="cert-title">Intermediate Machine Learning</div>
+                        <div class="cert-link">Completion Certificate →</div>
                     </a>
-
-                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089886687391745-KCPK" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
-                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">Kaggle · ML</div>
-                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Intro to Machine Learning</div>
-                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Completion Certificate →</div>
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089886687391745-KCPK" target="_blank" class="cert-card">
+                        <div class="cert-provider">Kaggle · ML</div>
+                        <div class="cert-title">Intro to Machine Learning</div>
+                        <div class="cert-link">Completion Certificate →</div>
                     </a>
-
-                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226836128476061698-QG4Y" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
-                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">DataCamp · Unsupervised</div>
-                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Unsupervised Learning in Python</div>
-                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Statement of Accomplishment →</div>
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226836128476061698-QG4Y" target="_blank" class="cert-card">
+                        <div class="cert-provider">DataCamp · Unsupervised</div>
+                        <div class="cert-title">Unsupervised Learning in Python</div>
+                        <div class="cert-link">Statement of Accomplishment →</div>
                     </a>
-
-                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226834970542059521-YGYQ" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
-                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">DataCamp · Supervised</div>
-                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Supervised Learning in Python</div>
-                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Statement of Accomplishment →</div>
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226834970542059521-YGYQ" target="_blank" class="cert-card">
+                        <div class="cert-provider">DataCamp · Supervised</div>
+                        <div class="cert-title">Supervised Learning in Python</div>
+                        <div class="cert-link">Statement of Accomplishment →</div>
                     </a>
-
-                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7227588051055558657-12wr" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-bottom: 1px solid var(--line); transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
-                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">DataCamp · Deep Learning</div>
-                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Intro to Deep Learning</div>
-                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Statement of Accomplishment →</div>
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7227588051055558657-12wr" target="_blank" class="cert-card">
+                        <div class="cert-provider">DataCamp · Deep Learning</div>
+                        <div class="cert-title">Intro to Deep Learning</div>
+                        <div class="cert-link">Statement of Accomplishment →</div>
                     </a>
-
-                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_value-health-hackathon-on-genai-activity-7281993405998448640-cAil" target="_blank" style="text-decoration: none; color: inherit; padding: 18px; border-right: 1px solid var(--line); grid-column: 1 / -1; transition: background 0.3s;" onmouseenter="this.style.background='var(--ink)'" onmouseleave="this.style.background='transparent'">
-                        <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark);">Value Health · GenAI Hackathon</div>
-                        <div style="font-family: 'DM Serif Display', serif; font-size: 15px; margin-top: 5px;">Value Health Hackathon on GenAI — Appreciation Certificate</div>
-                        <div style="font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px;">Certificate of Appreciation →</div>
+                    <a href="https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_value-health-hackathon-on-genai-activity-7281993405998448640-cAil" target="_blank" class="cert-card full-width">
+                        <div class="cert-provider">Value Health · GenAI Hackathon</div>
+                        <div class="cert-title">Value Health Hackathon on GenAI — Appreciation Certificate</div>
+                        <div class="cert-link">Certificate of Appreciation →</div>
                     </a>
-
                 </div>
             </div>
         </div>
+
+        <!-- Technical Leadership -->
         <div class="achievement-item reveal">
             <div class="achievement-dot"></div>
             <div>
@@ -2044,7 +2253,7 @@ footer {
 <!-- CONTACT -->
 <section id="contact">
     <div class="section-label reveal">
-        <div class="section-num">08</div>
+        <div class="section-num">09</div>
         <div class="section-heading">Get<br><em>In Touch</em></div>
     </div>
 
@@ -2058,6 +2267,7 @@ footer {
             <a href="https://www.instagram.com/madhav_yalamarthi" target="_blank" class="contact-link"><span>Instagram</span></a>
             <a href="mailto:yalamarthi.sriram123@gmail.com" class="contact-link"><span>Email</span></a>
             <a href="tel:+919949795982" class="contact-link"><span>+91 99497 95982</span></a>
+            <a href="Analysis.html" class="contact-link" style="border-color: var(--accent-dark);"><span>Academic Analytics ↗</span></a>
         </div>
     </div>
 </section>
@@ -2068,7 +2278,7 @@ footer {
     <div class="footer-right">Built with precision — 2026</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // Custom cursor
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
@@ -2103,7 +2313,7 @@ document.querySelectorAll('a, button').forEach(el => {
     });
 });
 
-// Scroll reveal — each element tracked individually so delay is per-element not per-batch
+// Scroll reveal
 let revealIndex = 0;
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
