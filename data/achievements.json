@@ -1,0 +1,94 @@
+[
+  {
+    "id": "iit-madras-road-safety",
+    "type": "hackathon",
+    "title": "National Road Safety Hackathon 2025",
+    "rank": "2nd",
+    "rankLabel": "National",
+    "organizer": "IIT Madras · CoERS · RBG Labs",
+    "prize": "₹90K Prize Pool",
+    "date": "2025",
+    "description": "AI-Powered Road Safety Intelligence System — full-stack platform automating road safety audit analysis. NLP extraction, IRC clause mapping via TF-IDF, SOR/CPWD/GeM cost estimation, RAG-based AI chatbot. Finished 2nd nationally in ₹90K prize pool organized by IIT Madras' MoRTH-funded Centre of Excellence for Road Safety.",
+    "tags": ["React", "Python", "spaCy", "TF-IDF", "RAG", "IIT Madras"],
+    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_nationalroadsafetyhackathon2025-secondprize-activity-7420022549138395136-oiMI",
+    "tier": "gold",
+    "visible": true
+  },
+  {
+    "id": "iisc-urban-vision",
+    "type": "hackathon",
+    "title": "Urban Vision Hackathon 2025",
+    "rank": "Top 5",
+    "rankLabel": "Among 565+ · National",
+    "organizer": "IISc Bengaluru · AIRAWAT Mobility · IIT Jammu",
+    "prize": "National Recognition",
+    "date": "2025",
+    "description": "National AI hackathon building India's largest open-source traffic image dataset. UVH-26 dataset — 26,646 high-resolution images, 1.8M bounding boxes across 14 Indian vehicle classes. Top 20 teams competed in-person at IISc to train YOLOv11/RT-DETR models.",
+    "tags": ["YOLOv11", "RT-DETR", "Computer Vision", "IISc Bengaluru"],
+    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_urbanvisionhackathon2025-iiscbengaluru-airawatmobility-activity-7420033127819034625-rE9i",
+    "tier": "silver",
+    "visible": true
+  },
+  {
+    "id": "innovatek12",
+    "type": "hackathon",
+    "title": "InnovateK12 Hackathon",
+    "rank": "10th",
+    "rankLabel": "EdTech Innovation",
+    "organizer": "InnovateK12",
+    "prize": "",
+    "date": "2024",
+    "description": "Chemical Buddy — AI-powered chemistry study assistant with natural language Q&A, PDF document analysis, unit conversions, and image search. Built with LangChain, FAISS, and Google Generative AI on Streamlit.",
+    "tags": ["LangChain", "FAISS", "GenAI", "Streamlit"],
+    "link": "https://devpost.com/software/chemical-buddy",
+    "tier": "bronze",
+    "visible": true
+  },
+  {
+    "id": "personify-ai-internship",
+    "type": "certification",
+    "title": "Personify AI Internship",
+    "issuer": "1Stop AI",
+    "date": "2024",
+    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_finally-completed-my-internship-activity-7193820013395386368-hK1O",
+    "visible": true
+  },
+  {
+    "id": "kaggle-intermediate-ml",
+    "type": "certification",
+    "title": "Intermediate Machine Learning",
+    "issuer": "Kaggle",
+    "date": "2024",
+    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089692466032640-Ncyi",
+    "visible": true
+  },
+  {
+    "id": "datacamp-unsupervised",
+    "type": "certification",
+    "title": "Unsupervised Learning in Python",
+    "issuer": "DataCamp",
+    "date": "2024",
+    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226836128476061698-QG4Y",
+    "visible": true
+  },
+  {
+    "id": "datacamp-deep-learning",
+    "type": "certification",
+    "title": "Intro to Deep Learning",
+    "issuer": "DataCamp",
+    "date": "2024",
+    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7227588051055558657-12wr",
+    "visible": true
+  },
+  {
+    "id": "acm-sig-ai",
+    "type": "leadership",
+    "title": "ACM Student Chapter — SIG AI Mentor",
+    "organization": "ACM · Amrita Vishwa Vidyapeetham",
+    "role": "Ex-Mentor",
+    "date": "2024",
+    "description": "Served as Mentor in SIG AI. Organised ML360 workshop in collaboration with ACM, mentored students through AI projects, co-ordinated hackathon teams, and fostered collaborative learning around applied AI.",
+    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_ml360-mentorship-ai-activity-7299994477874618368--Vly",
+    "visible": true
+  }
+]

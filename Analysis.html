@@ -4,190 +4,214 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Madhav Yalamarthi — Academic Analytics</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
-  --ink:#0a0a0a; --paper:#f5f0e8;
-  --accent:#c8a96e; --accent-dark:#9a7a45;
-  --muted:#6b6560; --line:rgba(10,10,10,0.12);
-  --green:#2d7a4f; --green-light:#4caf7a;
-  --amber:#e08f3a; --red:#c0392b; --blue:#2c5f8a;
+  --bg: #000000;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(56,189,248,0.05);
+  --accent: #38bdf8;
+  --accent-dim: rgba(56,189,248,0.18);
+  --accent-dark: #0ea5e9;
+  --border: rgba(255,255,255,0.10);
+  --border-accent: rgba(56,189,248,0.28);
+  --text: rgba(255,255,255,0.88);
+  --text-muted: rgba(255,255,255,0.45);
+  --text-dim: rgba(255,255,255,0.25);
+  --green: #4ade80;
+  --green-light: #86efac;
+  --amber: #fbbf24;
+  --red: #f87171;
+  --blue: #60a5fa;
+  --gold: #e2b96f;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 
 body {
-  font-family:'Syne',sans-serif;
-  background:var(--ink); color:var(--paper);
-  overflow-x:hidden;
+  font-family:'Inter',sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
 }
+
+/* Subtle star-field dot grid */
 body::before {
-  content:''; position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:1; opacity:0.5;
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.35;
+}
+/* Radial ambient glow */
+body::after {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(56,189,248,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 35% at 80% 85%, rgba(129,140,248,0.05) 0%, transparent 70%);
 }
 
 /* CURSOR */
 .cursor,.cursor-ring{display:none;}
 @media(pointer:fine){
-  .cursor{display:block;width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s;}
-  .cursor-ring{display:block;width:34px;height:34px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease;opacity:.4;}
-  body{cursor:none;}
+  .cursor{display:block;width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:999999;transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(56,189,248,0.9);transition:width .25s,height .25s;}
+  .cursor-ring{display:block;width:32px;height:32px;border:1.5px solid rgba(56,189,248,0.45);border-radius:50%;position:fixed;pointer-events:none;z-index:999998;transform:translate(-50%,-50%);transition:all .15s ease;}
+  body,body *{cursor:none!important;}
 }
 
 /* NAV */
 nav {
   position:fixed;top:0;width:100%;z-index:500;
   display:flex;justify-content:space-between;align-items:center;
-  padding:18px 6%;
-  background:rgba(10,10,10,0.92);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(200,169,110,0.15);
+  padding:16px 6%;
+  background:rgba(0,0,0,0.88);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
 }
-.nav-logo{font-family:'DM Serif Display',serif;font-size:16px;color:var(--paper);}
-.nav-logo span{color:var(--accent);font-style:italic;}
-.nav-right{display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
-.nav-right a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.5);transition:color .3s;}
+.nav-logo{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#fff;letter-spacing:-.01em;}
+.nav-logo span{color:var(--accent);}
+.nav-right{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.nav-right a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--text-muted);transition:color .25s;}
 .nav-right a:hover{color:var(--accent);}
-.nav-back{color:var(--accent)!important;border:1px solid rgba(200,169,110,.3);padding:7px 14px;}
+.nav-back{color:var(--accent)!important;border:1px solid var(--border-accent);padding:7px 14px;border-radius:8px;transition:background .25s!important;}
+.nav-back:hover{background:var(--accent-dim)!important;}
 
 /* HERO */
 .analytics-hero {
-  padding:120px 6% 72px;
-  border-bottom:1px solid rgba(200,169,110,.15);
+  padding:110px 6% 64px;
+  border-bottom:1px solid var(--border);
   position:relative;overflow:hidden;
 }
 .hero-bg-text {
-  position:absolute;top:60px;right:4%;
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(100px,20vw,260px);line-height:1;
-  color:rgba(200,169,110,0.04);font-style:italic;
-  pointer-events:none;letter-spacing:-.05em;
+  position:absolute;top:40px;right:3%;
+  font-family:'Inter',sans-serif;font-weight:900;
+  font-size:clamp(100px,18vw,240px);line-height:1;
+  color:rgba(56,189,248,0.025);
+  pointer-events:none;letter-spacing:-.06em;
   white-space:nowrap;
 }
 .hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;opacity:0;animation:fadeUp .8s .2s forwards;}
-.analytics-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(40px,7vw,90px);line-height:.95;letter-spacing:-.03em;opacity:0;animation:fadeUp .9s .35s forwards;}
-.analytics-hero h1 em{font-style:italic;color:var(--accent);}
-.hero-sub{font-size:14px;color:rgba(255,255,255,.45);line-height:1.7;max-width:480px;margin-top:24px;opacity:0;animation:fadeUp .8s .5s forwards;}
+.analytics-hero h1{font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(38px,7vw,84px);line-height:.95;letter-spacing:-.04em;opacity:0;animation:fadeUp .9s .35s forwards;color:#fff;}
+.analytics-hero h1 em{font-style:normal;background:linear-gradient(120deg,#fff 0%,#7dd3fc 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:14px;color:var(--text-muted);line-height:1.75;max-width:500px;margin-top:20px;opacity:0;animation:fadeUp .8s .5s forwards;}
 
-.hero-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border-top:1px solid rgba(200,169,110,.2);opacity:0;animation:fadeUp .8s .65s forwards;}
-.kpi{padding:28px 0;border-right:1px solid rgba(200,169,110,.15);}
+.hero-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border-top:1px solid var(--border);opacity:0;animation:fadeUp .8s .65s forwards;}
+.kpi{padding:24px 0;border-right:1px solid var(--border);}
 .kpi:last-child{border-right:none;}
-.kpi-val{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);letter-spacing:-.04em;line-height:1;color:var(--accent);}
-.kpi-label{font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.4);margin-top:6px;}
+.kpi-val{font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(28px,5vw,48px);letter-spacing:-.04em;line-height:1;color:var(--accent);}
+.kpi-label{font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--text-dim);margin-top:6px;}
 
 /* SECTION */
-.section{padding:72px 6%;border-bottom:1px solid rgba(200,169,110,.12);}
+.section{padding:64px 6%;border-bottom:1px solid var(--border);position:relative;z-index:1;}
 
-.section-header{display:grid;grid-template-columns:1fr 2fr;gap:36px;align-items:start;margin-bottom:56px;}
-.section-num{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;}
-.section-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,50px);line-height:1.05;letter-spacing:-.03em;}
-.section-title em{font-style:italic;color:var(--accent);}
-.section-insight{font-size:13px;color:rgba(255,255,255,.5);line-height:1.75;max-width:500px;padding-top:6px;}
+.section-header{display:grid;grid-template-columns:1fr 2fr;gap:36px;align-items:start;margin-bottom:48px;}
+.section-num{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;}
+.section-title{font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(26px,4vw,46px);line-height:1.05;letter-spacing:-.04em;color:#fff;}
+.section-title em{font-style:normal;background:linear-gradient(120deg,#fff 0%,#7dd3fc 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.section-insight{font-size:13px;color:var(--text-muted);line-height:1.75;max-width:500px;padding-top:4px;}
 
-.insight-callout{border-left:2px solid var(--accent);padding:14px 20px;background:rgba(200,169,110,.06);font-size:12px;line-height:1.7;color:rgba(255,255,255,.7);font-style:italic;margin-top:14px;}
-.insight-callout strong{color:var(--accent);font-style:normal;}
+.insight-callout{border-left:2px solid var(--accent);padding:12px 18px;background:rgba(56,189,248,0.06);font-size:12px;line-height:1.75;color:rgba(255,255,255,0.7);margin-top:14px;border-radius:0 8px 8px 0;}
+.insight-callout strong{color:var(--accent);font-weight:700;}
 
 /* CHART */
-.chart-wrap{position:relative;background:rgba(255,255,255,.03);border:1px solid rgba(200,169,110,.12);padding:24px;border-radius:2px;}
-.chart-wrap canvas{max-height:340px;}
-.chart-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:16px;}
+.chart-wrap{position:relative;background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:24px;border-radius:14px;}
+.chart-wrap canvas{max-height:320px;}
+.chart-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(56,189,248,0.6);margin-bottom:14px;}
 
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.full-col{display:grid;grid-template-columns:1fr;gap:20px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.full-col{display:grid;grid-template-columns:1fr;gap:16px;}
 
 /* SEM CARDS */
-.sem-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid rgba(200,169,110,.15);}
-.sem-card{padding:24px 18px;border-right:1px solid rgba(200,169,110,.12);position:relative;overflow:hidden;transition:.3s;cursor:pointer;}
-.sem-card:last-child{border-right:none;}
-.sem-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,169,110,.08),transparent);opacity:0;transition:.3s;}
+.sem-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.sem-card{padding:20px 16px;border:1px solid var(--border);border-radius:14px;position:relative;overflow:hidden;transition:.25s;cursor:pointer;background:var(--surface);}
+.sem-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(56,189,248,0.06),transparent);opacity:0;transition:.25s;border-radius:14px;}
+.sem-card:hover{border-color:var(--border-accent);transform:translateY(-3px);}
 .sem-card:hover::before{opacity:1;}
-.sem-card-num{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:10px;}
-.sem-card-sgpa{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,40px);letter-spacing:-.04em;line-height:1;}
-.sem-card-sgpa.high{color:var(--green-light);}
+.sem-card-num{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
+.sem-card-sgpa{font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(26px,3.5vw,38px);letter-spacing:-.04em;line-height:1;}
+.sem-card-sgpa.high{color:var(--green);}
 .sem-card-sgpa.mid{color:var(--accent);}
 .sem-card-sgpa.low{color:var(--amber);}
-.sem-card-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:6px;}
-.sem-card-bar{margin-top:12px;height:2px;background:rgba(255,255,255,.08);border-radius:1px;}
+.sem-card-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-top:6px;}
+.sem-card-bar{margin-top:10px;height:2px;background:rgba(255,255,255,0.08);border-radius:1px;}
 .sem-card-bar-fill{height:100%;border-radius:1px;background:var(--accent);transition:width 1.5s ease;}
-.sem-card-note{margin-top:10px;font-size:10px;color:rgba(255,255,255,.3);line-height:1.5;font-family:'Space Mono',monospace;}
+.sem-card-note{margin-top:8px;font-size:10px;color:var(--text-dim);line-height:1.5;font-family:'Space Mono',monospace;}
 
 /* GRADE ROWS */
-.grade-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);}
-.grade-letter{font-family:'DM Serif Display',serif;font-size:26px;width:36px;text-align:center;flex-shrink:0;}
-.grade-A-plus{color:#4caf7a}.grade-A{color:#81c784}.grade-B-plus{color:var(--accent)}.grade-B{color:#e0c070}.grade-C{color:var(--amber)}.grade-P{color:rgba(255,255,255,.35)}
-.grade-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
-.grade-bar-fill{height:100%;border-radius:3px;transition:width 1.5s ease;}
-.grade-count{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);width:56px;text-align:right;flex-shrink:0;}
+.grade-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.grade-letter{font-family:'Inter',sans-serif;font-weight:900;font-size:22px;width:34px;text-align:center;flex-shrink:0;}
+.grade-A-plus{color:var(--green)}.grade-A{color:var(--green-light)}.grade-B-plus{color:var(--accent)}.grade-B{color:var(--gold)}.grade-C{color:var(--amber)}.grade-P{color:var(--text-dim)}
+.grade-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.grade-bar-fill{height:100%;border-radius:2px;transition:width 1.5s ease;}
+.grade-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);width:56px;text-align:right;flex-shrink:0;}
 
 /* SEM TABS */
-.sem-tabs{display:flex;flex-wrap:wrap;gap:0;margin-bottom:20px;border:1px solid rgba(200,169,110,.15);width:fit-content;}
-.sem-tab{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:rgba(255,255,255,.4);border-right:1px solid rgba(200,169,110,.15);transition:.3s;user-select:none;}
-.sem-tab:last-child{border-right:none;}
-.sem-tab.active{background:var(--accent-dark);color:var(--paper);}
-.sem-tab:hover:not(.active){color:var(--accent);background:rgba(200,169,110,.05);}
+.sem-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.sem-tab{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:8px 16px;cursor:pointer;color:var(--text-muted);border:1px solid var(--border);border-radius:8px;transition:.25s;user-select:none;background:transparent;}
+.sem-tab.active{background:var(--accent-dim);color:var(--accent);border-color:var(--border-accent);}
+.sem-tab:hover:not(.active){color:var(--accent);border-color:var(--border-accent);}
 .sem-content{display:none;}
 .sem-content.active{display:block;}
 
 /* BADGE */
-.badge{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;}
-.badge-safe{background:rgba(76,175,122,.15);color:var(--green-light);border:1px solid rgba(76,175,122,.3);}
-.badge-warn{background:rgba(224,143,58,.15);color:var(--amber);border:1px solid rgba(224,143,58,.3);}
-.badge-danger{background:rgba(192,57,43,.15);color:#e74c3c;border:1px solid rgba(192,57,43,.3);}
+.badge{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:6px;}
+.badge-safe{background:rgba(74,222,128,0.1);color:var(--green);border:1px solid rgba(74,222,128,0.25);}
+.badge-warn{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+.badge-danger{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.25);}
 
 /* ATTENDANCE TABLE */
 .att-table{width:100%;border-collapse:collapse;font-size:11px;}
-.att-table th{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:10px 12px;border-bottom:1px solid rgba(200,169,110,.15);text-align:left;}
-.att-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.75);transition:.3s;}
-.att-table tr:hover td{background:rgba(200,169,110,.04);}
-.course-name{color:var(--paper);}
-.att-pct{font-family:'DM Serif Display',serif;font-size:16px;letter-spacing:-.02em;}
-.att-pct.perfect{color:var(--green-light)}.att-pct.good{color:var(--accent)}.att-pct.warn{color:var(--amber)}.att-pct.danger{color:var(--red)}
-.att-mini-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;min-width:60px;}
+.att-table th{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim);padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;}
+.att-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-muted);transition:.2s;}
+.att-table tr:hover td{background:rgba(56,189,248,0.04);}
+.course-name{color:var(--text)!important;}
+.att-pct{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;letter-spacing:-.02em;}
+.att-pct.perfect{color:var(--green)}.att-pct.good{color:var(--accent)}.att-pct.warn{color:var(--amber)}.att-pct.danger{color:var(--red)}
+.att-mini-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;min-width:60px;}
 .att-mini-fill{height:100%;border-radius:2px;}
-.att-mini-fill.perfect{background:var(--green-light)}.att-mini-fill.good{background:var(--accent)}.att-mini-fill.warn{background:var(--amber)}.att-mini-fill.danger{background:var(--red)}
+.att-mini-fill.perfect{background:var(--green)}.att-mini-fill.good{background:var(--accent)}.att-mini-fill.warn{background:var(--amber)}.att-mini-fill.danger{background:var(--red)}
 
 /* ATT SUMMARY */
-.att-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid rgba(200,169,110,.15);margin-bottom:40px;}
-.att-sum-cell{padding:20px 16px;border-right:1px solid rgba(200,169,110,.12);text-align:center;}
-.att-sum-cell:last-child{border-right:none;}
-.att-sum-val{font-family:'DM Serif Display',serif;font-size:clamp(22px,3vw,34px);letter-spacing:-.03em;line-height:1;}
-.att-sum-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:6px;}
+.att-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:32px;}
+.att-sum-cell{padding:18px;border:1px solid var(--border);border-radius:14px;text-align:center;background:var(--surface);}
+.att-sum-val{font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(20px,3vw,30px);letter-spacing:-.03em;line-height:1;}
+.att-sum-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin-top:6px;}
 
-.risk-alert{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.25);border-left:3px solid var(--red);padding:14px 18px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.7);}
-.risk-alert strong{color:#e74c3c;}
+.risk-alert{background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-left:3px solid var(--red);padding:12px 16px;margin-bottom:12px;font-size:12px;color:var(--text-muted);border-radius:0 8px 8px 0;}
+.risk-alert strong{color:var(--red);}
 
 /* INSIGHT PANELS */
-.insight-panel{padding:22px;border:1px solid rgba(200,169,110,.15);background:rgba(255,255,255,.02);}
-.insight-panel-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px;}
-.insight-panel-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:8px;}
-.insight-panel-text{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;}
+.insight-panel{padding:20px;border:1px solid var(--border);background:var(--surface);border-radius:14px;transition:.25s;}
+.insight-panel:hover{border-color:var(--border-accent);background:var(--surface-hover);}
+.insight-panel-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;}
+.insight-panel-title{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;margin-bottom:8px;color:#fff;}
+.insight-panel-text{font-size:12px;color:var(--text-muted);line-height:1.75;}
 
 /* STAT PILLS */
-.stat-pills{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
-.stat-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(200,169,110,.2);padding:8px 14px;}
-.stat-pill-val{font-family:'DM Serif Display',serif;font-size:18px;color:var(--accent);}
-.stat-pill-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.stat-pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+.stat-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border-accent);padding:8px 14px;border-radius:10px;background:var(--accent-dim);}
+.stat-pill-val{font-family:'Inter',sans-serif;font-weight:900;font-size:18px;color:var(--accent);}
+.stat-pill-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);}
 
 /* FINAL VERDICT */
-.verdict-block{padding:40px;border:1px solid rgba(200,169,110,.2);background:rgba(200,169,110,.04);position:relative;overflow:hidden;margin-top:40px;}
-.verdict-bg{position:absolute;top:16px;right:24px;font-family:'DM Serif Display',serif;font-size:clamp(80px,15vw,180px);color:rgba(200,169,110,.04);font-style:italic;line-height:1;pointer-events:none;}
-.verdict-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
-.verdict-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,3vw,36px);line-height:1.2;max-width:600px;margin-bottom:18px;}
-.verdict-body{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;max-width:580px;}
+.verdict-block{padding:40px;border:1px solid var(--border-accent);background:rgba(56,189,248,0.04);position:relative;overflow:hidden;margin-top:32px;border-radius:16px;}
+.verdict-bg{position:absolute;top:0;right:16px;font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(80px,14vw,180px);color:rgba(56,189,248,0.04);line-height:1;pointer-events:none;letter-spacing:-.05em;}
+.verdict-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.verdict-title{font-family:'Inter',sans-serif;font-weight:700;font-size:clamp(18px,2.5vw,30px);line-height:1.25;max-width:620px;margin-bottom:16px;color:#fff;}
+.verdict-title em{font-style:normal;color:var(--accent);}
+.verdict-body{font-size:13px;color:var(--text-muted);line-height:1.85;max-width:600px;}
 
 /* FOOTER */
-.analytics-footer{padding:28px 6%;border-top:1px solid rgba(200,169,110,.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.footer-text{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
-.back-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;padding:9px 18px;border:1px solid rgba(200,169,110,.2);transition:.3s;}
-.back-btn:hover{color:var(--accent);border-color:var(--accent-dark);}
+.analytics-footer{padding:24px 6%;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:relative;z-index:1;}
+.footer-text{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);}
+.back-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;padding:9px 18px;border:1px solid var(--border);border-radius:10px;transition:.25s;}
+.back-btn:hover{color:var(--accent);border-color:var(--border-accent);background:var(--accent-dim);}
 
 /* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .75s ease,transform .75s ease;}
 .reveal.visible{opacity:1;transform:none;}
 
 /* ─── MOBILE RESPONSIVE ─── */
@@ -350,21 +374,18 @@ nav {
     </div>
   </div>
 
-  <div class="two-col reveal" style="margin-top:20px;">
-    <div class="chart-wrap">
-      <div class="chart-label">Grade Distribution — All 5 Semesters</div>
-      <canvas id="gradeDistChart"></canvas>
-    </div>
-    <div>
-      <div class="chart-label" style="color:var(--accent-dark);margin-bottom:16px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;">Grade Breakdown by Letter</div>
+  <!-- Grade breakdown — full width, no doughnut -->
+  <div class="chart-wrap reveal" style="margin-top:20px;">
+    <div class="chart-label">Grade Breakdown by Letter — All 5 Semesters (39 Courses)</div>
+    <div style="margin-top:8px;">
       <div class="grade-row"><div class="grade-letter grade-A-plus">A+</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">ECS-1, Foundations Heritage</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:#4caf7a;" data-w="18%"></div></div></div><div class="grade-count">2 courses</div></div>
       <div class="grade-row"><div class="grade-letter grade-A">A</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">Math S2, OOP Java, DSA 1, Glimpses India, Comm & IoT, Soft Skills II</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:#81c784;" data-w="55%"></div></div></div><div class="grade-count">6 courses</div></div>
-      <div class="grade-row"><div class="grade-letter grade-B-plus">B+</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">Math S1, Physics, ECS-2, UIDesign, Math S3, Fund AI, Comp Networks, Python, Bio S1, Upanishads, ML, AI Robotics, FLA, DBMS, DL, Cloud</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:var(--accent);" data-w="100%"></div></div></div><div class="grade-count">16 courses</div></div>
+      <div class="grade-row"><div class="grade-letter grade-B-plus">B+</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">Math S1, Physics, ECS-2, UI Design, Math S3, Fund AI, Networks, Python, Bio S1, Upanishads, ML, AI Robotics, FLA, DBMS, Deep Learning, Cloud</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:var(--accent);" data-w="100%"></div></div></div><div class="grade-count">16 courses</div></div>
       <div class="grade-row"><div class="grade-letter grade-B">B</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">PS&C, Discrete Math, Elec Engg, OS, DSA 2, Prob Reasoning, Robotic OS, Math S4, DAA, Bio S2, Strategic Lessons</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:#e0c070;" data-w="75%"></div></div></div><div class="grade-count">12 courses</div></div>
       <div class="grade-row"><div class="grade-letter grade-C">C</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;">Technical Communication (S1) — never repeated</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:var(--amber);" data-w="9%"></div></div></div><div class="grade-count">1 course</div></div>
       <div class="grade-row"><div class="grade-letter grade-P">P</div><div style="flex:1;"><div style="font-size:11px;color:rgba(255,255,255,.3);margin-bottom:4px;">Leadership Lessons Ramayana, Environmental Science</div><div class="grade-bar-wrap"><div class="grade-bar-fill" style="width:0;background:rgba(255,255,255,.25);" data-w="18%"></div></div></div><div class="grade-count">2 courses</div></div>
-      <div class="insight-callout" style="margin-top:20px;"><strong>B+ dominates</strong> — 16 of 39 graded courses. Strong technical depth. Single C in S1 was an early outlier — never repeated again.</div>
     </div>
+    <div class="insight-callout" style="margin-top:20px;"><strong>B+ dominates</strong> — 16 of 39 graded courses. Strong technical depth. Single C in S1 was an early outlier — never repeated again.</div>
   </div>
 
   <!-- Grade bars per sem -->
@@ -522,22 +543,12 @@ nav {
     <div class="section-insight">Data without interpretation is just numbers. Here's what the complete academic record actually says about Madhav Yalamarthi.</div>
   </div>
 
-  <div class="two-col reveal">
-    <div class="chart-wrap">
-      <div class="chart-label">Attendance vs SGPA Correlation</div>
-      <canvas id="corrChart" style="max-height:300px;"></canvas>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:14px;">
-      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--accent);">01 — The S1 Promise</div><div class="insight-panel-title">100% Attendance · 7.85 SGPA</div><div class="insight-panel-text">"Madhav arrived with full commitment. Perfect attendance isn't just a metric — it's a statement of intent."</div></div>
-      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--green-light);">02 — The S2 Peak</div><div class="insight-panel-title">92.6% Attendance · 8.48 SGPA</div><div class="insight-panel-text">"Peak academic performance. All core CS courses in A/A+. Before the real world got loud."</div></div>
-      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--amber);">03 — The S3–S4 Diversion</div><div class="insight-panel-title">79% & 87% Att · 7.70 & 7.55 SGPA</div><div class="insight-panel-text">"Two national hackathon placements, 3 research projects, an IIT Madras win. The grades dipped because Madhav was building things that don't appear in the gradebook — yet."</div></div>
-      <div class="insight-panel"><div class="insight-panel-label" style="color:var(--blue);">04 — The S5 Signal</div><div class="insight-panel-title">83% Attendance · 7.67 SGPA</div><div class="insight-panel-text">"Deep Learning at 96.83% attendance and B+. The student who knows where he's going is starting to realign."</div></div>
-    </div>
-  </div>
-
-  <div class="two-col reveal" style="margin-top:20px;">
-    <div class="chart-wrap"><div class="chart-label">SGPA Radar — Semester Profile</div><canvas id="radarChart" style="max-height:340px;"></canvas></div>
-    <div class="chart-wrap"><div class="chart-label">Academic Domain Performance (Avg Grade Points)</div><canvas id="domainChart" style="max-height:340px;"></canvas></div>
+  <!-- Insight panels — 2x2 grid, no charts needed -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="reveal">
+    <div class="insight-panel"><div class="insight-panel-label" style="color:var(--accent);">01 — The S1 Promise</div><div class="insight-panel-title">100% Attendance · 7.85 SGPA</div><div class="insight-panel-text">"Madhav arrived with full commitment. Perfect attendance isn't just a metric — it's a statement of intent."</div></div>
+    <div class="insight-panel"><div class="insight-panel-label" style="color:var(--green-light);">02 — The S2 Peak</div><div class="insight-panel-title">92.6% Attendance · 8.48 SGPA</div><div class="insight-panel-text">"Peak academic performance. All core CS courses in A/A+. Before the real world got loud."</div></div>
+    <div class="insight-panel"><div class="insight-panel-label" style="color:var(--amber);">03 — The S3–S4 Diversion</div><div class="insight-panel-title">79% & 87% Att · 7.70 & 7.55 SGPA</div><div class="insight-panel-text">"Two national hackathon placements, 3 research projects, an IIT Madras win. The grades dipped because Madhav was building things that don't appear in the gradebook — yet."</div></div>
+    <div class="insight-panel"><div class="insight-panel-label" style="color:#4a90c4;">04 — The S5 Signal</div><div class="insight-panel-title">83% Attendance · 7.67 SGPA</div><div class="insight-panel-text">"Deep Learning at 96.83% attendance and B+. The student who knows where he's going is starting to realign."</div></div>
   </div>
 
   <!-- Final Verdict -->
@@ -600,22 +611,19 @@ function showAttSem(n,el){
   el.classList.add('active');
 }
 
-// Chart defaults
+// Chart defaults — portfolio theme
 Chart.defaults.color='rgba(255,255,255,0.4)';
-Chart.defaults.borderColor='rgba(200,169,110,0.1)';
+Chart.defaults.borderColor='rgba(255,255,255,0.07)';
 Chart.defaults.font.family="'Space Mono', monospace";
 Chart.defaults.font.size=10;
 
-const A=t=>(t||'rgba(200,169,110,1)'),ACCENT='#c8a96e',GREEN='#4caf7a',AMBER='#e08f3a',RED='#c0392b',BLUE='#4a90c4';
+const ACCENT='#38bdf8',GREEN='#4ade80',AMBER='#fbbf24',RED='#f87171',BLUE='#60a5fa',GOLD='#e2b96f';
 
 // SGPA Trend
-new Chart(document.getElementById('sgpaChart'),{type:'line',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'SGPA',data:[7.85,8.48,7.70,7.55,7.67],borderColor:ACCENT,backgroundColor:'rgba(200,169,110,0.08)',pointBackgroundColor:[GREEN,GREEN,AMBER,RED,AMBER],pointRadius:7,fill:true,tension:.4,borderWidth:2.5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:7,max:9,grid:{color:'rgba(200,169,110,0.07)'},ticks:{callback:v=>v.toFixed(2)}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('sgpaChart'),{type:'line',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'SGPA',data:[7.85,8.48,7.70,7.55,7.67],borderColor:ACCENT,backgroundColor:'rgba(56,189,248,0.07)',pointBackgroundColor:[GREEN,GREEN,AMBER,RED,AMBER],pointRadius:7,fill:true,tension:.4,borderWidth:2.5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:7,max:9,grid:{color:'rgba(255,255,255,0.06)'},ticks:{callback:v=>v.toFixed(2)}},x:{grid:{display:false}}}}});
 
 // CGPA
-new Chart(document.getElementById('cgpaChart'),{type:'bar',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'SGPA',data:[7.85,8.48,7.70,7.55,7.67],backgroundColor:'rgba(200,169,110,0.25)',borderColor:ACCENT,borderWidth:1.5,type:'bar'},{label:'CGPA Cumulative',data:[7.85,8.165,8.01,7.895,7.85],borderColor:GREEN,backgroundColor:'rgba(76,175,122,0.05)',pointBackgroundColor:GREEN,pointRadius:5,fill:false,tension:.3,borderWidth:2,type:'line'}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{min:7,max:9,grid:{color:'rgba(200,169,110,0.07)'}},x:{grid:{display:false}}}}});
-
-// Grade Dist Doughnut
-new Chart(document.getElementById('gradeDistChart'),{type:'doughnut',data:{labels:['A+','A','B+','B','C','P'],datasets:[{data:[2,6,16,12,1,2],backgroundColor:['#4caf7a','#81c784',ACCENT,'#e0c070',AMBER,'rgba(255,255,255,0.2)'],borderColor:'rgba(10,10,10,0.5)',borderWidth:2,hoverOffset:8}]},options:{responsive:true,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:'rgba(255,255,255,0.45)',padding:10,font:{size:9}}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} courses`}}}}});
+new Chart(document.getElementById('cgpaChart'),{type:'bar',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'SGPA',data:[7.85,8.48,7.70,7.55,7.67],backgroundColor:'rgba(56,189,248,0.18)',borderColor:ACCENT,borderWidth:1.5,type:'bar'},{label:'CGPA Cumulative',data:[7.85,8.165,8.01,7.895,7.85],borderColor:GREEN,backgroundColor:'rgba(74,222,128,0.05)',pointBackgroundColor:GREEN,pointRadius:5,fill:false,tension:.3,borderWidth:2,type:'line'}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{min:7,max:9,grid:{color:'rgba(255,255,255,0.06)'}},x:{grid:{display:false}}}}});
 
 // Grade bar data
 const semGD={
@@ -625,33 +633,25 @@ const semGD={
   4:{labels:['Math S4','Comm & IoT','DAA','Machine Learning','AI Robotics','Bio Sys 2','Leadership','Env Science','Soft Skills I'],grades:['B','A','B','B+','B+','B','P','P','B+'],points:[6,8,6,7,7,6,4,4,7]},
   5:{labels:['Prob Reasoning','FLA','DBMS','Deep Learning','Cloud Computing','Robotic OS','Soft Skills II'],grades:['B','B+','B+','B+','B','B','A'],points:[6,7,7,7,6,6,8]}
 };
-const gColor={'A+':'#4caf7a','A':'#81c784','B+':ACCENT,'B':'#e0c070','C':AMBER,'P':'rgba(255,255,255,0.25)'};
+const gColor={'A+':GREEN,'A':GREEN+'aa','B+':ACCENT,'B':GOLD,'C':AMBER,'P':'rgba(255,255,255,0.2)'};
 const gCharts={};
 function renderGradeBar(sem){
   const d=semGD[sem],c=document.getElementById('gradeBarS'+sem);
   if(!c)return;
   if(gCharts[sem]){gCharts[sem].destroy();}
-  gCharts[sem]=new Chart(c,{type:'bar',data:{labels:d.labels,datasets:[{label:'Grade Points',data:d.points,backgroundColor:d.grades.map(g=>gColor[g]+'88'),borderColor:d.grades.map(g=>gColor[g]),borderWidth:1.5,borderRadius:2}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` Grade: ${d.grades[ctx.dataIndex]} (${ctx.raw} pts)`}}},scales:{x:{min:0,max:10,grid:{color:'rgba(200,169,110,0.07)'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  gCharts[sem]=new Chart(c,{type:'bar',data:{labels:d.labels,datasets:[{label:'Grade Points',data:d.points,backgroundColor:d.grades.map(g=>gColor[g]+'55'),borderColor:d.grades.map(g=>gColor[g]),borderWidth:1.5,borderRadius:4}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`Grade: ${d.grades[ctx.dataIndex]} (${ctx.raw} pts)`}}},scales:{x:{min:0,max:10,grid:{color:'rgba(255,255,255,0.05)'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
 }
 [1,2,3,4,5].forEach(renderGradeBar);
 
 // Attendance Trend
-new Chart(document.getElementById('attTrendChart'),{type:'line',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'Avg Attendance %',data:[100,92.6,79.3,87.1,83.3],borderColor:ACCENT,backgroundColor:'rgba(200,169,110,0.07)',pointBackgroundColor:[GREEN,GREEN,AMBER,ACCENT,ACCENT],pointRadius:8,fill:true,tension:.35,borderWidth:2.5},{label:'75% Minimum',data:[75,75,75,75,75],borderColor:RED,borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{min:55,max:105,grid:{color:'rgba(200,169,110,0.07)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('attTrendChart'),{type:'line',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'Avg Attendance %',data:[100,92.6,79.3,87.1,83.3],borderColor:ACCENT,backgroundColor:'rgba(56,189,248,0.07)',pointBackgroundColor:[GREEN,GREEN,AMBER,ACCENT,ACCENT],pointRadius:8,fill:true,tension:.35,borderWidth:2.5},{label:'75% Minimum',data:[75,75,75,75,75],borderColor:RED,borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{min:55,max:105,grid:{color:'rgba(255,255,255,0.06)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
 
 // Att Dist
-new Chart(document.getElementById('attDistChart'),{type:'bar',data:{labels:['100%','90-99%','80-89%','75-79%','<75%'],datasets:[{label:'Courses',data:[8,16,8,7,1],backgroundColor:[GREEN,GREEN+'88',ACCENT+'88',AMBER+'88',RED+'aa'],borderColor:[GREEN,GREEN,ACCENT,AMBER,RED],borderWidth:1.5,borderRadius:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(200,169,110,0.07)'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('attDistChart'),{type:'bar',data:{labels:['100%','90–99%','80–89%','75–79%','<75%'],datasets:[{label:'Courses',data:[8,16,8,7,1],backgroundColor:[GREEN+'55',GREEN+'44',ACCENT+'55',AMBER+'55',RED+'66'],borderColor:[GREEN,GREEN,ACCENT,AMBER,RED],borderWidth:1.5,borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.06)'}},x:{grid:{display:false}}}}});
 
 // Risk chart
-new Chart(document.getElementById('riskChart'),{type:'bar',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'Safe (≥85%)',data:[8,6,2,5,4],backgroundColor:GREEN+'88',borderColor:GREEN,borderWidth:1.5,borderRadius:2,stack:'s'},{label:'Watch (75-84%)',data:[0,1,6,4,3],backgroundColor:AMBER+'88',borderColor:AMBER,borderWidth:1.5,borderRadius:2,stack:'s'},{label:'At-Risk (<75%)',data:[0,0,1,0,0],backgroundColor:RED+'aa',borderColor:RED,borderWidth:1.5,borderRadius:2,stack:'s'}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{stacked:true,grid:{color:'rgba(200,169,110,0.07)'}},x:{stacked:true,grid:{display:false}}}}});
+new Chart(document.getElementById('riskChart'),{type:'bar',data:{labels:['S1','S2','S3','S4','S5'],datasets:[{label:'Safe (≥85%)',data:[8,6,2,5,4],backgroundColor:GREEN+'55',borderColor:GREEN,borderWidth:1.5,borderRadius:4,stack:'s'},{label:'Watch (75–84%)',data:[0,1,6,4,3],backgroundColor:AMBER+'55',borderColor:AMBER,borderWidth:1.5,borderRadius:4,stack:'s'},{label:'At-Risk (<75%)',data:[0,0,1,0,0],backgroundColor:RED+'66',borderColor:RED,borderWidth:1.5,borderRadius:4,stack:'s'}]},options:{responsive:true,plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}},scales:{y:{stacked:true,grid:{color:'rgba(255,255,255,0.06)'}},x:{stacked:true,grid:{display:false}}}}});
 
-// Correlation scatter
-new Chart(document.getElementById('corrChart'),{type:'scatter',data:{datasets:[{label:'Semester',data:[{x:100,y:7.85,s:'S1'},{x:92.6,y:8.48,s:'S2'},{x:79.3,y:7.70,s:'S3'},{x:87.1,y:7.55,s:'S4'},{x:83.3,y:7.67,s:'S5'}],backgroundColor:[GREEN+'cc',GREEN+'cc',AMBER+'cc',RED+'cc',ACCENT+'cc'],borderColor:[GREEN,GREEN,AMBER,RED,ACCENT],borderWidth:2,pointRadius:14}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw.s}: Att ${ctx.raw.x}% | SGPA ${ctx.raw.y}`}}},scales:{x:{min:70,max:105,title:{display:true,text:'Attendance %',color:'rgba(255,255,255,0.35)'},grid:{color:'rgba(200,169,110,0.07)'}},y:{min:7,max:9,title:{display:true,text:'SGPA',color:'rgba(255,255,255,0.35)'},grid:{color:'rgba(200,169,110,0.07)'}}}}});
-
-// Radar
-new Chart(document.getElementById('radarChart'),{type:'radar',data:{labels:['SGPA Score','Attendance','Course Load','Grade Consistency','Technical Subjects','Recovery Trend'],datasets:[{label:'S1',data:[7.85,10,8,8.5,8,8],borderColor:GREEN,backgroundColor:GREEN+'15',borderWidth:1.5,pointRadius:3},{label:'S2',data:[8.48,9.26,7,9,9,8.5],borderColor:ACCENT,backgroundColor:ACCENT+'15',borderWidth:1.5,pointRadius:3},{label:'S3',data:[7.70,7.93,9,7.5,8,7],borderColor:AMBER,backgroundColor:AMBER+'15',borderWidth:1.5,pointRadius:3},{label:'S4',data:[7.55,8.71,9,7,8.5,7.5],borderColor:RED,backgroundColor:RED+'10',borderWidth:1.5,pointRadius:3},{label:'S5',data:[7.67,8.33,7,7.5,8.5,8.5],borderColor:BLUE,backgroundColor:BLUE+'15',borderWidth:1.5,pointRadius:3}]},options:{responsive:true,scales:{r:{min:0,max:10,grid:{color:'rgba(200,169,110,0.08)'},angleLines:{color:'rgba(200,169,110,0.08)'},ticks:{display:false},pointLabels:{color:'rgba(255,255,255,0.45)',font:{size:9}}}},plugins:{legend:{labels:{color:'rgba(255,255,255,0.4)',font:{size:9}}}}}});
-
-// Domain
-new Chart(document.getElementById('domainChart'),{type:'bar',data:{labels:['AI & ML','Mathematics','Core CS','Physics/Bio','Soft Skills','Admin/Heritage'],datasets:[{label:'Avg Grade Points',data:[7.1,6.8,7.3,7.0,6.8,7.4],backgroundColor:[ACCENT+'88',ACCENT+'66',GREEN+'88',BLUE+'88',AMBER+'66',ACCENT+'44'],borderColor:[ACCENT,ACCENT,GREEN,BLUE,AMBER,ACCENT],borderWidth:1.5,borderRadius:2}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{min:6,max:8,grid:{color:'rgba(200,169,110,0.07)'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
 </script>
 </body>
 </html>

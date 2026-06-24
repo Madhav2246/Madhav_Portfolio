@@ -1,0 +1,56 @@
+[
+  {
+    "id": "drug-toxicity-gnn",
+    "num": "R — 01",
+    "title": "Multi-Stage Toxicity Prediction for Drug Discovery Using Fingerprints, GNNs & Knowledge Graph Neural Networks",
+    "domain": "Drug Discovery · Cheminformatics · Graph ML",
+    "status": "in-progress",
+    "abstract": "Five-stage cooperative learning pipeline addressing extreme label sparsity (<0.5% labeled). Integrates Morgan fingerprint initialization, GIN, data-driven Knowledge Graph construction, and ensemble fusion. Validated on 79,002 molecules from ZINC, ChEMBL, and Tox21.",
+    "tags": ["PyTorch Geometric", "RDKit", "GIN", "UMAP", "Tox21", "Label Propagation"],
+    "metrics": [
+      { "value": "0.71", "label": "Stage I AUC" },
+      { "value": "79K", "label": "Molecules" },
+      { "value": "5", "label": "Stages" },
+      { "value": "<0.5%", "label": "Label Cover" }
+    ],
+    "course": "Deep Learning · 24AIE304 · Term Project",
+    "visible": true,
+    "order": 1
+  },
+  {
+    "id": "gamete-prediction",
+    "num": "R — 02",
+    "title": "Predicting Dominant Gamete Contribution in Fertilization Using Genomic & Phenotypic Characteristics",
+    "domain": "Bioinformatics · Reproductive AI · Genomics",
+    "status": "in-progress",
+    "abstract": "Novel hybrid AI-bioinformatics pipeline predicting gamete dominance in fertilization. Integrates WHO semen data, SHBG synthetic SNPs, and oocyte transcriptomic profiles (GSE107746). Random Forest achieves 92% accuracy (ROC-AUC 0.94). SHAP reveals BMP15, GDF9, ZP3 as primary drivers.",
+    "tags": ["Random Forest", "XGBoost", "SHAP", "Gene Ontology", "g:Profiler"],
+    "metrics": [
+      { "value": "0.94", "label": "ROC-AUC" },
+      { "value": "92%", "label": "Accuracy" },
+      { "value": "4", "label": "Models" },
+      { "value": "GO", "label": "Enrichment" }
+    ],
+    "course": "Bioinformatics Research · Unpublished",
+    "visible": true,
+    "order": 2
+  },
+  {
+    "id": "continual-learning-hat",
+    "num": "R — 03",
+    "title": "Continual Learning on CIFAR-100 via Hard Attention to Task (HAT) with Memory-Aware Replay & EWC",
+    "domain": "Continual Learning · Catastrophic Forgetting · Computer Vision",
+    "status": "in-progress",
+    "abstract": "Research evolution: RoutedMLP (26%) → CNN routing (41%) → ResNet18 (49%) → HAT achieving 58.86% on Split-CIFAR-100. Task-specific sigmoid attention gates with EWC regularization and episodic memory replay to combat catastrophic forgetting.",
+    "tags": ["PyTorch", "ResNet18", "HAT", "EWC", "CIFAR-100"],
+    "metrics": [
+      { "value": "58.86%", "label": "Accuracy" },
+      { "value": "−30.5", "label": "BWT" },
+      { "value": "60.53", "label": "FWT" },
+      { "value": "5", "label": "Task Splits" }
+    ],
+    "course": "Continual Learning Research · Unpublished",
+    "visible": true,
+    "order": 3
+  }
+]

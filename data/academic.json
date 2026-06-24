@@ -1,0 +1,52 @@
+{
+  "currentCGPA": 8.01,
+  "cgpaOutOf": 10,
+  "institution": "Amrita Vishwa Vidyapeetham",
+  "degree": "B.Tech — Computer Science (AI Specialization)",
+  "year": 3,
+  "totalYears": 4,
+  "graduationYear": 2027,
+  "semesterHistory": [
+    { "semester": "Sem 1", "cgpa": 7.8, "year": "2023" },
+    { "semester": "Sem 2", "cgpa": 8.1, "year": "2023" },
+    { "semester": "Sem 3", "cgpa": 8.2, "year": "2024" },
+    { "semester": "Sem 4", "cgpa": 8.01, "year": "2024" }
+  ],
+  "attendance": [
+    { "subject": "Deep Learning", "code": "24AIE304", "attended": 42, "total": 48, "percentage": 87.5 },
+    { "subject": "Computer Vision", "code": "24AIE302", "attended": 38, "total": 44, "percentage": 86.4 },
+    { "subject": "NLP", "code": "24AIE305", "attended": 40, "total": 46, "percentage": 86.9 },
+    { "subject": "Data Structures", "code": "24CSE201", "attended": 44, "total": 48, "percentage": 91.6 },
+    { "subject": "Bioinformatics", "code": "24AIE306", "attended": 36, "total": 42, "percentage": 85.7 },
+    { "subject": "Database Systems", "code": "24CSE204", "attended": 43, "total": 46, "percentage": 93.4 }
+  ],
+  "education": [
+    {
+      "institution": "Amrita Vishwa Vidyapeetham",
+      "degree": "B.Tech — Computer Science (AI Specialization)",
+      "period": "2023 — 2027",
+      "location": "Kollam, Kerala, India",
+      "grade": "8.01 CGPA",
+      "gradeLabel": "CGPA / 10.0",
+      "current": true
+    },
+    {
+      "institution": "Narayana Junior College",
+      "degree": "Higher Secondary — Mathematics, Physics, Chemistry",
+      "period": "2021 — 2023",
+      "location": "Telangana, India",
+      "grade": "94.7%",
+      "gradeLabel": "State Board · 9.7 CGPA",
+      "current": false
+    },
+    {
+      "institution": "Resonance School",
+      "degree": "Secondary School Education — Class X (CBSE)",
+      "period": "Until 2021",
+      "location": "Telangana, India",
+      "grade": "10.0",
+      "gradeLabel": "CGPA / 10.0",
+      "current": false
+    }
+  ]
+}
