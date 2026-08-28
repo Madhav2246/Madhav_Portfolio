@@ -83,6 +83,16 @@ const GITHUB_LINKS: Record<string, string> = {
   "physics-based-slm-rag":       "https://github.com/Madhav2246/Physics-Based-RAG_SLM",
 };
 
+function getSpotifyEmbedUrl(rawUrl: string): string {
+  if (!rawUrl) return "";
+  if (rawUrl.includes("embed")) return rawUrl;
+  const match = rawUrl.match(/spotify\.com\/(playlist|album|track|artist)\/([a-zA-Z0-9]+)/);
+  if (match) {
+    return `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator`;
+  }
+  return rawUrl;
+}
+
 export default function PortfolioShell({ projects, academic, achievements, research, hobbies }: Props) {
   const [activeSection, setActiveSection] = useState("hero");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -92,6 +102,12 @@ export default function PortfolioShell({ projects, academic, achievements, resea
   const [triviaIdx, setTriviaIdx] = useState(0);
   const [triviaChoice, setTriviaChoice] = useState<number | null>(null);
   const [triviaScore, setTriviaScore] = useState(0);
+  const [spotifyLink, setSpotifyLink] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("user_spotify_link") || hobbies.musicAndCulture?.spotifyUrl || "";
+    }
+    return hobbies.musicAndCulture?.spotifyUrl || "";
+  });
   const typedRef = useRef<{ destroy: () => void } | null>(null);
 
   // Typed.js for hero tagline
@@ -1109,31 +1125,58 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                           ♫
                         </div>
                         <div>
-                          <div className="mono-tag" style={{ color: "#1DB954", fontSize: 9 }}>Spotify Integration</div>
-                          <h4 className="font-display font-bold text-[#f0ead6] text-base">Madhav&apos;s Curated Playlist</h4>
+                          <div className="mono-tag" style={{ color: "#1DB954", fontSize: 9 }}>Live Spotify Connector</div>
+                          <h4 className="font-display font-bold text-[#f0ead6] text-base">Madhav&apos;s Spotify Playlist</h4>
                         </div>
                       </div>
-                      <a href={hobbies.musicAndCulture?.spotifyProfile || "https://open.spotify.com"}
-                         target="_blank" rel="noreferrer"
-                         className="px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all hover:scale-105"
-                         style={{ background: "#1DB954", color: "#000" }}>
-                        Open in Spotify ↗
-                      </a>
+                      {spotifyLink && (
+                        <a href={spotifyLink.replace("/embed/", "/")} target="_blank" rel="noreferrer"
+                           className="px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all hover:scale-105"
+                           style={{ background: "#1DB954", color: "#000" }}>
+                          Open in Spotify ↗
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Spotify Link Input */}
+                    <div className="mb-4">
+                      <label className="mono-tag block mb-1.5" style={{ fontSize: 9, color: "rgba(29,185,84,0.8)" }}>
+                        Paste Your Spotify Playlist / Album / Profile Share Link:
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. https://open.spotify.com/playlist/YOUR_PLAYLIST_ID"
+                        value={spotifyLink}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setSpotifyLink(val);
+                          if (typeof window !== "undefined") {
+                            localStorage.setItem("user_spotify_link", val);
+                          }
+                        }}
+                        className="w-full bg-[rgba(255,255,255,0.05)] border border-[rgba(29,185,84,0.3)] rounded-xl px-4 py-2.5 text-xs text-[#f0ead6] outline-none focus:border-[#1DB954] transition-colors font-mono"
+                      />
                     </div>
 
                     {/* Spotify Embed Player */}
-                    <div className="rounded-xl overflow-hidden mt-3" style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(29,185,84,0.2)" }}>
-                      <iframe
-                        src={hobbies.musicAndCulture?.spotifyUrl || "https://open.spotify.com/embed/playlist/37i9dQZF1DXa2SPUyWl8Y5"}
-                        width="100%"
-                        height="152"
-                        frameBorder="0"
-                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                        loading="lazy"
-                        title="Spotify Playlist Player"
-                        className="rounded-xl"
-                      />
-                    </div>
+                    {spotifyLink ? (
+                      <div className="rounded-xl overflow-hidden mt-2" style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(29,185,84,0.2)" }}>
+                        <iframe
+                          src={getSpotifyEmbedUrl(spotifyLink)}
+                          width="100%"
+                          height="152"
+                          frameBorder="0"
+                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          loading="lazy"
+                          title="Spotify Live Player"
+                          className="rounded-xl"
+                        />
+                      </div>
+                    ) : (
+                      <div className="p-6 text-center rounded-xl font-mono text-xs text-[rgba(240,234,214,0.5)] border border-dashed border-[rgba(29,185,84,0.3)]">
+                        Paste your Spotify Playlist link above to sync and play your live music! 🎵
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               )}
