@@ -8,6 +8,7 @@ import CursorGlow from "./CursorGlow";
 import StoryboardTimeline from "./StoryboardTimeline";
 import AudioVisualizer from "./AudioVisualizer";
 import IntroSplash from "./IntroSplash";
+import HoloLab3D from "./HoloLab3D";
 import { proceduralAudio } from "@/utils/proceduralAudio";
 
 const NeuralCanvas = dynamic(() => import("./NeuralCanvas"), { ssr: false });
@@ -893,10 +894,14 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                 <motion.div variants={fadeUp} custom={5} className="mt-4">
                   <StoryboardTimeline />
                 </motion.div>
-              </div>
+              {/* Interactive 3D Holo-Lab & Contact column */}
+              <div className="space-y-5 flex flex-col justify-between">
+                <motion.div variants={fadeUp} custom={5}>
+                  <HoloLab3D />
+                </motion.div>
 
-              {/* Contact card */}
-              <motion.div variants={fadeUp} custom={5} className="cine-card p-7 flex flex-col justify-between">
+                {/* Contact card */}
+                <motion.div variants={fadeUp} custom={6} className="cine-card p-7 flex flex-col justify-between">
                 <div>
                   <div className="section-eyebrow mb-4">
                     <span style={{ width: 24, height: 1, background: "#a07830", display: "inline-block" }} />
@@ -937,7 +942,8 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                 </div>
               </motion.div>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
         </section>
 
         {/* ══════════════════════════════════════
