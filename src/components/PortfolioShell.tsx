@@ -731,7 +731,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                       <div className="flex items-center justify-between gap-2 mb-3">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">
-                            {cert.issuer.includes("Google") ? "☁️" : cert.issuer.includes("DataCamp") ? "🎓" : "📜"}
+                            {(cert.issuer || "").includes("Google") ? "☁️" : (cert.issuer || "").includes("DataCamp") ? "🎓" : "📜"}
                           </span>
                           <span className="mono-tag" style={{ color: "#d4a847", fontSize: 10 }}>{cert.issuer}</span>
                         </div>
@@ -762,7 +762,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                         className="mono-tag hover:text-gold transition-colors pt-3 flex items-center justify-between"
                         style={{ borderTop: "1px solid rgba(255,255,255,0.08)", fontSize: 9 }}>
                         <span>
-                          {cert.issuer.includes("Google") ? "Credly Verification" : cert.issuer.includes("DataCamp") ? "DataCamp Course / Certificate" : `${cert.issuer} Certificate`}
+                          {(cert.issuer || "").includes("Google") ? "Credly Verification" : (cert.issuer || "").includes("DataCamp") ? "DataCamp Course / Certificate" : `${cert.issuer || "View"} Certificate`}
                         </span>
                         <span>↗</span>
                       </a>
