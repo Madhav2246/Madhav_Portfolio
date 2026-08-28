@@ -706,19 +706,19 @@ export default function PortfolioShell({ projects, academic, achievements, resea
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
 
             <motion.div variants={fadeUp} custom={0} className="section-eyebrow">
-              <span className="gold-line" />Verified Credentials &amp; Skill Boosts
+              <span className="gold-line" />Verified Credentials &amp; Certifications
             </motion.div>
 
             <motion.h2 variants={fadeUp} custom={1}
               className="font-display font-black text-[#f0ead6] mb-3 tracking-tight"
               style={{ fontSize: "clamp(32px,5vw,64px)" }}>
-              Google Cloud &amp; <span className="text-gold">Skill Badges</span>
+              Certifications &amp; <span className="text-gold">Skill Badges</span>
             </motion.h2>
 
             <motion.p variants={fadeUp} custom={2}
               className="text-sm sm:text-base mb-8 max-w-2xl leading-relaxed"
               style={{ color: "rgba(240,234,214,0.6)" }}>
-              Hands-on skill badges and foundational certifications verified by <strong style={{ color: "#f0ead6" }}>Google Cloud Skills Boost</strong> and Credly.
+              Verified skill badges and course accomplishments from <strong style={{ color: "#f0ead6" }}>Google Cloud</strong>, <strong style={{ color: "#f0ead6" }}>DataCamp</strong>, and <strong style={{ color: "#f0ead6" }}>Kaggle</strong>.
             </motion.p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -762,7 +762,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                         className="mono-tag hover:text-gold transition-colors pt-3 flex items-center justify-between"
                         style={{ borderTop: "1px solid rgba(255,255,255,0.08)", fontSize: 9 }}>
                         <span>
-                          {cert.issuer.includes("Google") ? "Credly Verification" : `${cert.issuer} Certificate`}
+                          {cert.issuer.includes("Google") ? "Credly Verification" : cert.issuer.includes("DataCamp") ? "DataCamp Course / Certificate" : `${cert.issuer} Certificate`}
                         </span>
                         <span>↗</span>
                       </a>
