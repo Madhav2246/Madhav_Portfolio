@@ -99,16 +99,14 @@ export interface SoftSkill {
   highlights: string[];
 }
 
-export interface MovieRecommendation {
+export interface FavoriteMovie {
   id: string;
   title: string;
   year: number;
   director: string;
-  genre: string[];
-  vibe: "mindbender" | "thriller" | "epic" | "inspiring";
-  rating: string;
-  posterBg: string;
-  takeaway: string;
+  genre: string;
+  vibe: string;
+  note: string;
 }
 
 export interface TriviaQuestion {
@@ -118,6 +116,12 @@ export interface TriviaQuestion {
   options: string[];
   answer: number;
   explanation: string;
+}
+
+export interface DirectorEntry {
+  name: string;
+  signature: string;
+  emoji: string;
 }
 
 export interface HobbiesData {
@@ -130,9 +134,10 @@ export interface HobbiesData {
   };
   cinema: {
     philosophy: string;
-    favoriteDirectors: string[];
+    favoriteActors: string[];
+    favoriteDirectors: DirectorEntry[];
     topGenres: string[];
-    recommendations: MovieRecommendation[];
+    favoriteMovies: FavoriteMovie[];
     trivia: TriviaQuestion[];
   };
   softSkills: SoftSkill[];

@@ -1,143 +1,73 @@
 {
   "cricket": {
     "role": "Top-Order Batter & Finisher",
-    "favoritePlayer": "MS Dhoni (Thala #7) 🏏⚡ & Virat Kohli",
-    "battingStyle": "Right-Hand Bat · Signature Helicopter Shot & High-Pressure Composure",
+    "favoritePlayer": "MS Dhoni (Thala #7) 🏏",
+    "battingStyle": "Right-Hand Bat — Helicopter Shot & High-Pressure Finishing",
     "stats": [
       { "label": "Role Model", "value": "MS Dhoni #7 🚁" },
       { "label": "Signature Shot", "value": "Helicopter & Cover Drive" },
-      { "label": "Finishing Mindset", "value": "Captain Cool Composure" },
-      { "label": "Match Strategy", "value": "Take it Deep & Win" }
+      { "label": "Mindset", "value": "Captain Cool Composure" },
+      { "label": "Strategy", "value": "Take it Deep & Finish" }
     ],
-    "philosophy": "Cricket is applied game theory under pressure. Channeling the MS Dhoni #7 mindset: stay calm when the required run rate spikes, read the field, back your instincts, and finish it off in style 🚁⚡."
+    "philosophy": "Cricket is applied game theory under pressure. Channel the Thala #7 mindset — ice-cold when the pressure spikes, read the field, back your instincts, and finish it off in style. 🚁⚡"
   },
   "cinema": {
-    "philosophy": "Cinema is the ultimate canvas of emotion, visual framing, sound design, and world-building. From high-octane mass epics to mind-bending sci-fi, cinema pushes the boundary of human imagination.",
-    "favoriteActors": ["Prabhas (Rebel Star) 🦖⚔️", "Christian Bale", "Cillian Murphy"],
-    "favoriteDirectors": ["Prashanth Neel", "Christopher Nolan", "S.S. Rajamouli", "Denis Villeneuve", "David Fincher", "Quentin Tarantino"],
-    "topGenres": ["Pan-Indian Mass Epics 🦖", "Sci-Fi Mindbenders 🌀", "Psychological Thrillers ⚡", "Cinematic Masterpieces 🏛️", "World Cinema 🌍"],
-    "recommendations": [
-      {
-        "id": "salaar",
-        "title": "Salaar: Part 1 – Ceasefire",
-        "year": 2023,
-        "director": "Prashanth Neel",
-        "genre": ["Mass Action", "Epic", "Drama"],
-        "vibe": "epic",
-        "rating": "9.9/10",
-        "posterBg": "from-red-950 via-zinc-950 to-black",
-        "takeaway": "Pure Rebel Star Prabhas dominance: unrivaled screen presence, deafening high-voltage sound design, and atmospheric Khansaar world-building. 'I am not violent, but I have a promise.' 🦖⚔️"
-      },
-      {
-        "id": "interstellar",
-        "title": "Interstellar",
-        "year": 2014,
-        "director": "Christopher Nolan",
-        "genre": ["Sci-Fi", "Drama", "Adventure"],
-        "vibe": "mindbender",
-        "rating": "9.8/10",
-        "posterBg": "from-sky-950 via-indigo-950 to-black",
-        "takeaway": "A timeless exploration of relativity, human endurance, and love as a quantifiable fifth dimension."
-      },
-      {
-        "id": "kalki-2898-ad",
-        "title": "Kalki 2898 AD",
-        "year": 2024,
-        "director": "Nag Ashwin",
-        "genre": ["Sci-Fi", "Mythology", "Epic"],
-        "vibe": "epic",
-        "rating": "9.7/10",
-        "posterBg": "from-amber-950 via-orange-950 to-black",
-        "takeaway": "Grand fusion of Mahabharata mythology with dystopian sci-fi cyberpunk aesthetics. Prabhas as Bhairava delivers legendary scale."
-      },
-      {
-        "id": "oppenheimer",
-        "title": "Oppenheimer",
-        "year": 2023,
-        "director": "Christopher Nolan",
-        "genre": ["Biography", "Drama", "History"],
-        "vibe": "epic",
-        "rating": "9.6/10",
-        "posterBg": "from-amber-950 via-red-950 to-black",
-        "takeaway": "Masterclass in pacing, sound design, and the ethical weight of transformative scientific breakthrough."
-      },
-      {
-        "id": "baahubali-2",
-        "title": "Baahubali 2: The Conclusion",
-        "year": 2017,
-        "director": "S.S. Rajamouli",
-        "genre": ["Epic", "Action", "Mythology"],
-        "vibe": "epic",
-        "rating": "9.8/10",
-        "posterBg": "from-amber-900 via-zinc-950 to-black",
-        "takeaway": "Indian cinema's greatest magnum opus. Prabhas as Amarendra Baahubali redefined cinematic scale forever."
-      },
-      {
-        "id": "arrival",
-        "title": "Arrival",
-        "year": 2016,
-        "director": "Denis Villeneuve",
-        "genre": ["Sci-Fi", "Mystery", "Drama"],
-        "vibe": "mindbender",
-        "rating": "9.5/10",
-        "posterBg": "from-teal-950 via-slate-950 to-black",
-        "takeaway": "The Sapir-Whorf hypothesis realized on screen: how language and representation shape cognition itself."
-      },
-      {
-        "id": "whiplash",
-        "title": "Whiplash",
-        "year": 2014,
-        "director": "Damien Chazelle",
-        "genre": ["Drama", "Music", "Psychological"],
-        "vibe": "thriller",
-        "rating": "9.7/10",
-        "posterBg": "from-yellow-950 via-amber-950 to-black",
-        "takeaway": "Uncompromising obsession with greatness. The rhythm and editing mirror relentless algorithmic optimization."
-      },
-      {
-        "id": "the-dark-knight",
-        "title": "The Dark Knight",
-        "year": 2008,
-        "director": "Christopher Nolan",
-        "genre": ["Action", "Crime", "Drama"],
-        "vibe": "thriller",
-        "rating": "9.9/10",
-        "posterBg": "from-blue-950 via-slate-950 to-black",
-        "takeaway": "The pinnacle of psychological crime drama. Heath Ledger's Joker and Hans Zimmer's two-note score."
-      }
+    "philosophy": "Cinema is the ultimate canvas — emotion, light, sound, and mythology colliding into something that stays with you forever. From Rajamouli's universe-scale epics to RGV's dark raw intensity, Telugu cinema is unmatched storytelling.",
+    "favoriteActors": ["Prabhas (Rebel Star) 🦁", "Venkatesh Daggubati", "Vijay Deverakonda"],
+    "favoriteDirectors": [
+      { "name": "S.S. Rajamouli", "signature": "Universe-scale epics, emotional mythology, jaw-dropping VFX", "emoji": "🌊" },
+      { "name": "Nag Ashwin", "signature": "Futuristic dystopian sci-fi blended with Indian mythology", "emoji": "🔮" },
+      { "name": "Prashanth Varma", "signature": "Cinematic universe building — HanuVerse, raw superhero energy", "emoji": "⚡" },
+      { "name": "Ram Gopal Varma (RGV)", "signature": "Visceral dark realism, gritty streets, raw human psychology", "emoji": "🖤" },
+      { "name": "Puri Jagannadh", "signature": "Mass commercial action, street-smart dialogues, high energy", "emoji": "🔥" }
+    ],
+    "topGenres": ["Telugu Mass Epics 🦁", "Pan-Indian Action 💥", "Sci-Fi Mythology 🔮", "Dark Thriller 🖤", "Romantic Drama 💛"],
+    "favoriteMovies": [
+      { "id": "salaar", "title": "Salaar: Part 1 – Ceasefire", "year": 2023, "director": "Prashanth Neel", "genre": "Mass Action Epic", "vibe": "epic", "note": "Prabhas as Deva — unmatched screen presence and atmospheric Khansaar world-building. 🦁⚔️" },
+      { "id": "baahubali-1", "title": "Baahubali: The Beginning", "year": 2015, "director": "S.S. Rajamouli", "genre": "Mythological Epic", "vibe": "epic", "note": "The waterfall climb that changed Indian cinema forever." },
+      { "id": "baahubali-2", "title": "Baahubali 2: The Conclusion", "year": 2017, "director": "S.S. Rajamouli", "genre": "Mythological Epic", "vibe": "epic", "note": "Why Kattappa killed Baahubali — answered with unmatched grandeur." },
+      { "id": "kalki", "title": "Kalki 2898 AD", "year": 2024, "director": "Nag Ashwin", "genre": "Sci-Fi Mythology", "vibe": "scifi", "note": "Dystopian Kurukshetra meets Prabhas as Bhairava. Scale redefined." },
+      { "id": "hanuman", "title": "HanuMan", "year": 2024, "director": "Prashanth Varma", "genre": "Superhero", "vibe": "epic", "note": "HanuVerse begins — Telugu superhero cinema reaches its peak." },
+      { "id": "mr-perfect", "title": "Mr. Perfect", "year": 2011, "director": "Dasarath", "genre": "Romantic Comedy", "vibe": "romantic", "note": "Prabhas at his most charming — the perfect blend of fun and heart." },
+      { "id": "darling", "title": "Darling", "year": 2010, "director": "Krishna Vamsi", "genre": "Romantic Drama", "vibe": "romantic", "note": "Prabhas showcasing pure emotional depth in a different shade." },
+      { "id": "robo", "title": "Enthiran (Robo)", "year": 2010, "director": "S. Shankar", "genre": "Sci-Fi Action", "vibe": "scifi", "note": "Rajinikanth's Chitti — Tamil/Telugu sci-fi that was decades ahead." },
+      { "id": "chandramukhi", "title": "Chandramukhi", "year": 2005, "director": "P. Vasu", "genre": "Supernatural Thriller", "vibe": "thriller", "note": "Rajinikanth in a supernatural thriller — pure mass entertainment." },
+      { "id": "pournami", "title": "Pournami", "year": 2006, "director": "Raghavendra Rao", "genre": "Romantic Action", "vibe": "romantic", "note": "Young Prabhas — the film that showcased his versatility early." },
+      { "id": "shakti", "title": "Shakti", "year": 2011, "director": "S.S. Rajamouli", "genre": "Action Drama", "vibe": "drama", "note": "Rajamouli's raw action brilliance with Junior NTR." },
+      { "id": "ante-sundaraniki", "title": "Ante Sundaraniki", "year": 2022, "director": "Vivek Athreya", "genre": "Romantic Comedy", "vibe": "romantic", "note": "Nani at his finest — heartfelt, funny, and beautifully told." }
     ],
     "trivia": [
       {
         "id": "q1",
-        "quoteOrQuestion": "\"Please... I politely request!\" (Kaateramma Koduku / Deva)",
-        "context": "Which monumental mass action blockbuster features Prabhas delivering this goosebumps-inducing dialogue before the coal mine interval fight?",
-        "options": ["Salaar: Ceasefire 🦖", "Baahubali 2", "Kalki 2898 AD", "Saaho"],
+        "quoteOrQuestion": "\"Please... I politely request!\" — Which Prabhas blockbuster features this iconic interval dialogue from Deva?",
+        "context": "Salaar: Part 1 — Ceasefire (2023) · Prashanth Neel",
+        "options": ["Salaar: Ceasefire 🦁", "Baahubali 2", "Kalki 2898 AD", "Saaho"],
         "answer": 0,
-        "explanation": "In Prashanth Neel's Salaar (2023), Prabhas as Deva delivers this polite warning before unleashing full rebel fury!"
+        "explanation": "Prabhas as Deva delivers this goosebumps dialogue before the coal mine interval fight in Prashanth Neel's Salaar (2023)!"
       },
       {
         "id": "q2",
-        "quoteOrQuestion": "\"Do not go gentle into that good night. Rage, rage against the dying of the light.\"",
-        "context": "Which iconic sci-fi masterpiece prominently features this Dylan Thomas poem?",
-        "options": ["Inception", "Interstellar 🚀", "Blade Runner 2049", "The Martian"],
-        "answer": 1,
-        "explanation": "Professor Brand recites Dylan Thomas's poem to the Endurance crew in Christopher Nolan's Interstellar (2014)."
+        "quoteOrQuestion": "\"Kattappa ne Baahubali ko kyun maara?\" — Which director created this most-asked question in Indian cinema history?",
+        "context": "Baahubali franchise",
+        "options": ["Rajamouli 🌊", "Mani Ratnam", "Shankar", "K. Raghavendra Rao"],
+        "answer": 0,
+        "explanation": "S.S. Rajamouli crafted the greatest interval cliffhanger ever — 'Kattappa ne Baahubali ko kyun maara?' kept India waiting for 2 years!"
       },
       {
         "id": "q3",
-        "quoteOrQuestion": "In MS Dhoni's iconic 2011 ICC World Cup final winning shot, who was the bowler he dispatched over long-on for a six?",
-        "context": "Cricket & Cinema (MS Dhoni: The Untold Story)",
+        "quoteOrQuestion": "In MS Dhoni's iconic 2011 ICC World Cup final winning shot, who was the bowler he hit for the winning six?",
+        "context": "Cricket — MS Dhoni: The Untold Story",
         "options": ["Nuwan Kulasekara 🏏", "Lasith Malinga", "Muttiah Muralitharan", "Thisara Perera"],
         "answer": 0,
-        "explanation": "MS Dhoni hit Nuwan Kulasekara over long-on for the iconic 2011 World Cup-winning six to finish off in style!"
+        "explanation": "MS Dhoni hit Nuwan Kulasekara over long-on for the iconic 2011 World Cup winning six — finish off in style! 🚁⚡"
       },
       {
         "id": "q4",
-        "quoteOrQuestion": "\"There are no two words in the English language more harmful than 'good job'.\"",
-        "context": "Which intense mentor character delivered this unforgettable philosophy on mastery?",
-        "options": ["Terence Fletcher (Whiplash)", "Gordon Gekko (Wall Street)", "Morpheus (The Matrix)", "Tyler Durden (Fight Club)"],
+        "quoteOrQuestion": "Which Nag Ashwin film blends Mahabharata mythology with a dystopian 2898 AD sci-fi setting featuring Prabhas as Bhairava?",
+        "context": "Tollywood Sci-Fi",
+        "options": ["Kalki 2898 AD 🔮", "Saaho", "Project K", "RRR"],
         "answer": 0,
-        "explanation": "J.K. Simmons' Terence Fletcher in Damien Chazelle's Whiplash delivers this ruthless pursuit of perfection."
+        "explanation": "Nag Ashwin's Kalki 2898 AD (2024) — Prabhas as the irreverent Bhairava in a breathtaking mythology meets sci-fi universe!"
       }
     ]
   },
@@ -146,7 +76,7 @@
       "id": "leadership",
       "name": "Collaborative Leadership & Mentorship",
       "category": "Leadership",
-      "description": "Guided 50+ students in ML360 workshops, mentored junior developers in deep learning pipelines, and captained hackathon squads under high pressure.",
+      "description": "Guided 50+ students in ML360 workshops, mentored junior developers in deep learning pipelines, and led hackathon squads under high pressure.",
       "icon": "👑",
       "highlights": ["SIG AI Mentor at Amrita ACM", "Team Lead at IIT Madras & IISc Hackathons", "Technical Speaker & Peer Mentor"]
     },
@@ -162,9 +92,9 @@
       "id": "analytical-thinking",
       "name": "First-Principles Analytical Thinking",
       "category": "Strategy",
-      "description": "Breaking down intricate scientific challenges (e.g. drug toxicity GNNs, continual learning) into fundamental mathematical components and verifiable code.",
+      "description": "Breaking down intricate scientific challenges into fundamental mathematical components, tested against empirical benchmarks.",
       "icon": "🧠",
-      "highlights": ["Published / In-Progress Research Tracks", "Algorithmic Complexity Optimization", "Causal & Graph ML Reasoning"]
+      "highlights": ["Published / In-Progress Research Tracks", "Algorithmic Optimization", "Causal & Graph ML Reasoning"]
     },
     {
       "id": "communication",
@@ -172,7 +102,7 @@
       "category": "Collaboration",
       "description": "Bridging high-level mathematical theory with stakeholder value. Translating complex model metrics into clear visual insights and executive pitches.",
       "icon": "🎯",
-      "highlights": ["Jury & National Panel Presentations", "Comprehensive Technical Documentation", "Cross-Disciplinary Team Harmony"]
+      "highlights": ["Jury & National Panel Presentations", "Technical Documentation", "Cross-Disciplinary Teamwork"]
     }
   ]
 }

@@ -6,6 +6,7 @@ const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 const jakarta = Plus_Jakarta_Sans({
@@ -23,7 +24,7 @@ const spaceMono = Space_Mono({
 
 const syne = Syne({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["600", "700", "800"],
   variable: "--font-syne",
   display: "swap",
 });
@@ -31,25 +32,21 @@ const syne = Syne({
 export const metadata: Metadata = {
   title: "Madhav Yalamarthi — AI/ML Engineer & Researcher",
   description:
-    "AI/ML Engineer & Researcher – Continual Learning, Neuro-Symbolic RAG, Multi-Agent Systems. B.Tech AI at Amrita Vishwa Vidyapeetham. IIT Madras Hackathon Winner.",
+    "AI/ML Engineer & Researcher specializing in Continual Learning, Neuro-Symbolic RAG, and Distributed AI Systems. B.Tech AI @ Amrita Vishwa Vidyapeetham. IIT Madras National Winner.",
   authors: [{ name: "Madhav Yalamarthi" }],
-  keywords: ["AI Engineer", "Machine Learning", "Continual Learning", "RAG", "Portfolio", "Madhav Yalamarthi"],
+  keywords: ["AI Engineer", "Machine Learning", "Continual Learning", "RAG", "Distributed Systems", "Madhav Yalamarthi", "Amrita"],
   openGraph: {
     title: "Madhav Yalamarthi — AI/ML Engineer & Researcher",
-    description: "AI/ML Engineer & Researcher · Continual Learning · Neuro-Symbolic RAG · Multi-Agent Systems",
+    description: "AI/ML Research Engineer · Continual Learning · Neuro-Symbolic RAG · IIT Madras National Winner",
     type: "website",
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <body
-        className={`${outfit.variable} ${jakarta.variable} ${spaceMono.variable} ${syne.variable} font-sans bg-[#06080d] text-[#e2e8f0] antialiased selection:bg-sky-500/30 selection:text-white`}
+        className={`${outfit.variable} ${jakarta.variable} ${spaceMono.variable} ${syne.variable} antialiased`}
       >
         {children}
       </body>
