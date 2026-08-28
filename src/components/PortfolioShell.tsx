@@ -8,6 +8,9 @@ import CursorGlow from "./CursorGlow";
 
 const NeuralCanvas = dynamic(() => import("./NeuralCanvas"), { ssr: false });
 
+// SectionId exported so legacy components (FloatingNav, GameNav, HeroPanel) still compile
+export type SectionId = "hero" | "research" | "projects" | "skills" | "achievements" | "about" | "passions" | "contact" | "home" | "arcade";
+
 // ────────── animation helpers ──────────
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
