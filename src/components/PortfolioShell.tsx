@@ -189,7 +189,8 @@ export default function PortfolioShell({ projects, academic, achievements, resea
   const triviaQ = hobbies.cinema.trivia[triviaIdx];
 
   return (
-    <div className="relative min-h-screen bg-void" style={{ color: "#f0ead6" }}>
+    <div className="relative min-h-screen bg-void overflow-x-hidden"
+         style={{ color: "#f0ead6", perspective: 1200, transformStyle: "preserve-3d" }}>
       {!hasEntered && <IntroSplash onEnter={() => setHasEntered(true)} />}
       <CursorGlow />
 

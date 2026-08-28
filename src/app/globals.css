@@ -74,13 +74,14 @@ body {
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--border);
   border-radius: 16px;
-  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.3s ease;
+  transform-style: preserve-3d;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cine-card:hover {
-  border-color: rgba(212, 168, 71, 0.3);
-  box-shadow: 0 0 30px rgba(212, 168, 71, 0.08), 0 20px 40px rgba(0, 0, 0, 0.7);
-  transform: translateY(-2px);
+  border-color: rgba(212, 168, 71, 0.45);
+  box-shadow: 0 16px 45px rgba(212, 168, 71, 0.15), 0 0 80px rgba(212, 168, 71, 0.08);
+  transform: translateY(-6px) translateZ(18px) rotateX(2deg) rotateY(-1.5deg);
 }
 
 /* ── Feature card with left gold border accent ── */

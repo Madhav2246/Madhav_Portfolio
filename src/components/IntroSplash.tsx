@@ -10,8 +10,11 @@ interface Props {
 export default function IntroSplash({ onEnter }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isEntering, setIsEntering] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  // 3D Rotating Wireframe Cube & Particle Field on Canvas
+  const isEnteringRef = useRef(false);
+
+  // 3D Rotating Wireframe Cube & Hyper-Warp Particle Field on Canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -21,6 +24,7 @@ export default function IntroSplash({ onEnter }: Props) {
     let animId: number;
     let angleX = 0;
     let angleY = 0;
+    let speedMult = 1.0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -42,34 +46,48 @@ export default function IntroSplash({ onEnter }: Props) {
       [0, 4], [1, 5], [2, 6], [3, 7],
     ];
 
-    // Background floating dust particles
-    const particles = Array.from({ length: 60 }, () => ({
+    // Floating particles
+    const particles = Array.from({ length: 90 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      radius: Math.random() * 1.5 + 0.5,
-      alpha: Math.random() * 0.5 + 0.1,
-      speedY: Math.random() * 0.4 - 0.2,
+      z: Math.random() * 1000,
+      radius: Math.random() * 2 + 0.5,
+      alpha: Math.random() * 0.6 + 0.1,
+      speedZ: Math.random() * 2 + 1,
     }));
 
     const render = () => {
       ctx.fillStyle = "#070604";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Render ambient whitish-grey particles
-      particles.forEach((p) => {
-        p.y += p.speedY;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
+      if (isEnteringRef.current) {
+        speedMult = Math.min(speedMult * 1.05, 12.0);
+      }
 
-        ctx.fillStyle = `rgba(226, 232, 240, ${p.alpha})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
+      // Starfield / hyper-drive warp particles
+      particles.forEach((p) => {
+        p.z -= isEnteringRef.current ? p.speedZ * speedMult : p.speedZ;
+        if (p.z <= 0) p.z = 1000;
+
+        const k = 400 / p.z;
+        const px = (p.x - canvas.width / 2) * k + canvas.width / 2;
+        const py = (p.y - canvas.height / 2) * k + canvas.height / 2;
+
+        if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+          const size = Math.max(0.5, p.radius * k);
+          ctx.fillStyle = isEnteringRef.current
+            ? `rgba(212, 168, 71, ${Math.min(1, p.alpha * 1.8)})`
+            : `rgba(226, 232, 240, ${p.alpha})`;
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
       });
 
       // 3D Cube Math
-      const fov = 350;
-      const scale = Math.min(canvas.width, canvas.height) * 0.18;
+      const fov = 360;
+      const baseScale = Math.min(canvas.width, canvas.height) * 0.18;
+      const currentScale = isEnteringRef.current ? baseScale * (1 + (speedMult * 0.15)) : baseScale;
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
 
@@ -91,17 +109,17 @@ export default function IntroSplash({ onEnter }: Props) {
 
         const distance = 3.5;
         const sz = z2 + distance;
-        const px = (x1 * fov) / sz + cx;
-        const py = (y2 * fov) / sz + cy;
+        const px = (x1 * currentScale * fov) / (sz * 100) + cx;
+        const py = (y2 * currentScale * fov) / (sz * 100) + cy;
 
         projected.push([px, py]);
       }
 
-      // Draw wireframe edges with glowing whitish-grey stroke
-      ctx.strokeStyle = "rgba(240, 234, 214, 0.45)";
-      ctx.lineWidth = 1.8;
-      ctx.shadowColor = "rgba(212, 168, 71, 0.4)";
-      ctx.shadowBlur = 12;
+      // Draw wireframe edges with glowing whitish-grey / gold stroke
+      ctx.strokeStyle = isEnteringRef.current ? "rgba(212, 168, 71, 0.9)" : "rgba(240, 234, 214, 0.55)";
+      ctx.lineWidth = isEnteringRef.current ? 2.8 : 1.8;
+      ctx.shadowColor = "rgba(212, 168, 71, 0.6)";
+      ctx.shadowBlur = isEnteringRef.current ? 25 : 12;
 
       for (const [start, end] of edges) {
         const [x1, y1] = projected[start];
@@ -117,12 +135,12 @@ export default function IntroSplash({ onEnter }: Props) {
       for (const [px, py] of projected) {
         ctx.fillStyle = "#d4a847";
         ctx.beginPath();
-        ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+        ctx.arc(px, py, isEnteringRef.current ? 5 : 3.5, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      angleX += 0.008;
-      angleY += 0.012;
+      angleX += 0.008 * speedMult;
+      angleY += 0.012 * speedMult;
 
       animId = requestAnimationFrame(render);
     };
@@ -137,19 +155,29 @@ export default function IntroSplash({ onEnter }: Props) {
 
   const handleStart = () => {
     setIsEntering(true);
+    isEnteringRef.current = true;
+
     try {
       proceduralAudio.unlock();
-      proceduralAudio.playCinematicPulse();
-      setTimeout(() => {
-        proceduralAudio.playSwish();
-      }, 250);
+      proceduralAudio.playPortalWarpSound();
     } catch {
       // Ignore audio errors
     }
 
-    setTimeout(() => {
-      onEnter();
-    }, 1100);
+    // 3.0 Second Progress counter
+    const startTime = Date.now();
+    const duration = 3000;
+
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const p = Math.min(100, Math.floor((elapsed / duration) * 100));
+      setProgress(p);
+
+      if (elapsed >= duration) {
+        clearInterval(timer);
+        onEnter();
+      }
+    }, 30);
   };
 
   return (
@@ -158,27 +186,27 @@ export default function IntroSplash({ onEnter }: Props) {
         key="intro-splash"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, scale: 1.4, filter: "blur(20px)" }}
-        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        exit={{ opacity: 0, scale: 3.5, filter: "blur(40px)" }}
+        transition={{ duration: 3.0, ease: [0.22, 1, 0.36, 1] }}
         className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070604] overflow-hidden select-none"
       >
         {/* 3D Canvas Background */}
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
 
         {/* Ambient Top & Bottom Gold Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#070604] via-transparent to-[#070604] opacity-90 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070604] via-transparent to-[#070604] opacity-95 pointer-events-none" />
 
         {/* Content Box */}
         <motion.div
-          animate={isEntering ? { scale: 1.2, opacity: 0, filter: "blur(10px)" } : { scale: 1, opacity: 1 }}
-          transition={{ duration: 0.9, ease: "easeIn" }}
+          animate={isEntering ? { scale: 1.4, opacity: 0, filter: "blur(20px)" } : { scale: 1, opacity: 1 }}
+          transition={{ duration: 3.0, ease: "easeIn" }}
           className="relative z-10 text-center px-6 max-w-2xl mx-auto space-y-6"
         >
           {/* Eyebrow badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full font-mono text-[10px] sm:text-xs uppercase tracking-widest border"
                style={{ background: "rgba(212,168,71,0.08)", borderColor: "rgba(212,168,71,0.3)", color: "#d4a847" }}>
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-            Initializing Experience
+            {isEntering ? "WARPING INTO MADHAV'S UNIVERSE..." : "INITIALIZING EXPERIENCE"}
           </div>
 
           {/* Main Question */}
@@ -192,20 +220,37 @@ export default function IntroSplash({ onEnter }: Props) {
             AI &amp; Systems Engineer · Continual Learning Researcher · IIT Madras National Finalist
           </p>
 
-          {/* Action CTA Button */}
-          <div className="pt-4">
-            <button
-              onClick={handleStart}
-              disabled={isEntering}
-              className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-mono text-xs sm:text-sm uppercase tracking-wider font-bold transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(212,168,71,0.3)]"
-              style={{
-                background: "linear-gradient(135deg, #d4a847 0%, #a87e2a 100%)",
-                color: "#070604",
-              }}
-            >
-              <span>Take Me To Madhav&apos;s Universe</span>
-              <span className="text-base group-hover:translate-x-1 transition-transform">✦</span>
-            </button>
+          {/* Action CTA Button or 3-Sec Progress Bar */}
+          <div className="pt-4 flex flex-col items-center justify-center min-h-[90px]">
+            {!isEntering ? (
+              <button
+                onClick={handleStart}
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-mono text-xs sm:text-sm uppercase tracking-wider font-bold transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_35px_rgba(212,168,71,0.35)]"
+                style={{
+                  background: "linear-gradient(135deg, #d4a847 0%, #a87e2a 100%)",
+                  color: "#070604",
+                }}
+              >
+                <span>Take Me To Madhav&apos;s Universe</span>
+                <span className="text-base group-hover:translate-x-1 transition-transform">✦</span>
+              </button>
+            ) : (
+              <div className="w-full max-w-xs space-y-2">
+                <div className="flex justify-between font-mono text-xs text-gold">
+                  <span>HYPER-DRIVE WARP</span>
+                  <span>{progress}%</span>
+                </div>
+                <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden border border-gold/30">
+                  <div
+                    className="h-full bg-gradient-to-r from-amber-500 to-gold transition-all duration-75"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <div className="font-mono text-[10px] text-[rgba(240,234,214,0.5)] animate-pulse">
+                  🔊 USSSHHH PORTAL AUDIO SYNTHESIS...
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
       </motion.div>

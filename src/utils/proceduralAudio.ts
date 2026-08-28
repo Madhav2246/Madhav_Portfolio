@@ -27,7 +27,7 @@ class ProceduralAudioEngine {
     }
   }
 
-  // Crisp futuristic UI blip sound (audible and clear)
+  // Crisp futuristic UI blip sound
   playClick() {
     try {
       this.unlock();
@@ -55,7 +55,7 @@ class ProceduralAudioEngine {
     }
   }
 
-  // Deep cinematic swish / swoop sound for section changes & reveals
+  // Deep cinematic swish / swoop sound for section changes
   playSwish() {
     try {
       this.unlock();
@@ -83,7 +83,70 @@ class ProceduralAudioEngine {
     }
   }
 
-  // Deep gold synth chord pulse for research sandbox & achievements
+  // 3-Second Epic "Ussshhh" Portal Warp Sound Synthesis
+  playPortalWarpSound() {
+    try {
+      this.unlock();
+      if (!this.ctx) return;
+
+      const duration = 3.0;
+      const now = this.ctx.currentTime;
+
+      // 1. White Noise Buffer for the "Ussshhh" wind / portal airflow
+      const bufferSize = this.ctx.sampleRate * duration;
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = this.ctx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+
+      // Filter for sweeping lowpass frequency (ussshhh sound transition)
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(300, now);
+      filter.frequency.exponentialRampToValueAtTime(3500, now + 1.8);
+      filter.frequency.exponentialRampToValueAtTime(150, now + duration);
+      filter.Q.setValueAtTime(2.5, now);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.01, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.5, now + 1.2);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      whiteNoise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+
+      whiteNoise.start(now);
+      whiteNoise.stop(now + duration);
+
+      // 2. Sub-bass cinematic engine rumble (50Hz → 120Hz → 30Hz)
+      const subOsc = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+
+      subOsc.type = "sine";
+      subOsc.frequency.setValueAtTime(55, now);
+      subOsc.frequency.exponentialRampToValueAtTime(160, now + 1.5);
+      subOsc.frequency.exponentialRampToValueAtTime(30, now + duration);
+
+      subGain.gain.setValueAtTime(0.01, now);
+      subGain.gain.exponentialRampToValueAtTime(0.4, now + 1.0);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      subOsc.connect(subGain);
+      subGain.connect(this.ctx.destination);
+
+      subOsc.start(now);
+      subOsc.stop(now + duration);
+    } catch {
+      // Ignore audio errors
+    }
+  }
+
+  // Deep gold synth chord pulse
   playCinematicPulse() {
     try {
       this.unlock();
@@ -91,7 +154,6 @@ class ProceduralAudioEngine {
 
       const now = this.ctx.currentTime;
 
-      // Root note (A2 = 110Hz)
       const osc1 = this.ctx.createOscillator();
       const gain1 = this.ctx.createGain();
 
@@ -107,23 +169,6 @@ class ProceduralAudioEngine {
 
       osc1.start(now);
       osc1.stop(now + 0.35);
-
-      // Harmonizing fifth (E3 = 164.8Hz) for rich cinematic tone
-      const osc2 = this.ctx.createOscillator();
-      const gain2 = this.ctx.createGain();
-
-      osc2.type = "sine";
-      osc2.frequency.setValueAtTime(164.81, now);
-      osc2.frequency.exponentialRampToValueAtTime(329.63, now + 0.35);
-
-      gain2.gain.setValueAtTime(0.2, now);
-      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-
-      osc2.connect(gain2);
-      gain2.connect(this.ctx.destination);
-
-      osc2.start(now);
-      osc2.stop(now + 0.35);
     } catch {
       // Ignore audio errors
     }
