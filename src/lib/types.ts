@@ -144,6 +144,12 @@ export interface DirectorEntry {
   emoji: string;
 }
 
+export interface MusicGenre {
+  title: string;
+  desc: string;
+  emoji: string;
+}
+
 export interface HobbiesData {
   cricket: {
     role: string;
@@ -159,6 +165,10 @@ export interface HobbiesData {
     topGenres: string[];
     favoriteMovies: FavoriteMovie[];
     trivia: TriviaQuestion[];
+  };
+  musicAndCulture?: {
+    philosophy: string;
+    genres: MusicGenre[];
   };
   softSkills: SoftSkill[];
 }

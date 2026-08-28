@@ -88,7 +88,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [projectCat, setProjectCat] = useState("all");
   const [skillsTab, setSkillsTab] = useState(0);
-  const [arcadeTab, setArcadeTab] = useState<"cricket" | "cinema">("cinema");
+  const [arcadeTab, setArcadeTab] = useState<"cricket" | "cinema" | "music">("cinema");
   const [triviaIdx, setTriviaIdx] = useState(0);
   const [triviaChoice, setTriviaChoice] = useState<number | null>(null);
   const [triviaScore, setTriviaScore] = useState(0);
@@ -931,6 +931,15 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                   : { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
                 🏏 Dhoni #7 Cricket
               </button>
+              <button onClick={() => setArcadeTab("music")}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all ${
+                  arcadeTab === "music" ? "font-bold" : "text-[rgba(240,234,214,0.5)]"
+                }`}
+                style={arcadeTab === "music"
+                  ? { background: "rgba(212,168,71,0.12)", border: "1px solid rgba(212,168,71,0.4)", color: "#d4a847" }
+                  : { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                🎶 Music &amp; Classical Arts
+              </button>
             </motion.div>
 
             <AnimatePresence mode="wait">
@@ -1056,6 +1065,39 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                         </div>
                       ))}
                     </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {arcadeTab === "music" && (
+                <motion.div key="music"
+                  initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="space-y-6">
+
+                  <div className="cine-card p-7" style={{ borderLeft: "2px solid #d4a847" }}>
+                    <div className="mono-tag mb-2">🎶 Heritage, Rhythm &amp; Aesthetics</div>
+                    <h3 className="font-display font-bold text-xl text-[#f0ead6] mb-3">Indian Music &amp; Classical Performing Arts</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: "rgba(240,234,214,0.72)" }}>
+                      {hobbies.musicAndCulture?.philosophy || "Music & Classical Arts are the soul of Indian heritage — from tranquil devotional stotrams and traditional Carnatic melodies to high-energy mass beats and live classical recitals."}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {(hobbies.musicAndCulture?.genres || [
+                      { title: "Indian Traditional & Devotional", desc: "Immersive traditional compositions, Vedic stotrams, and peaceful spiritual ragas.", emoji: "🛕" },
+                      { title: "Soulful Melodies & Classics", desc: "Timeless romantic melodies, acoustic arrangements, and evergreen Telugu & Indian classics.", emoji: "🎼" },
+                      { title: "High-Energy Mass Songs", desc: "Electrifying mass tracks, dholak rhythms, and high-tempo festive anthems.", emoji: "🔥" },
+                      { title: "Classical Performance Recitals", desc: "Enthusiastic audience for live traditional Indian dance (Kuchipudi, Bharatanatyam) and musical recitals.", emoji: "🎭" }
+                    ]).map(item => (
+                      <div key={item.title} className="cine-card p-5 flex flex-col justify-between">
+                        <div>
+                          <span className="text-3xl mb-3 block">{item.emoji}</span>
+                          <h4 className="font-display font-bold text-[#f0ead6] text-base mb-2">{item.title}</h4>
+                          <p className="text-xs leading-relaxed" style={{ color: "rgba(240,234,214,0.65)" }}>{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </motion.div>
               )}

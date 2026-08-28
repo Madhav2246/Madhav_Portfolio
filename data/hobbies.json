@@ -71,6 +71,31 @@
       }
     ]
   },
+  "musicAndCulture": {
+    "philosophy": "Music & Classical Arts are the soul of Indian heritage — from tranquil devotional stotrams and traditional Carnatic melodies to high-energy mass beats and watching live classical dance performances.",
+    "genres": [
+      {
+        "title": "Indian Traditional & Devotional Music",
+        "desc": "Immersive traditional compositions, Vedic stotrams, and peaceful spiritual ragas.",
+        "emoji": "🛕"
+      },
+      {
+        "title": "Soulful Melodies & Classics",
+        "desc": "Timeless romantic melodies, acoustic arrangements, and evergreen Telugu & Indian classics.",
+        "emoji": "🎼"
+      },
+      {
+        "title": "High-Energy Mass Songs",
+        "desc": "Electrifying mass tracks, dholak rhythms, and high-tempo festive anthems.",
+        "emoji": "🔥"
+      },
+      {
+        "title": "Classical Performance Recitals",
+        "desc": "Enthusiastic audience for live traditional Indian dance (Kuchipudi, Bharatanatyam) and musical recitals.",
+        "emoji": "🎭"
+      }
+    ]
+  },
   "softSkills": [
     {
       "id": "leadership",
