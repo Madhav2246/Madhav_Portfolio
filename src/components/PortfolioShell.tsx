@@ -6,7 +6,6 @@ import type { Project, AcademicData, Achievement, ResearchPaper, HobbiesData } f
 import ProjectModal from "./ProjectModal";
 import CursorGlow from "./CursorGlow";
 import StoryboardTimeline from "./StoryboardTimeline";
-import PhysicsRagsSandbox from "./PhysicsRagsSandbox";
 import AudioVisualizer from "./AudioVisualizer";
 import { proceduralAudio } from "@/utils/proceduralAudio";
 
@@ -160,7 +159,20 @@ export default function PortfolioShell({ projects, academic, achievements, resea
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const handleFirstUserInteraction = () => {
+      proceduralAudio.unlock();
+    };
+    window.addEventListener("click", handleFirstUserInteraction);
+    window.addEventListener("keydown", handleFirstUserInteraction);
+    return () => {
+      window.removeEventListener("click", handleFirstUserInteraction);
+      window.removeEventListener("keydown", handleFirstUserInteraction);
+    };
+  }, []);
+
   const scrollTo = (id: string) => {
+    proceduralAudio.playSwish();
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -428,11 +440,6 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                 );
               })}
             </div>
-
-            {/* Interactive Physics RAG & SymPy Sandbox Demo */}
-            <motion.div variants={fadeUp} custom={7}>
-              <PhysicsRagsSandbox />
-            </motion.div>
           </motion.div>
         </section>
 
@@ -474,7 +481,10 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                   return p.category.includes(cat.id);
                 }).length;
                 return (
-                  <button key={cat.id} onClick={() => setProjectCat(cat.id)}
+                  <button key={cat.id} onClick={() => {
+                    proceduralAudio.playClick();
+                    setProjectCat(cat.id);
+                  }}
                     className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-mono text-[11px] tracking-wider uppercase transition-all ${
                       projectCat === cat.id
                         ? "border font-bold"
