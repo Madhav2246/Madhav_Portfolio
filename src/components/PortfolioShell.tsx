@@ -174,7 +174,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
   }, []);
 
   const scrollTo = (id: string) => {
-    proceduralAudio.playSwish();
+    proceduralAudio.playDropSound();
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -233,14 +233,27 @@ export default function PortfolioShell({ projects, academic, achievements, resea
             ))}
           </div>
 
-          {/* Connect CTA */}
-          <button
-            onClick={() => scrollTo("contact")}
-            className="px-5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider font-bold text-void"
-            style={{ background: "linear-gradient(135deg, #d4a847, #f8d87a)" }}
-          >
-            Hire Me
-          </button>
+          {/* Connect & 3D Intro Buttons */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                proceduralAudio.playDropSound();
+                setHasEntered(false);
+              }}
+              className="px-3.5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 border border-gold/40 bg-gold/10 text-gold hover:bg-gold hover:text-black hover:scale-105 shadow-[0_0_15px_rgba(212,168,71,0.2)]"
+              title="Replay 3D Intro Experience"
+            >
+              <span>🌀</span>
+              <span className="hidden sm:inline">3D Intro</span>
+            </button>
+            <button
+              onClick={() => scrollTo("contact")}
+              className="px-5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider font-bold text-void hover:scale-105 transition-transform"
+              style={{ background: "linear-gradient(135deg, #d4a847, #f8d87a)" }}
+            >
+              Hire Me
+            </button>
+          </div>
         </nav>
       </header>
 

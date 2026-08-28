@@ -55,6 +55,34 @@ class ProceduralAudioEngine {
     }
   }
 
+  // Soft crystalline falling / tumbling drop sound for scroll & 3D shapes
+  playDropSound() {
+    try {
+      this.unlock();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = "triangle";
+      const now = this.ctx.currentTime;
+
+      osc.frequency.setValueAtTime(360, now);
+      osc.frequency.exponentialRampToValueAtTime(110, now + 0.18);
+
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.18);
+    } catch {
+      // Ignore audio errors
+    }
+  }
+
   // Deep cinematic swish / swoop sound for section changes
   playSwish() {
     try {
@@ -92,7 +120,7 @@ class ProceduralAudioEngine {
       const duration = 3.0;
       const now = this.ctx.currentTime;
 
-      // 1. White Noise Buffer for the "Ussshhh" wind / portal airflow
+      // White Noise Buffer for the "Ussshhh" wind / portal airflow
       const bufferSize = this.ctx.sampleRate * duration;
       const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const output = noiseBuffer.getChannelData(0);
@@ -103,7 +131,7 @@ class ProceduralAudioEngine {
       const whiteNoise = this.ctx.createBufferSource();
       whiteNoise.buffer = noiseBuffer;
 
-      // Filter for sweeping lowpass frequency (ussshhh sound transition)
+      // Filter for sweeping lowpass frequency
       const filter = this.ctx.createBiquadFilter();
       filter.type = "bandpass";
       filter.frequency.setValueAtTime(300, now);
@@ -123,7 +151,7 @@ class ProceduralAudioEngine {
       whiteNoise.start(now);
       whiteNoise.stop(now + duration);
 
-      // 2. Sub-bass cinematic engine rumble (50Hz → 120Hz → 30Hz)
+      // Sub-bass cinematic engine rumble
       const subOsc = this.ctx.createOscillator();
       const subGain = this.ctx.createGain();
 
