@@ -1,7 +1,61 @@
 [
   {
-    "id": "drug-toxicity-gnn",
+    "id": "facl-fakd-continual-learning",
     "num": "R — 01",
+    "title": "Feature Anchoring with Replay and Knowledge Distillation for Class-Incremental Continual Learning",
+    "domain": "Continual Learning · Knowledge Distillation · Catastrophic Forgetting",
+    "status": "published",
+    "abstract": "Proposed FACL/FAKD, a lightweight tri-level continual-learning framework combining class-balanced replay, layer-4 feature anchoring, logit distillation, and diagonal-Fisher EWC to mitigate catastrophic forgetting. Outperformed DER++ by +12.61% and reduced forgetting by 21.27 points across 5 seeds on Split-CIFAR-100.",
+    "tags": ["PyTorch", "Continual Learning", "ResNet-18", "Logit Distillation", "EWC", "FACL/FAKD"],
+    "metrics": [
+      { "value": "+12.61%", "label": "vs DER++" },
+      { "value": "37.66%", "label": "CIFAR-100 Acc" },
+      { "value": "-21.27", "label": "Forgetting" },
+      { "value": "45.36ms", "label": "Latency" }
+    ],
+    "course": "1st Author · Amrita School of Computing · Accepted, CIS 2026",
+    "visible": true,
+    "order": 1
+  },
+  {
+    "id": "physics-rag-verification",
+    "num": "R — 02",
+    "title": "Verification-Guided Retrieval-Augmented Generation for Reliable Semiconductor Device Physics Reasoning",
+    "domain": "Neuro-Symbolic AI · RAG · Physics Reasoning · SLMs",
+    "status": "submitted",
+    "abstract": "Built a neuro-symbolic RAG pipeline combining LoRA-fine-tuned Qwen2.5-0.5B with FAISS/BM25/RRF hybrid retrieval, cross-encoder reranking, and a three-stage SymPy validator for symbolic, dimensional, and numerical verification. Outperformed ungrounded 70B-parameter baseline by +135% on hard physics reasoning.",
+    "tags": ["Neuro-Symbolic", "Qwen2.5", "LoRA", "SymPy", "Hybrid RAG", "FAISS/BM25"],
+    "metrics": [
+      { "value": "+135%", "label": "vs 70B Baseline" },
+      { "value": "140×", "label": "Fewer Params" },
+      { "value": "116×", "label": "Less VRAM" },
+      { "value": "Single 8GB", "label": "GPU Budget" }
+    ],
+    "course": "1st Author · Amrita School of Computing · Submitted to EAAI",
+    "visible": true,
+    "order": 2
+  },
+  {
+    "id": "nexus-task-queue",
+    "num": "R — 03",
+    "title": "Nexus — LLM-Driven Autonomous Self-Healing Distributed Task Queue",
+    "domain": "Distributed Systems · AIOps · Self-Healing Reliability",
+    "status": "submitted",
+    "abstract": "Designed a capability-aware distributed task queue with Redis-backed priority queues, DAG workflow execution, persistent task state, database-hydration crash recovery, and sandboxed worker execution. LLM-driven AIOps reliability engine achieves 91.2% autonomous remediation across 12 fault categories.",
+    "tags": ["Distributed Systems", "Redis", "DAG Execution", "LLM AIOps", "FastAPI"],
+    "metrics": [
+      { "value": "91.2%", "label": "Remediation" },
+      { "value": "10K", "label": "Tasks Workload" },
+      { "value": "1.35s", "label": "Recovery Time" },
+      { "value": "12", "label": "Fault Classes" }
+    ],
+    "course": "Conference Research Project · Paper Ready for Submission",
+    "visible": true,
+    "order": 3
+  },
+  {
+    "id": "drug-toxicity-gnn",
+    "num": "R — 04",
     "title": "Multi-Stage Toxicity Prediction for Drug Discovery Using Fingerprints, GNNs & Knowledge Graph Neural Networks",
     "domain": "Drug Discovery · Cheminformatics · Graph ML",
     "status": "in-progress",
@@ -13,13 +67,13 @@
       { "value": "5", "label": "Stages" },
       { "value": "<0.5%", "label": "Label Cover" }
     ],
-    "course": "Deep Learning · 24AIE304 · Term Project",
+    "course": "Deep Learning · 24AIE304 · Research Project",
     "visible": true,
-    "order": 1
+    "order": 4
   },
   {
     "id": "gamete-prediction",
-    "num": "R — 02",
+    "num": "R — 05",
     "title": "Predicting Dominant Gamete Contribution in Fertilization Using Genomic & Phenotypic Characteristics",
     "domain": "Bioinformatics · Reproductive AI · Genomics",
     "status": "in-progress",
@@ -31,26 +85,8 @@
       { "value": "4", "label": "Models" },
       { "value": "GO", "label": "Enrichment" }
     ],
-    "course": "Bioinformatics Research · Unpublished",
+    "course": "Bioinformatics Research · Interdisciplinary AI",
     "visible": true,
-    "order": 2
-  },
-  {
-    "id": "continual-learning-hat",
-    "num": "R — 03",
-    "title": "Continual Learning on CIFAR-100 via Hard Attention to Task (HAT) with Memory-Aware Replay & EWC",
-    "domain": "Continual Learning · Catastrophic Forgetting · Computer Vision",
-    "status": "in-progress",
-    "abstract": "Research evolution: RoutedMLP (26%) → CNN routing (41%) → ResNet18 (49%) → HAT achieving 58.86% on Split-CIFAR-100. Task-specific sigmoid attention gates with EWC regularization and episodic memory replay to combat catastrophic forgetting.",
-    "tags": ["PyTorch", "ResNet18", "HAT", "EWC", "CIFAR-100"],
-    "metrics": [
-      { "value": "58.86%", "label": "Accuracy" },
-      { "value": "−30.5", "label": "BWT" },
-      { "value": "60.53", "label": "FWT" },
-      { "value": "5", "label": "Task Splits" }
-    ],
-    "course": "Continual Learning Research · Unpublished",
-    "visible": true,
-    "order": 3
+    "order": 5
   }
 ]

@@ -1,28 +1,37 @@
 "use client";
-import { useState, Suspense, useEffect } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import type { Project, AcademicData, Achievement, ResearchPaper } from "@/lib/types";
+import type { Project, AcademicData, Achievement, ResearchPaper, HobbiesData } from "@/lib/types";
 import FloatingNav from "./FloatingNav";
 import HeroPanel from "./panels/HeroPanel";
 import AboutPanel from "./panels/AboutPanel";
 import ProjectsPanel from "./panels/ProjectsPanel";
+import ArcadePanel from "./panels/ArcadePanel";
 import SkillsPanel from "./panels/SkillsPanel";
 import ResearchPanel from "./panels/ResearchPanel";
 import AchievementsPanel from "./panels/AchievementsPanel";
 import ContactPanel from "./panels/ContactPanel";
 import CursorGlow from "./CursorGlow";
 import Footer from "./Footer";
+import CommandCenter from "./CommandCenter";
+import ProjectModal from "./ProjectModal";
 import { useClickRipple } from "./ClickRipple";
 
-const NeuralCanvas  = dynamic(() => import("./NeuralCanvas"),  { ssr: false });
-const ShaderCanvas  = dynamic(() => import("./ShaderCanvas").then(m => ({ default: m.default })), { ssr: false });
+const NeuralCanvas = dynamic(() => import("./NeuralCanvas"), { ssr: false });
+const ShaderCanvas = dynamic(() => import("./ShaderCanvas").then(m => ({ default: m.default })), { ssr: false });
 
-export type SectionId = "home" | "about" | "projects" | "skills" | "research" | "achievements" | "contact";
+export type SectionId = "home" | "about" | "projects" | "arcade" | "skills" | "research" | "achievements" | "contact";
 
 const SECTION_LABELS: Record<SectionId, string> = {
-  home: "Home", about: "About", projects: "Projects",
-  skills: "Skills", research: "Research", achievements: "Awards", contact: "Contact",
+  home: "Home",
+  about: "About",
+  projects: "Projects & Lab",
+  arcade: "Arcade & Hobbies 🏏🎬",
+  skills: "Skills & Leadership",
+  research: "Research",
+  achievements: "Awards & Honors",
+  contact: "Contact",
 };
 
 interface Props {
@@ -30,6 +39,7 @@ interface Props {
   academic: AcademicData;
   achievements: Achievement[];
   research: ResearchPaper[];
+  hobbies: HobbiesData;
 }
 
 // Panel materializes out of the star field
@@ -45,16 +55,30 @@ const panelVariants = {
   },
 };
 
-export default function PortfolioShell({ projects, academic, achievements, research }: Props) {
+export default function PortfolioShell({ projects, academic, achievements, research, hobbies }: Props) {
   const [section, setSection] = useState<SectionId>("home");
+  const [isCommandCenterOpen, setIsCommandCenterOpen] = useState(false);
+  const [modalProject, setModalProject] = useState<Project | null>(null);
   const { trigger: triggerRipple, RippleLayer } = useClickRipple();
 
-  // ESC = go back to landing
+  // Keyboard shortcut listener for Ctrl+K
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSection("home"); };
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsCommandCenterOpen(prev => !prev);
+      }
+      if (e.key === "Escape") {
+        if (isCommandCenterOpen) {
+          setIsCommandCenterOpen(false);
+        } else {
+          setSection("home");
+        }
+      }
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [isCommandCenterOpen]);
 
   const goHome = () => setSection("home");
 
@@ -91,7 +115,11 @@ export default function PortfolioShell({ projects, academic, achievements, resea
             exit={{ opacity: 0, transition: { duration: 0.3 } }}
             className="absolute inset-0 z-[15] pointer-events-none"
           >
-            <HeroPanel academic={academic} onSection={(id) => handleSelect(id)} />
+            <HeroPanel
+              academic={academic}
+              onSection={(id, e) => handleSelect(id, e)}
+              onOpenCommandCenter={() => setIsCommandCenterOpen(true)}
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -99,7 +127,19 @@ export default function PortfolioShell({ projects, academic, achievements, resea
       {/* Floating orbiting section nodes */}
       <FloatingNav active={section} onSelect={(id, e) => handleSelect(id, e)} />
 
-      {/* Click ripple layer — z-[29] so it shows above canvas but below panels */}
+      {/* Floating Spotlight Command Bar Trigger (Bottom Right) */}
+      {section === "home" && (
+        <button
+          onClick={() => setIsCommandCenterOpen(true)}
+          className="fixed bottom-12 right-12 z-[25] flex items-center gap-2 px-4 py-2 rounded-full font-mono text-[10px] tracking-wider uppercase text-white/70 bg-black/60 border border-white/20 hover:border-sky-400 hover:text-white backdrop-blur-md transition-all shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+        >
+          <span className="text-sky-400">⚡</span>
+          <span>Command Palette</span>
+          <span className="px-1.5 py-0.5 rounded bg-white/10 text-[9px] text-white/40">Ctrl+K</span>
+        </button>
+      )}
+
+      {/* Click ripple layer */}
       {RippleLayer}
 
       {/* Section panels — materialize from stars */}
@@ -112,7 +152,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
             initial="initial"
             animate="animate"
             exit="exit"
-            style={{ background: "rgba(0,0,0,0.80)", backdropFilter: "blur(20px)" }}
+            style={{ background: "rgba(0,0,0,0.82)", backdropFilter: "blur(24px)" }}
           >
             {/* Minimal back button — top left */}
             <button
@@ -120,9 +160,9 @@ export default function PortfolioShell({ projects, academic, achievements, resea
               className="fixed top-5 left-6 z-[100] flex items-center gap-2 font-mono text-[10px] tracking-[0.12em] uppercase transition-all hover:scale-105"
               style={{
                 background: "rgba(0,0,0,0.8)",
-                border: "1px solid rgba(255,255,255,0.14)",
+                border: "1px solid rgba(255,255,255,0.18)",
                 backdropFilter: "blur(14px)",
-                color: "rgba(255,255,255,0.7)",
+                color: "rgba(255,255,255,0.8)",
                 padding: "8px 16px",
                 borderRadius: 8,
               }}
@@ -130,13 +170,21 @@ export default function PortfolioShell({ projects, academic, achievements, resea
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
-              Back
+              Back to Core
+            </button>
+
+            {/* Quick Command Center button */}
+            <button
+              onClick={() => setIsCommandCenterOpen(true)}
+              className="fixed top-5 left-36 z-[100] flex items-center gap-1.5 font-mono text-[9px] tracking-wider uppercase px-3 py-2 rounded-lg bg-black/60 border border-white/15 text-white/60 hover:text-white hover:border-sky-400/50 backdrop-blur-md transition-all"
+            >
+              <span>⚡</span> Search (Ctrl+K)
             </button>
 
             {/* Section label — top right */}
             <div
               className="fixed top-5 right-6 z-[100] font-mono text-[10px] tracking-[0.18em] uppercase"
-              style={{ color: "rgba(56,189,248,0.7)" }}
+              style={{ color: "rgba(56,189,248,0.85)" }}
             >
               {SECTION_LABELS[section]}
             </div>
@@ -144,8 +192,8 @@ export default function PortfolioShell({ projects, academic, achievements, resea
             {/* Admin link */}
             <a
               href="/admin"
-              className="fixed top-5 left-1/2 -translate-x-1/2 z-[100] font-mono text-[9px] tracking-[0.1em] uppercase"
-              style={{ color: "rgba(255,255,255,0.2)" }}
+              className="fixed top-5 left-1/2 -translate-x-1/2 z-[100] font-mono text-[9px] tracking-[0.1em] uppercase hover:text-white transition-colors"
+              style={{ color: "rgba(255,255,255,0.25)" }}
             >
               ⚙ Admin
             </a>
@@ -153,6 +201,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
             {/* Render section */}
             {section === "about"        && <AboutPanel        academic={academic} />}
             {section === "projects"     && <ProjectsPanel     projects={projects} />}
+            {section === "arcade"       && <ArcadePanel       hobbies={hobbies} />}
             {section === "skills"       && <SkillsPanel />}
             {section === "research"     && <ResearchPanel     papers={research} />}
             {section === "achievements" && <AchievementsPanel achievements={achievements} />}
@@ -161,7 +210,23 @@ export default function PortfolioShell({ projects, academic, achievements, resea
         )}
       </AnimatePresence>
 
-      {/* Persistent HUD footer — always on top of everything except cursor */}
+      {/* Global Interactive Command Center */}
+      <CommandCenter
+        isOpen={isCommandCenterOpen}
+        onClose={() => setIsCommandCenterOpen(false)}
+        onNavigate={(id) => handleSelect(id)}
+        onSelectProject={(p) => setModalProject(p)}
+        projects={projects}
+        achievements={achievements}
+      />
+
+      {/* Global Project Deep Dive Modal */}
+      <ProjectModal
+        project={modalProject}
+        onClose={() => setModalProject(null)}
+      />
+
+      {/* Persistent HUD footer */}
       <Footer />
     </div>
   );

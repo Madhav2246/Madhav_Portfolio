@@ -1,0 +1,144 @@
+{
+  "cricket": {
+    "role": "Top-Order Batsman & Strategist",
+    "favoritePlayer": "MS Dhoni & Virat Kohli",
+    "battingStyle": "Right-Hand Bat · Timing & Power Placement",
+    "stats": [
+      { "label": "Batting Role", "value": "Anchor / Finisher" },
+      { "label": "Preferred Shot", "value": "Cover Drive & Pull" },
+      { "label": "Mindset", "value": "Pressure Absorber" },
+      { "label": "Match Strategy", "value": "Calculated Aggression" }
+    ],
+    "philosophy": "Cricket is applied game theory under pressure. Whether chasing down a 200+ target or architecting distributed AI models, composure in the final overs and reading the bowler's field setup defines victory."
+  },
+  "cinema": {
+    "philosophy": "Cinema is the ultimate symphony of storytelling, visual framing, sound design, and emotional resonance. Great films, like elegant code, leave no wasted frames and challenge our worldview.",
+    "favoriteDirectors": ["Christopher Nolan", "Denis Villeneuve", "Quentin Tarantino", "S.S. Rajamouli", "David Fincher"],
+    "topGenres": ["Sci-Fi Mindbenders", "Psychological Thrillers", "Epic Cinema", "Neoclassical Drama"],
+    "recommendations": [
+      {
+        "id": "interstellar",
+        "title": "Interstellar",
+        "year": 2014,
+        "director": "Christopher Nolan",
+        "genre": ["Sci-Fi", "Drama", "Adventure"],
+        "vibe": "mindbender",
+        "rating": "9.8/10",
+        "posterBg": "from-sky-950 via-indigo-950 to-black",
+        "takeaway": "A timeless exploration of relativity, human endurance, and love as a quantifiable fifth dimension."
+      },
+      {
+        "id": "oppenheimer",
+        "title": "Oppenheimer",
+        "year": 2023,
+        "director": "Christopher Nolan",
+        "genre": ["Biography", "Drama", "History"],
+        "vibe": "epic",
+        "rating": "9.6/10",
+        "posterBg": "from-amber-950 via-red-950 to-black",
+        "takeaway": "Masterclass in pacing, sound design, and the ethical weight of transformative technology."
+      },
+      {
+        "id": "arrival",
+        "title": "Arrival",
+        "year": 2016,
+        "director": "Denis Villeneuve",
+        "genre": ["Sci-Fi", "Mystery", "Drama"],
+        "vibe": "mindbender",
+        "rating": "9.5/10",
+        "posterBg": "from-teal-950 via-slate-950 to-black",
+        "takeaway": "The Sapir-Whorf hypothesis realized on screen: how language and representation shape cognition itself."
+      },
+      {
+        "id": "whiplash",
+        "title": "Whiplash",
+        "year": 2014,
+        "director": "Damien Chazelle",
+        "genre": ["Drama", "Music", "Psychological"],
+        "vibe": "thriller",
+        "rating": "9.7/10",
+        "posterBg": "from-yellow-950 via-amber-950 to-black",
+        "takeaway": "Uncompromising obsession with greatness. The rhythm and editing mirror relentless algorithmic optimization."
+      },
+      {
+        "id": "fight-club",
+        "title": "Fight Club",
+        "year": 1999,
+        "director": "David Fincher",
+        "genre": ["Drama", "Psychological Thriller"],
+        "vibe": "thriller",
+        "rating": "9.4/10",
+        "posterBg": "from-purple-950 via-slate-950 to-black",
+        "takeaway": "Iconic subversive storytelling with razor-sharp direction and non-linear narrative depth."
+      }
+    ],
+    "trivia": [
+      {
+        "id": "q1",
+        "quoteOrQuestion": "\"Do not go gentle into that good night. Rage, rage against the dying of the light.\"",
+        "context": "Which iconic sci-fi masterpiece prominently features this Dylan Thomas poem?",
+        "options": ["Inception", "Interstellar", "Blade Runner 2049", "The Martian"],
+        "answer": 1,
+        "explanation": "Professor Brand recites Dylan Thomas's poem to the Endurance crew in Nolan's Interstellar (2014)."
+      },
+      {
+        "id": "q2",
+        "quoteOrQuestion": "In Christopher Nolan's 'Oppenheimer', what visual format distinction was used to separate subjective vs objective perspectives?",
+        "context": "Cinematography Technique",
+        "options": ["Color vs Black & White IMAX", "4:3 Aspect Ratio vs 16:9", "Digital vs 35mm Film", "Handheld vs Steadicam"],
+        "answer": 0,
+        "explanation": "Color represents Oppenheimer's subjective viewpoint (Fission), while B&W represents Strauss's objective viewpoint (Fusion)."
+      },
+      {
+        "id": "q3",
+        "quoteOrQuestion": "\"There are no two words in the English language more harmful than 'good job'.\"",
+        "context": "Which intense mentor character delivered this unforgettable philosophy on mastery?",
+        "options": ["Terence Fletcher (Whiplash)", "Gordon Gekko (Wall Street)", "Morpheus (The Matrix)", "Tyler Durden (Fight Club)"],
+        "answer": 0,
+        "explanation": "J.K. Simmons' Terence Fletcher in Damien Chazelle's Whiplash delivers this ruthless pursuit of perfection."
+      },
+      {
+        "id": "q4",
+        "quoteOrQuestion": "In 'Arrival' (2016), what was the circular visual language of the Heptapods called?",
+        "context": "Linguistics & Sci-Fi",
+        "options": ["Semagrams", "Logograms", "Cryptographs", "Ideograms"],
+        "answer": 1,
+        "explanation": "The Heptapods communicate via non-linear circular Logograms, expressing complex thoughts simultaneously."
+      }
+    ]
+  },
+  "softSkills": [
+    {
+      "id": "leadership",
+      "name": "Collaborative Leadership & Mentorship",
+      "category": "Leadership",
+      "description": "Guided 50+ students in ML360 workshops, mentored junior developers in deep learning pipelines, and captained hackathon squads under high pressure.",
+      "icon": "👑",
+      "highlights": ["SIG AI Mentor at Amrita ACM", "Team Lead at IIT Madras & IISc Hackathons", "Technical Speaker & Peer Mentor"]
+    },
+    {
+      "id": "hackathon-agility",
+      "name": "Rapid Prototyping & High-Stakes Agility",
+      "category": "Execution",
+      "description": "Thrive in 36-hour crunch environments. Ability to conceptualize, design, train ML models, and ship full-stack production MVPs from scratch.",
+      "icon": "⚡",
+      "highlights": ["2nd Place National IIT Madras CoERS", "Top 5 Finalist IISc Urban Vision", "10+ End-to-End AI Products Shipped"]
+    },
+    {
+      "id": "analytical-thinking",
+      "name": "First-Principles Analytical Thinking",
+      "category": "Strategy",
+      "description": "Breaking down intricate scientific challenges (e.g. drug toxicity GNNs, continual learning) into fundamental mathematical components and verifiable code.",
+      "icon": "🧠",
+      "highlights": ["Published / In-Progress Research Tracks", "Algorithmic Complexity Optimization", "Causal & Graph ML Reasoning"]
+    },
+    {
+      "id": "communication",
+      "name": "Technical Storytelling & Articulation",
+      "category": "Collaboration",
+      "description": "Bridging high-level mathematical theory with stakeholder value. Translating complex model metrics into clear visual insights and executive pitches.",
+      "icon": "🎯",
+      "highlights": ["Jury & National Panel Presentations", "Comprehensive Technical Documentation", "Cross-Disciplinary Team Harmony"]
+    }
+  ]
+}

@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 const ACCENT = "#38bdf8";
 const LINKS = [
-  { label: "LinkedIn",           href: "https://www.linkedin.com/in/yalamarthi-madhav-1776a9287/" },
-  { label: "GitHub",             href: "https://github.com/Madhav2246/" },
+  { label: "LinkedIn",           href: "https://www.linkedin.com/in/Yalamarthi-Madhav" },
+  { label: "GitHub",             href: "https://github.com/Madhav2246" },
   { label: "Instagram",          href: "https://www.instagram.com/madhav_yalamarthi" },
   { label: "Portfolio Analytics",href: "/analysis" },
 ];
@@ -49,7 +49,7 @@ export default function ContactPanel() {
         <motion.p
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.22 }}
           className="text-[17px] leading-[1.75] mb-10" style={{ color: "rgba(255,255,255,0.65)" }}>
-          Open to research collaborations, internships, and full-time opportunities.
+          Open to research collaborations, AI/ML engineering roles, and innovative projects.
         </motion.p>
 
         {/* Primary CTA */}
@@ -65,8 +65,8 @@ export default function ContactPanel() {
 
         {/* Phone */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 }}
-          className="font-mono text-[13px] mb-8" style={{ color: "rgba(255,255,255,0.4)" }}>
-          <a href="tel:+919949795982" className="hover:text-white transition-colors">+91 99497 95982</a>
+          className="font-mono text-[13px] mb-8" style={{ color: "rgba(255,255,255,0.6)" }}>
+          <a href="tel:+919949795082" className="hover:text-white transition-colors">📞 +91 99497 95082</a>
         </motion.div>
 
         {/* Social links */}

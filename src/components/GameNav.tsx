@@ -1,10 +1,12 @@
 "use client";
+import React from "react";
 import type { SectionId } from "./PortfolioShell";
 
 const SECTIONS: { id: SectionId; label: string }[] = [
   { id: "home",         label: "Home" },
   { id: "about",        label: "About" },
   { id: "projects",     label: "Projects" },
+  { id: "arcade",       label: "Arcade 🏏🎬" },
   { id: "skills",       label: "Skills" },
   { id: "research",     label: "Research" },
   { id: "achievements", label: "Awards" },
@@ -53,7 +55,7 @@ export default function GameNav({ active, onSelect }: Props) {
 
       {/* CTA */}
       <a
-        href="mailto:yalamarthi.sriram123@gmail.com"
+        href="mailto:yalamarthimadhav05@gmail.com"
         className="hidden md:inline-flex font-mono text-[10px] tracking-[0.1em] uppercase text-black font-bold px-[18px] py-[8px] rounded-[8px] transition-all hover:opacity-85"
         style={{ background: "#38bdf8", boxShadow: "0 4px 20px rgba(56,189,248,0.3)" }}
       >

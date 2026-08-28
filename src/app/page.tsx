@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import path from "path";
 import PortfolioShell from "@/components/PortfolioShell";
-import type { Project, AcademicData, Achievement, ResearchPaper } from "@/lib/types";
+import type { Project, AcademicData, Achievement, ResearchPaper, HobbiesData } from "@/lib/types";
 
 function readData<T>(filename: string): T {
   const filePath = path.join(process.cwd(), "data", filename);
@@ -9,10 +9,11 @@ function readData<T>(filename: string): T {
 }
 
 export default function Home() {
-  const projects    = readData<Project[]>("projects.json");
-  const academic    = readData<AcademicData>("academic.json");
+  const projects     = readData<Project[]>("projects.json");
+  const academic     = readData<AcademicData>("academic.json");
   const achievements = readData<Achievement[]>("achievements.json");
-  const research    = readData<ResearchPaper[]>("research.json");
+  const research     = readData<ResearchPaper[]>("research.json");
+  const hobbies      = readData<HobbiesData>("hobbies.json");
 
   return (
     <PortfolioShell
@@ -20,6 +21,7 @@ export default function Home() {
       academic={academic}
       achievements={achievements}
       research={research}
+      hobbies={hobbies}
     />
   );
 }

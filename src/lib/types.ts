@@ -89,3 +89,51 @@ export interface ResearchPaper {
   visible: boolean;
   order: number;
 }
+
+export interface SoftSkill {
+  id: string;
+  name: string;
+  category: "Leadership" | "Collaboration" | "Strategy" | "Execution";
+  description: string;
+  icon: string;
+  highlights: string[];
+}
+
+export interface MovieRecommendation {
+  id: string;
+  title: string;
+  year: number;
+  director: string;
+  genre: string[];
+  vibe: "mindbender" | "thriller" | "epic" | "inspiring";
+  rating: string;
+  posterBg: string;
+  takeaway: string;
+}
+
+export interface TriviaQuestion {
+  id: string;
+  quoteOrQuestion: string;
+  context?: string;
+  options: string[];
+  answer: number;
+  explanation: string;
+}
+
+export interface HobbiesData {
+  cricket: {
+    role: string;
+    favoritePlayer: string;
+    battingStyle: string;
+    stats: { label: string; value: string }[];
+    philosophy: string;
+  };
+  cinema: {
+    philosophy: string;
+    favoriteDirectors: string[];
+    topGenres: string[];
+    recommendations: MovieRecommendation[];
+    trivia: TriviaQuestion[];
+  };
+  softSkills: SoftSkill[];
+}
