@@ -333,7 +333,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                       position: "relative",
                       overflow: "hidden",
                     }}
-                    whileHover={{ borderLeftColor: "#d4a847", boxShadow: "0 0 30px rgba(212,168,71,0.07)" } as object}
+                    whileHover={{ borderLeftColor: "#d4a847", boxShadow: "0 0 30px rgba(212,168,71,0.07)" }}
                   >
                     {/* Subtle top gradient accent */}
                     <div style={{
