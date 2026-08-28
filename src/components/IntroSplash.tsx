@@ -14,7 +14,7 @@ export default function IntroSplash({ onEnter }: Props) {
 
   const isEnteringRef = useRef(false);
 
-  // Lock body scroll while splash screen is active so user cannot scroll into empty space
+  // Lock body scroll while splash screen is active
   useEffect(() => {
     const originalStyle = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -31,8 +31,8 @@ export default function IntroSplash({ onEnter }: Props) {
     if (!ctx) return;
 
     let animId: number;
-    let angleX = 0;
-    let angleY = 0;
+    let angleX = 0.4;
+    let angleY = 0.6;
     let speedMult = 1.0;
 
     let width = window.innerWidth;
@@ -62,25 +62,25 @@ export default function IntroSplash({ onEnter }: Props) {
       [0, 4], [1, 5], [2, 6], [3, 7],
     ];
 
-    // Floating particles
+    // Ambient floating particles
     const particles = Array.from({ length: 60 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       z: Math.random() * 1000,
-      radius: Math.random() * 1.5 + 0.5,
-      alpha: Math.random() * 0.5 + 0.15,
-      speedZ: Math.random() * 2 + 1,
+      radius: Math.random() * 1.5 + 0.4,
+      alpha: Math.random() * 0.4 + 0.1,
+      speedZ: Math.random() * 1.5 + 0.5,
     }));
 
     const render = () => {
-      ctx.fillStyle = "#070604";
+      ctx.fillStyle = "#050507";
       ctx.fillRect(0, 0, width, height);
 
       if (isEnteringRef.current) {
         speedMult = Math.min(speedMult * 1.05, 10.0);
       }
 
-      // Starfield / hyper-drive warp particles
+      // Starfield particles
       particles.forEach((p) => {
         p.z -= isEnteringRef.current ? p.speedZ * speedMult : p.speedZ;
         if (p.z <= 0) p.z = 1000;
@@ -93,18 +93,18 @@ export default function IntroSplash({ onEnter }: Props) {
           const size = Math.max(0.4, p.radius * k);
           ctx.fillStyle = isEnteringRef.current
             ? `rgba(212, 168, 71, ${Math.min(1, p.alpha * 1.8)})`
-            : `rgba(226, 232, 240, ${p.alpha})`;
+            : `rgba(240, 234, 214, ${p.alpha})`;
           ctx.beginPath();
           ctx.arc(px, py, size, 0, Math.PI * 2);
           ctx.fill();
         }
       });
 
-      // 3D Cube Perspective Math — Compact 120px 3D wireframe box
-      const baseRadius = Math.min(width, height) * 0.055;
+      // 3D Cube Math — Centered behind text
+      const baseRadius = Math.min(width, height) * 0.16;
       const radius = isEnteringRef.current ? baseRadius * (1 + speedMult * 0.08) : baseRadius;
       const cx = width / 2;
-      const cy = height / 2;
+      const cy = height / 2 - 10;
 
       const cosX = Math.cos(angleX);
       const sinX = Math.sin(angleX);
@@ -122,19 +122,19 @@ export default function IntroSplash({ onEnter }: Props) {
         const y2 = vy * cosX - z1 * sinX;
         const z2 = vy * sinX + z1 * cosX;
 
-        // Perspective scale factor
-        const fovScale = 2.5 / (z2 + 4.0);
-        const px = cx + x1 * radius * fovScale;
-        const py = cy + y2 * radius * fovScale;
+        // Perspective projection
+        const sz = z2 + 3.8;
+        const px = cx + (x1 * radius * 3.5) / sz;
+        const py = cy + (y2 * radius * 3.5) / sz;
 
         projected.push([px, py]);
       }
 
-      // Draw wireframe edges with glowing whitish-grey / gold stroke
-      ctx.strokeStyle = isEnteringRef.current ? "rgba(212, 168, 71, 0.9)" : "rgba(240, 234, 214, 0.45)";
-      ctx.lineWidth = isEnteringRef.current ? 2.2 : 1.5;
+      // Draw 3D wireframe edges
+      ctx.strokeStyle = isEnteringRef.current ? "rgba(212, 168, 71, 0.9)" : "rgba(240, 234, 214, 0.25)";
+      ctx.lineWidth = isEnteringRef.current ? 2.5 : 1.4;
       ctx.shadowColor = "rgba(212, 168, 71, 0.5)";
-      ctx.shadowBlur = isEnteringRef.current ? 20 : 10;
+      ctx.shadowBlur = isEnteringRef.current ? 20 : 8;
 
       for (const [start, end] of edges) {
         const [x1, y1] = projected[start];
@@ -150,12 +150,12 @@ export default function IntroSplash({ onEnter }: Props) {
       for (const [px, py] of projected) {
         ctx.fillStyle = "#d4a847";
         ctx.beginPath();
-        ctx.arc(px, py, isEnteringRef.current ? 4 : 3, 0, Math.PI * 2);
+        ctx.arc(px, py, isEnteringRef.current ? 4.5 : 3, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      angleX += 0.008 * speedMult;
-      angleY += 0.012 * speedMult;
+      angleX += 0.005 * speedMult;
+      angleY += 0.008 * speedMult;
 
       animId = requestAnimationFrame(render);
     };
@@ -203,51 +203,50 @@ export default function IntroSplash({ onEnter }: Props) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0, scale: 2.5, filter: "blur(30px)" }}
         transition={{ duration: 3.0, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070604] overflow-hidden select-none p-4"
+        className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#050507] overflow-hidden select-none p-4"
       >
         {/* 3D Canvas Background */}
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
 
-        {/* Ambient Top & Bottom Gold Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#070604] via-transparent to-[#070604] opacity-95 pointer-events-none" />
+        {/* Ambient Overlay Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-transparent to-[#050507] opacity-90 pointer-events-none" />
 
-        {/* Content Box — Perfectly Centered */}
+        {/* Content Box — Matches Screenshot Exactly */}
         <motion.div
           animate={isEntering ? { scale: 1.2, opacity: 0, filter: "blur(15px)" } : { scale: 1, opacity: 1 }}
           transition={{ duration: 3.0, ease: "easeIn" }}
-          className="relative z-10 text-center max-w-lg mx-auto space-y-4"
+          className="relative z-10 text-center max-w-xl mx-auto space-y-6 flex flex-col items-center justify-center"
         >
-          {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full font-mono text-[9px] sm:text-[11px] uppercase tracking-widest border"
-               style={{ background: "rgba(212,168,71,0.08)", borderColor: "rgba(212,168,71,0.3)", color: "#d4a847" }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-            {isEntering ? "WARPING INTO MADHAV'S UNIVERSE..." : "INITIALIZING EXPERIENCE"}
+          {/* Top Pill Tag */}
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full font-mono text-[10px] sm:text-xs uppercase tracking-widest border border-[rgba(212,168,71,0.35)] bg-[rgba(212,168,71,0.06)] text-gold">
+            <span>INITIALIZING EXPERIENCE</span>
           </div>
 
-          {/* Main Question */}
-          <h1 className="font-display font-black text-2xl sm:text-4xl md:text-5xl text-[#f0ead6] tracking-tight leading-snug">
-            Do you want to know about <span className="text-gold">Madhav?</span>
+          {/* Title - Wide Display Typography */}
+          <h1 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-[#f0ead6] tracking-normal leading-[1.1] max-w-lg mx-auto">
+            Do you want<br />
+            to know<br />
+            about<br />
+            <span className="text-gold">Madhav?</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="font-sans text-xs sm:text-sm max-w-sm mx-auto leading-relaxed"
-             style={{ color: "rgba(240,234,214,0.65)" }}>
+          <p className="font-sans text-xs sm:text-sm text-[rgba(240,234,214,0.65)] max-w-md mx-auto leading-relaxed">
             AI &amp; Systems Engineer · Continual Learning Researcher · IIT Madras National Finalist
           </p>
 
-          {/* Action CTA Button or 3-Sec Progress Bar */}
-          <div className="pt-2 flex flex-col items-center justify-center min-h-[75px]">
+          {/* Button / Warp Progress Bar */}
+          <div className="pt-2 flex flex-col items-center justify-center min-h-[75px] w-full">
             {!isEntering ? (
               <button
                 onClick={handleStart}
-                className="group relative inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-mono text-xs sm:text-sm uppercase tracking-wider font-bold transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(212,168,71,0.3)]"
+                className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-2xl font-mono text-xs sm:text-sm uppercase tracking-wider font-bold transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(212,168,71,0.35)] text-black"
                 style={{
                   background: "linear-gradient(135deg, #d4a847 0%, #a87e2a 100%)",
-                  color: "#070604",
                 }}
               >
-                <span>Take Me To Madhav&apos;s Universe</span>
-                <span className="text-sm group-hover:translate-x-1 transition-transform">✦</span>
+                <span>TAKE ME TO MADHAV&apos;S UNIVERSE</span>
+                <span className="text-sm">✦</span>
               </button>
             ) : (
               <div className="w-full max-w-xs space-y-2">
