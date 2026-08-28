@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { Project, AcademicData, Achievement, ResearchPaper, HobbiesData } from "@/lib/types";
 import ProjectModal from "./ProjectModal";
 import CursorGlow from "./CursorGlow";
+import StoryboardTimeline from "./StoryboardTimeline";
+import PhysicsRagsSandbox from "./PhysicsRagsSandbox";
+import AudioVisualizer from "./AudioVisualizer";
+import { proceduralAudio } from "@/utils/proceduralAudio";
 
 const NeuralCanvas = dynamic(() => import("./NeuralCanvas"), { ssr: false });
 
@@ -430,6 +434,11 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                 );
               })}
             </div>
+
+            {/* Interactive Physics RAG & SymPy Sandbox Demo */}
+            <motion.div variants={fadeUp} custom={7}>
+              <PhysicsRagsSandbox />
+            </motion.div>
           </motion.div>
         </section>
 
@@ -858,6 +867,11 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                     </div>
                   ))}
                 </motion.div>
+
+                {/* 4-Act Storyboard Motion Narrative */}
+                <motion.div variants={fadeUp} custom={5} className="mt-4">
+                  <StoryboardTimeline />
+                </motion.div>
               </div>
 
               {/* Contact card */}
@@ -911,8 +925,9 @@ export default function PortfolioShell({ projects, academic, achievements, resea
         <section id="passions" className="snap-section min-h-screen px-6 md:px-16 py-20 max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
 
-            <motion.div variants={fadeUp} custom={0} className="section-eyebrow">
-              <span className="gold-line" />Beyond the Algorithm
+            <motion.div variants={fadeUp} custom={0} className="section-eyebrow flex items-center justify-between">
+              <div><span className="gold-line" />Beyond the Algorithm</div>
+              <AudioVisualizer isPlaying={arcadeTab === "music"} />
             </motion.div>
 
             <motion.h2 variants={fadeUp} custom={1}
