@@ -11,10 +11,10 @@ export default function Research({ papers }: ResearchProps) {
         <span className="section-line" />Research
       </div>
       <h2 data-gsap="chars" className="font-display font-extrabold tracking-[-0.04em] leading-none mb-4" style={{ fontSize: "clamp(36px,5vw,64px)" }}>
-        Research <span className="gradient-text">Projects</span>
+        Research <span className="gradient-text">Publications</span>
       </h2>
       <p data-gsap="fade-up" className="text-white/40 text-[16px] leading-[1.7] max-w-[520px] mb-16">
-        Unpublished research at the frontier of AI, bioinformatics, and continual learning.
+        First-author research in Continual Learning (CIS 2026), Neuro-Symbolic RAG (EAAI), and Autonomous Distributed Systems (Nexus).
       </p>
 
       <div className="flex flex-col gap-4">
@@ -28,18 +28,11 @@ export default function Research({ papers }: ResearchProps) {
             <div className="absolute top-0 left-0 right-0 h-[1px] bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="flex flex-wrap items-start justify-between gap-5 mb-3">
-              <div className="font-mono text-[9px] tracking-[0.18em] uppercase text-white/30">{paper.num}</div>
-              {paper.status === "in-progress" && (
-                <div className="flex items-center gap-2 font-mono text-[9px] tracking-[0.14em] uppercase text-white/50 border border-white/[0.14] rounded-md px-3 py-[5px]">
-                  <span className="w-[5px] h-[5px] rounded-full bg-white/60 shadow-[0_0_6px_rgba(255,255,255,0.4)] animate-[pulseDot_2s_ease-in-out_infinite]" />
-                  In Progress
-                </div>
-              )}
-              {paper.status === "published" && (
-                <div className="flex items-center gap-2 font-mono text-[9px] tracking-[0.14em] uppercase text-white border border-white/30 rounded-md px-3 py-[5px]">
-                  Published
-                </div>
-              )}
+              <div className="font-mono text-[9px] tracking-[0.18em] uppercase text-white/30">{paper.num} · {paper.course}</div>
+              <div className="flex items-center gap-2 font-mono text-[9px] tracking-[0.14em] uppercase text-sky-300 border border-sky-500/30 bg-sky-500/10 rounded-md px-3 py-[5px]">
+                {paper.id === "continual-learning-research" ? "Accepted · CIS 2026 (Forthcoming)" :
+                 paper.id === "physics-based-slm-rag" ? "Submitted to EAAI" : "Paper Ready"}
+              </div>
             </div>
 
             <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-white/35 mb-3">{paper.domain}</div>
@@ -69,11 +62,10 @@ export default function Research({ papers }: ResearchProps) {
       </div>
 
       <div data-gsap="fade-up" className="flex items-center gap-4 px-8 py-5 bg-white/[0.03] border border-white/[0.08] rounded-xl mt-5 flex-wrap">
-        <span className="w-[6px] h-[6px] rounded-full bg-white/40 animate-[pulseDot_2s_ease-in-out_infinite]" />
-        <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-white/40 flex-1">
-          {visible.length} Active Research Tracks — Manuscripts Under Preparation
+        <span className="w-[6px] h-[6px] rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8] animate-[pulseDot_2s_ease-in-out_infinite]" />
+        <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-white/60 flex-1">
+          3 First-Author &amp; Core Research Papers · Continual Learning, Neuro-Symbolic RAG &amp; Nexus Distributed Systems
         </span>
-        <span className="text-[11px] text-white/20 italic">Results not yet published</span>
       </div>
     </section>
   );
