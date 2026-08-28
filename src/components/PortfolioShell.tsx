@@ -30,14 +30,15 @@ interface Props {
 
 // ────────── nav sections ──────────
 const SECTIONS = [
-  { id: "hero",         label: "Home" },
-  { id: "research",     label: "Research" },
-  { id: "projects",     label: "Projects" },
-  { id: "skills",       label: "Skills" },
-  { id: "achievements", label: "Awards" },
-  { id: "about",        label: "About" },
-  { id: "passions",     label: "Passions" },
-  { id: "contact",      label: "Contact" },
+  { id: "hero",           label: "Home" },
+  { id: "research",       label: "Research" },
+  { id: "projects",       label: "Projects" },
+  { id: "skills",         label: "Skills" },
+  { id: "achievements",   label: "Awards" },
+  { id: "certifications", label: "Badges ☁️" },
+  { id: "about",          label: "About" },
+  { id: "passions",       label: "Passions" },
+  { id: "contact",        label: "Contact" },
 ];
 
 // ────────── tech skill groups ──────────
@@ -86,7 +87,6 @@ export default function PortfolioShell({ projects, academic, achievements, resea
   const [activeSection, setActiveSection] = useState("hero");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [projectCat, setProjectCat] = useState("all");
-  const [achCat, setAchCat] = useState("all");
   const [skillsTab, setSkillsTab] = useState(0);
   const [arcadeTab, setArcadeTab] = useState<"cricket" | "cinema">("cinema");
   const [triviaIdx, setTriviaIdx] = useState(0);
@@ -636,72 +636,49 @@ export default function PortfolioShell({ projects, academic, achievements, resea
         </section>
 
         {/* ══════════════════════════════════════
-            SECTION 5: ACHIEVEMENTS
+            SECTION 5: ACHIEVEMENTS & AWARDS
         ══════════════════════════════════════ */}
         <section id="achievements" className="snap-section min-h-screen px-6 md:px-16 py-20 max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
 
             <motion.div variants={fadeUp} custom={0} className="section-eyebrow">
-              <span className="gold-line" />Honors &amp; Recognition
+              <span className="gold-line" />Honors &amp; Competition Wins
             </motion.div>
 
             <motion.h2 variants={fadeUp} custom={1}
-              className="font-display font-black text-[#f0ead6] mb-10 tracking-tight"
+              className="font-display font-black text-[#f0ead6] mb-8 tracking-tight"
               style={{ fontSize: "clamp(32px,5vw,64px)" }}>
               Awards &amp; <span className="text-gold">Leadership</span>
             </motion.h2>
 
-            {/* Filter tabs */}
-            <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-2 mb-8">
-              {[
-                { id: "all",           label: "All Honors & Badges" },
-                { id: "hackathon",     label: "Hackathons & Awards 🏆" },
-                { id: "certification", label: "Google Cloud & Certifications ☁️" },
-                { id: "leadership",    label: "Leadership & Community 👑" },
-              ].map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setAchCat(cat.id)}
-                  className={`px-3.5 py-1.5 rounded-xl font-mono text-[11px] tracking-wider uppercase transition-all ${
-                    achCat === cat.id
-                      ? "border font-bold text-gold bg-[rgba(212,168,71,0.12)] border-[rgba(212,168,71,0.45)]"
-                      : "text-[rgba(240,234,214,0.5)] hover:text-[#f0ead6] bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.08)] border"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {achievements
-                .filter(ach => ach.visible !== false)
-                .filter(ach => achCat === "all" || ach.type === achCat)
+                .filter(ach => ach.visible !== false && ach.type !== "certification")
                 .map((ach, i) => (
                   <motion.div key={ach.id} variants={fadeUp} custom={i + 2}
-                    className="cine-card p-5 flex flex-col justify-between">
+                    className="cine-card p-6 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
-                        <span className="mono-tag px-2.5 py-0.5 rounded-full border"
+                        <span className="mono-tag px-3 py-1 rounded-full border"
                           style={{ background: "rgba(212,168,71,0.08)", borderColor: "rgba(212,168,71,0.25)", color: "#d4a847" }}>
                           {ach.rank || ach.type} {ach.rankLabel ? `· ${ach.rankLabel}` : ""}
                         </span>
                         <span className="mono-tag" style={{ color: "rgba(240,234,214,0.35)", fontSize: 9 }}>{ach.date}</span>
                       </div>
 
-                      <h3 className="font-display font-bold text-[#f0ead6] text-base mb-1 leading-snug">{ach.title}</h3>
-                      <div className="mono-tag mb-2" style={{ color: "#d4a847", fontSize: 10 }}>
+                      <h3 className="font-display font-bold text-[#f0ead6] text-lg mb-1 leading-snug">{ach.title}</h3>
+                      <div className="mono-tag mb-3" style={{ color: "#d4a847" }}>
                         {ach.organizer || ach.organization || ach.issuer}
                       </div>
 
                       {ach.description && (
-                        <p className="text-xs leading-relaxed mb-3" style={{ color: "rgba(240,234,214,0.65)" }}>
+                        <p className="text-xs leading-relaxed mb-4" style={{ color: "rgba(240,234,214,0.65)" }}>
                           {ach.description}
                         </p>
                       )}
 
                       {ach.tags && ach.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-3">
+                        <div className="flex flex-wrap gap-1.5 mb-4">
                           {ach.tags.map(t => (
                             <span key={t} className="tech-pill">{t}</span>
                           ))}
@@ -712,8 +689,82 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                     {ach.link && (
                       <a href={ach.link} target="_blank" rel="noreferrer"
                         className="mono-tag hover:text-gold transition-colors pt-3 block"
+                        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                        View Recognition ↗
+                      </a>
+                    )}
+                  </motion.div>
+                ))}
+            </div>
+          </motion.div>
+        </section>
+
+        {/* ══════════════════════════════════════
+            SECTION 6: GOOGLE CLOUD BADGES & CERTIFICATIONS
+        ══════════════════════════════════════ */}
+        <section id="certifications" className="snap-section min-h-screen px-6 md:px-16 py-20 max-w-7xl mx-auto">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+
+            <motion.div variants={fadeUp} custom={0} className="section-eyebrow">
+              <span className="gold-line" />Verified Credentials &amp; Skill Boosts
+            </motion.div>
+
+            <motion.h2 variants={fadeUp} custom={1}
+              className="font-display font-black text-[#f0ead6] mb-3 tracking-tight"
+              style={{ fontSize: "clamp(32px,5vw,64px)" }}>
+              Google Cloud &amp; <span className="text-gold">Skill Badges</span>
+            </motion.h2>
+
+            <motion.p variants={fadeUp} custom={2}
+              className="text-sm sm:text-base mb-8 max-w-2xl leading-relaxed"
+              style={{ color: "rgba(240,234,214,0.6)" }}>
+              Hands-on skill badges and foundational certifications verified by <strong style={{ color: "#f0ead6" }}>Google Cloud Skills Boost</strong> and Credly.
+            </motion.p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {achievements
+                .filter(ach => ach.visible !== false && ach.type === "certification")
+                .map((cert, i) => (
+                  <motion.div key={cert.id} variants={fadeUp} custom={i + 3}
+                    className="cine-card p-5 flex flex-col justify-between group hover:border-[rgba(212,168,71,0.35)] transition-all">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">
+                            {cert.issuer.includes("Google") ? "☁️" : cert.issuer.includes("DataCamp") ? "🎓" : "📜"}
+                          </span>
+                          <span className="mono-tag" style={{ color: "#d4a847", fontSize: 10 }}>{cert.issuer}</span>
+                        </div>
+                        <span className="mono-tag" style={{ color: "rgba(240,234,214,0.35)", fontSize: 9 }}>{cert.date}</span>
+                      </div>
+
+                      <h3 className="font-display font-bold text-[#f0ead6] text-base mb-2 group-hover:text-gold transition-colors leading-snug">
+                        {cert.title}
+                      </h3>
+
+                      {cert.description && (
+                        <p className="text-xs leading-relaxed mb-3" style={{ color: "rgba(240,234,214,0.6)" }}>
+                          {cert.description}
+                        </p>
+                      )}
+
+                      {cert.tags && cert.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {cert.tags.map(t => (
+                            <span key={t} className="tech-pill">{t}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {cert.link && (
+                      <a href={cert.link} target="_blank" rel="noreferrer"
+                        className="mono-tag hover:text-gold transition-colors pt-3 flex items-center justify-between"
                         style={{ borderTop: "1px solid rgba(255,255,255,0.08)", fontSize: 9 }}>
-                        View Credential ↗
+                        <span>
+                          {cert.issuer.includes("Google") ? "Credly Verification" : `${cert.issuer} Certificate`}
+                        </span>
+                        <span>↗</span>
                       </a>
                     )}
                   </motion.div>

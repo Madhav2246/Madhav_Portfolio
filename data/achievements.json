@@ -109,6 +109,50 @@
     "visible": true
   },
   {
+    "id": "datacamp-deep-learning-pytorch",
+    "type": "certification",
+    "title": "Introduction to Deep Learning with PyTorch",
+    "issuer": "DataCamp",
+    "date": "Aug 2025",
+    "description": "Building and training deep neural networks, CNNs, and optimization algorithms using PyTorch (#35,578,708).",
+    "tags": ["PyTorch", "Deep Learning", "DataCamp"],
+    "link": "https://www.datacamp.com/completed/statement-of-accomplishment/course/bc5c84f347764ec3c62c99ac9d9f11c61c3c85f0",
+    "visible": true
+  },
+  {
+    "id": "datacamp-deep-learning-python",
+    "type": "certification",
+    "title": "Introduction to Deep Learning in Python",
+    "issuer": "DataCamp",
+    "date": "Aug 2024",
+    "description": "Fundamentals of neural networks, forward propagation, backpropagation, and Keras/Keras-based architectures (#35,433,056).",
+    "tags": ["Deep Learning", "Keras", "Python", "DataCamp"],
+    "link": "https://www.datacamp.com/courses/introduction-to-deep-learning-in-python",
+    "visible": true
+  },
+  {
+    "id": "datacamp-unsupervised-python",
+    "type": "certification",
+    "title": "Unsupervised Learning in Python",
+    "issuer": "DataCamp",
+    "date": "Jul 2024",
+    "description": "Clustering (k-means, hierarchical), dimension reduction (PCA, t-SNE), and non-negative matrix factorization (#35,312,362).",
+    "tags": ["Unsupervised Learning", "PCA", "k-means", "scikit-learn"],
+    "link": "https://www.datacamp.com/courses/unsupervised-learning-in-python",
+    "visible": true
+  },
+  {
+    "id": "datacamp-supervised-scikit",
+    "type": "certification",
+    "title": "Supervised Learning with scikit-learn",
+    "issuer": "DataCamp",
+    "date": "Jul 2024",
+    "description": "Classification, regression, fine-tuning model hyperparameters, cross-validation, and ROC-AUC evaluation (#34,993,834).",
+    "tags": ["Supervised Learning", "scikit-learn", "ML", "Python"],
+    "link": "https://www.datacamp.com/courses/supervised-learning-with-scikit-learn",
+    "visible": true
+  },
+  {
     "id": "virasat-ssr-lead",
     "type": "leadership",
     "title": "Virasat — Universal Vault for Cultural Heritage",
@@ -164,24 +208,6 @@
     "issuer": "Kaggle",
     "date": "2024",
     "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_activity-7176089692466032640-Ncyi",
-    "visible": true
-  },
-  {
-    "id": "datacamp-unsupervised",
-    "type": "certification",
-    "title": "Unsupervised Learning in Python",
-    "issuer": "DataCamp",
-    "date": "2024",
-    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7226836128476061698-QG4Y",
-    "visible": true
-  },
-  {
-    "id": "datacamp-deep-learning",
-    "type": "certification",
-    "title": "Intro to Deep Learning",
-    "issuer": "DataCamp",
-    "date": "2024",
-    "link": "https://www.linkedin.com/posts/yalamarthi-madhav-1776a9287_yalamarthi-madhavs-statement-of-accomplishment-activity-7227588051055558657-12wr",
     "visible": true
   }
 ]
