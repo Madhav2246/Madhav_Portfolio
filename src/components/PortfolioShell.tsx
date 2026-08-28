@@ -894,6 +894,8 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                 <motion.div variants={fadeUp} custom={5} className="mt-4">
                   <StoryboardTimeline />
                 </motion.div>
+              </div>
+
               {/* Interactive 3D Holo-Lab & Contact column */}
               <div className="space-y-5 flex flex-col justify-between">
                 <motion.div variants={fadeUp} custom={5}>
