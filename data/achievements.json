@@ -30,6 +30,85 @@
     "visible": true
   },
   {
+    "id": "gcp-foundations-cert",
+    "type": "certification",
+    "title": "Google Cloud Computing Foundations Certificate",
+    "issuer": "Google Cloud",
+    "date": "Mar 2026",
+    "description": "Comprehensive certification covering cloud infrastructure, networking, compute, data engineering, and machine learning foundations on Google Cloud Platform.",
+    "tags": ["Google Cloud", "GCP", "Cloud Architecture"],
+    "link": "https://www.credly.com/users/madhav-yalamarthi/badges",
+    "tier": "gold",
+    "visible": true
+  },
+  {
+    "id": "gcp-vertex-ai-prompt",
+    "type": "certification",
+    "title": "Prompt Design in Vertex AI Skill Badge",
+    "issuer": "Google Cloud",
+    "date": "May 2026",
+    "description": "Applied expertise in prompt engineering, parameter tuning, multimodal prompt design, and LLM orchestration using Vertex AI Studio.",
+    "tags": ["Vertex AI", "Prompt Engineering", "LLMs", "Google Cloud"],
+    "tier": "gold",
+    "link": "https://www.credly.com/users/madhav-yalamarthi/badges",
+    "visible": true
+  },
+  {
+    "id": "gcp-ml-apis",
+    "type": "certification",
+    "title": "Use Machine Learning APIs on Google Cloud Skill Badge",
+    "issuer": "Google Cloud",
+    "date": "Nov 2025",
+    "description": "Hands-on integration of pretrained Google Cloud ML APIs (Vision API, Natural Language API, Translation API, Speech-to-Text).",
+    "tags": ["Google Cloud", "ML APIs", "Vision API", "NLP"],
+    "link": "https://www.credly.com/users/madhav-yalamarthi/badges",
+    "visible": true
+  },
+  {
+    "id": "gcp-prepare-data-ml",
+    "type": "certification",
+    "title": "Prepare Data for ML APIs on Google Cloud Skill Badge",
+    "issuer": "Google Cloud",
+    "date": "Mar 2026",
+    "description": "Data preprocessing, feature engineering, BigQuery data preparation, and pipeline ingestion for ML workflows.",
+    "tags": ["BigQuery", "Data Preprocessing", "ML Pipelines", "GCP"],
+    "link": "https://www.credly.com/users/madhav-yalamarthi/badges",
+    "visible": true
+  },
+  {
+    "id": "gcp-cloud-network",
+    "type": "certification",
+    "title": "Build a Secure Google Cloud Network Skill Badge",
+    "issuer": "Google Cloud",
+    "date": "Oct 2025",
+    "description": "Configuring secure VPC networks, firewall rules, IAM access controls, and private Google access.",
+    "tags": ["VPC", "Cloud Security", "Networking", "GCP"],
+    "link": "https://www.credly.com/users/madhav-yalamarthi/badges",
+    "visible": true
+  },
+  {
+    "id": "gcp-load-balancing",
+    "type": "certification",
+    "title": "Implement Load Balancing on Compute Engine Skill Badge",
+    "issuer": "Google Cloud",
+    "date": "Oct 2025",
+    "description": "Architecting HTTP(S), Network, and Internal load balancers with instance groups on Compute Engine.",
+    "tags": ["Compute Engine", "Load Balancing", "Infrastructure", "GCP"],
+    "link": "https://www.credly.com/users/madhav-yalamarthi/badges",
+    "visible": true
+  },
+  {
+    "id": "gcp-app-dev-env",
+    "type": "certification",
+    "title": "Set Up an App Dev Environment on Google Cloud Skill Badge",
+    "issuer": "Google Cloud",
+    "date": "Oct 2025",
+    "description": "Setting up cloud environments, Cloud Shell, Cloud Storage, and IAM service accounts for application deployment.",
+    "tags": ["App Dev", "Cloud Storage", "IAM", "GCP"],
+    "link": "https://www.credly.com/users/madhav-yalamarthi/badges",
+    "visible": true
+  },
+  {
     "id": "virasat-ssr-lead",
     "type": "leadership",
     "title": "Virasat — Universal Vault for Cultural Heritage",

@@ -86,6 +86,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
   const [activeSection, setActiveSection] = useState("hero");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [projectCat, setProjectCat] = useState("all");
+  const [achCat, setAchCat] = useState("all");
   const [skillsTab, setSkillsTab] = useState(0);
   const [arcadeTab, setArcadeTab] = useState<"cricket" | "cinema">("cinema");
   const [triviaIdx, setTriviaIdx] = useState(0);
@@ -290,86 +291,133 @@ export default function PortfolioShell({ projects, academic, achievements, resea
             SECTION 2: RESEARCH — PRIMARY TECH FOCUS
         ══════════════════════════════════════ */}
         <section id="research" className="snap-section min-h-screen px-6 md:px-16 py-20 max-w-7xl mx-auto">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
 
             <motion.div variants={fadeUp} custom={0} className="section-eyebrow">
               <span className="gold-line" />Research &amp; Publications
             </motion.div>
 
             <motion.h2 variants={fadeUp} custom={1}
-              className="font-display font-black text-[#f0ead6] mb-3 tracking-tight"
+              className="font-display font-black text-[#f0ead6] mb-2 tracking-tight"
               style={{ fontSize: "clamp(32px,5vw,64px)" }}>
               Scholarly <span className="text-gold">Research</span>
             </motion.h2>
 
             <motion.p variants={fadeUp} custom={2}
-              className="text-sm sm:text-base mb-10 max-w-2xl leading-relaxed"
-              style={{ color: "rgba(240,234,214,0.6)" }}>
-              First-author theoretical and applied research in{" "}
-              <strong style={{ color: "#f0ead6" }}>Continual Learning, Neuro-Symbolic Verification</strong>, and{" "}
-              <strong style={{ color: "#f0ead6" }}>Autonomous Distributed Intelligence</strong>.
+              className="text-sm mb-8 max-w-xl leading-relaxed"
+              style={{ color: "rgba(240,234,214,0.55)" }}>
+              First-author research in <strong style={{ color: "#f0ead6" }}>Continual Learning</strong>,{" "}
+              <strong style={{ color: "#f0ead6" }}>Neuro-Symbolic RAG</strong>, and{" "}
+              <strong style={{ color: "#f0ead6" }}>Autonomous Distributed Systems</strong>.
             </motion.p>
 
-            <div className="flex flex-col gap-6">
+            {/* 2-col grid — first paper spans full width as featured, next two side by side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {research.filter(p => p.visible).sort((a, b) => a.order - b.order).map((paper, i) => {
                 const status = researchStatus(paper);
                 const ghUrl = GITHUB_LINKS[paper.id];
+                const isFeatured = i === 0;
                 return (
-                  <motion.div key={paper.id} variants={fadeUp} custom={i + 3} className="research-card">
-                    {/* Number + status */}
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                      <span className="mono-tag">{paper.num} · {paper.course}</span>
-                      <span className={`font-mono text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border ${status.color}`}>
+                  <motion.article
+                    key={paper.id}
+                    variants={fadeUp}
+                    custom={i + 3}
+                    className={isFeatured ? "lg:col-span-2" : ""}
+                    style={{
+                      background: "rgba(10,8,5,0.82)",
+                      border: "1px solid rgba(255,255,255,0.07)",
+                      borderLeft: "3px solid rgba(212,168,71,0.5)",
+                      borderRadius: 16,
+                      padding: "28px 28px 22px",
+                      transition: "border-color 0.3s, box-shadow 0.3s",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                    whileHover={{ borderLeftColor: "#d4a847", boxShadow: "0 0 30px rgba(212,168,71,0.07)" } as object}
+                  >
+                    {/* Subtle top gradient accent */}
+                    <div style={{
+                      position: "absolute", top: 0, left: 0, right: 0, height: 1,
+                      background: "linear-gradient(90deg, rgba(212,168,71,0.3), transparent)",
+                    }} />
+
+                    {/* Header row */}
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="font-display font-black text-3xl" style={{ color: "rgba(212,168,71,0.2)", lineHeight: 1 }}>
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <div>
+                          <div className="mono-tag" style={{ fontSize: 8, color: "rgba(240,234,214,0.35)" }}>{paper.domain}</div>
+                          <div className="mono-tag mt-0.5" style={{ fontSize: 8, color: "rgba(212,168,71,0.5)" }}>{paper.num}</div>
+                        </div>
+                      </div>
+                      <span className={`font-mono text-[9px] uppercase tracking-wider px-3 py-1 rounded-full border ${status.color}`}>
                         {status.label}
                       </span>
                     </div>
 
-                    {/* Domain */}
-                    <div className="mono-tag mb-2" style={{ color: "rgba(240,234,214,0.4)", fontSize: 9 }}>{paper.domain}</div>
-
                     {/* Title */}
-                    <h3 className="font-display font-bold text-[#f0ead6] mb-3 leading-snug"
-                      style={{ fontSize: "clamp(16px,2vw,21px)" }}>
+                    <h3 className="font-display font-bold text-[#f0ead6] mb-2 leading-snug"
+                      style={{ fontSize: isFeatured ? "clamp(16px,1.6vw,20px)" : "clamp(14px,1.2vw,17px)" }}>
                       {paper.title}
                     </h3>
 
-                    {/* Abstract */}
-                    <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(240,234,214,0.68)" }}>
+                    {/* Course / venue line */}
+                    <div className="mono-tag mb-3" style={{ fontSize: 9, color: "rgba(212,168,71,0.55)" }}>
+                      {paper.course}
+                    </div>
+
+                    {/* Abstract — 3-line clamp */}
+                    <p className="text-xs leading-relaxed mb-4"
+                      style={{
+                        color: "rgba(240,234,214,0.62)",
+                        display: "-webkit-box",
+                        WebkitLineClamp: isFeatured ? 3 : 4,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}>
                       {paper.abstract}
                     </p>
 
-                    {/* Metrics grid */}
+                    {/* Metrics — compact horizontal pills */}
                     {paper.metrics.length > 0 && (
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl mb-5"
-                        style={{ background: "rgba(212,168,71,0.04)", border: "1px solid rgba(212,168,71,0.1)" }}>
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {paper.metrics.map(m => (
-                          <div key={m.label}>
-                            <div className="font-display font-black text-gold text-xl">{m.value}</div>
-                            <div className="mono-tag" style={{ fontSize: 9, color: "rgba(240,234,214,0.4)" }}>{m.label}</div>
+                          <div key={m.label}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
+                            style={{ background: "rgba(212,168,71,0.06)", border: "1px solid rgba(212,168,71,0.12)" }}>
+                            <span className="font-display font-black text-sm text-gold">{m.value}</span>
+                            <span className="mono-tag" style={{ fontSize: 8, color: "rgba(240,234,214,0.4)" }}>{m.label}</span>
                           </div>
                         ))}
                       </div>
                     )}
 
-                    {/* Tags + repo link */}
-                    <div className="flex flex-wrap items-center justify-between gap-4 pt-4"
-                      style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+                    {/* Footer: tags + repo */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-3"
+                      style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
                       <div className="flex flex-wrap gap-1.5">
-                        {paper.tags.map(t => <span key={t} className="tech-pill">{t}</span>)}
+                        {paper.tags.slice(0, 4).map(t => <span key={t} className="tech-pill">{t}</span>)}
+                        {paper.tags.length > 4 && (
+                          <span className="tech-pill" style={{ opacity: 0.5 }}>+{paper.tags.length - 4}</span>
+                        )}
                       </div>
                       {ghUrl && (
                         <a href={ghUrl} target="_blank" rel="noreferrer"
-                          className="mono-tag hover:text-gold transition-colors">
-                          Research Repo →
+                          className="mono-tag hover:text-gold transition-colors" style={{ fontSize: 9 }}>
+                          Repo →
                         </a>
                       )}
                     </div>
-                  </motion.div>
+                  </motion.article>
                 );
               })}
             </div>
           </motion.div>
         </section>
+
+
 
         {/* ══════════════════════════════════════
             SECTION 3: PROJECTS — TECH BUILDS
@@ -603,40 +651,73 @@ export default function PortfolioShell({ projects, academic, achievements, resea
               Awards &amp; <span className="text-gold">Leadership</span>
             </motion.h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {achievements.map((ach, i) => (
-                <motion.div key={ach.id} variants={fadeUp} custom={i + 2}
-                  className="cine-card p-6 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
-                      <span className="mono-tag px-3 py-1 rounded-full border"
-                        style={{ background: "rgba(212,168,71,0.08)", borderColor: "rgba(212,168,71,0.25)" }}>
-                        {ach.rank || ach.type} {ach.rankLabel ? `· ${ach.rankLabel}` : ""}
-                      </span>
-                      <span className="mono-tag" style={{ color: "rgba(240,234,214,0.35)", fontSize: 9 }}>{ach.date}</span>
-                    </div>
-
-                    <h3 className="font-display font-bold text-[#f0ead6] text-lg mb-1 leading-snug">{ach.title}</h3>
-                    <div className="mono-tag mb-3" style={{ color: "#d4a847" }}>
-                      {ach.organizer || ach.organization || ach.issuer}
-                    </div>
-
-                    {ach.description && (
-                      <p className="text-xs leading-relaxed mb-4" style={{ color: "rgba(240,234,214,0.65)" }}>
-                        {ach.description}
-                      </p>
-                    )}
-                  </div>
-
-                  {ach.link && (
-                    <a href={ach.link} target="_blank" rel="noreferrer"
-                      className="mono-tag hover:text-gold transition-colors pt-3 block"
-                      style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                      View Credential ↗
-                    </a>
-                  )}
-                </motion.div>
+            {/* Filter tabs */}
+            <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-2 mb-8">
+              {[
+                { id: "all",           label: "All Honors & Badges" },
+                { id: "hackathon",     label: "Hackathons & Awards 🏆" },
+                { id: "certification", label: "Google Cloud & Certifications ☁️" },
+                { id: "leadership",    label: "Leadership & Community 👑" },
+              ].map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setAchCat(cat.id)}
+                  className={`px-3.5 py-1.5 rounded-xl font-mono text-[11px] tracking-wider uppercase transition-all ${
+                    achCat === cat.id
+                      ? "border font-bold text-gold bg-[rgba(212,168,71,0.12)] border-[rgba(212,168,71,0.45)]"
+                      : "text-[rgba(240,234,214,0.5)] hover:text-[#f0ead6] bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.08)] border"
+                  }`}
+                >
+                  {cat.label}
+                </button>
               ))}
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {achievements
+                .filter(ach => ach.visible !== false)
+                .filter(ach => achCat === "all" || ach.type === achCat)
+                .map((ach, i) => (
+                  <motion.div key={ach.id} variants={fadeUp} custom={i + 2}
+                    className="cine-card p-5 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+                        <span className="mono-tag px-2.5 py-0.5 rounded-full border"
+                          style={{ background: "rgba(212,168,71,0.08)", borderColor: "rgba(212,168,71,0.25)", color: "#d4a847" }}>
+                          {ach.rank || ach.type} {ach.rankLabel ? `· ${ach.rankLabel}` : ""}
+                        </span>
+                        <span className="mono-tag" style={{ color: "rgba(240,234,214,0.35)", fontSize: 9 }}>{ach.date}</span>
+                      </div>
+
+                      <h3 className="font-display font-bold text-[#f0ead6] text-base mb-1 leading-snug">{ach.title}</h3>
+                      <div className="mono-tag mb-2" style={{ color: "#d4a847", fontSize: 10 }}>
+                        {ach.organizer || ach.organization || ach.issuer}
+                      </div>
+
+                      {ach.description && (
+                        <p className="text-xs leading-relaxed mb-3" style={{ color: "rgba(240,234,214,0.65)" }}>
+                          {ach.description}
+                        </p>
+                      )}
+
+                      {ach.tags && ach.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {ach.tags.map(t => (
+                            <span key={t} className="tech-pill">{t}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {ach.link && (
+                      <a href={ach.link} target="_blank" rel="noreferrer"
+                        className="mono-tag hover:text-gold transition-colors pt-3 block"
+                        style={{ borderTop: "1px solid rgba(255,255,255,0.08)", fontSize: 9 }}>
+                        View Credential ↗
+                      </a>
+                    )}
+                  </motion.div>
+                ))}
             </div>
           </motion.div>
         </section>
