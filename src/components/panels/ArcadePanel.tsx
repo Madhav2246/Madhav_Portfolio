@@ -133,9 +133,9 @@ export default function ArcadePanel({ hobbies }: Props) {
         {activeMode === "cinema" && (
           <div className="space-y-6">
             <CinephileLab
-              recommendations={hobbies.cinema.recommendations}
+              recommendations={[]}
               trivia={hobbies.cinema.trivia}
-              directors={hobbies.cinema.favoriteDirectors}
+              directors={hobbies.cinema.favoriteDirectors.map(d => d.name)}
             />
 
             <div className="bg-black/40 border border-white/10 rounded-xl p-5">

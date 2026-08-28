@@ -115,6 +115,20 @@ export interface FavoriteMovie {
   note: string;
 }
 
+// Legacy shape used by CinephileLab game component
+export interface MovieRecommendation {
+  id: string;
+  title: string;
+  year: number;
+  director: string;
+  genre: string[];
+  vibe: string;
+  rating: string;
+  posterBg: string;
+  takeaway: string;
+}
+
+
 export interface TriviaQuestion {
   id: string;
   quoteOrQuestion: string;
