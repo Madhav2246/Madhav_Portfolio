@@ -26,9 +26,16 @@ export default function IntroSplash({ onEnter }: Props) {
     let angleY = 0;
     let speedMult = 1.0;
 
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener("resize", resize);
@@ -48,17 +55,17 @@ export default function IntroSplash({ onEnter }: Props) {
 
     // Floating particles
     const particles = Array.from({ length: 70 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
+      x: Math.random() * width,
+      y: Math.random() * height,
       z: Math.random() * 1000,
-      radius: Math.random() * 1.8 + 0.4,
-      alpha: Math.random() * 0.5 + 0.1,
+      radius: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.5 + 0.15,
       speedZ: Math.random() * 2 + 1,
     }));
 
     const render = () => {
       ctx.fillStyle = "#070604";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, width, height);
 
       if (isEnteringRef.current) {
         speedMult = Math.min(speedMult * 1.05, 10.0);
@@ -70,10 +77,10 @@ export default function IntroSplash({ onEnter }: Props) {
         if (p.z <= 0) p.z = 1000;
 
         const k = 400 / p.z;
-        const px = (p.x - canvas.width / 2) * k + canvas.width / 2;
-        const py = (p.y - canvas.height / 2) * k + canvas.height / 2;
+        const px = (p.x - width / 2) * k + width / 2;
+        const py = (p.y - height / 2) * k + height / 2;
 
-        if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+        if (px >= 0 && px <= width && py >= 0 && py <= height) {
           const size = Math.max(0.4, p.radius * k);
           ctx.fillStyle = isEnteringRef.current
             ? `rgba(212, 168, 71, ${Math.min(1, p.alpha * 1.8)})`
@@ -84,12 +91,11 @@ export default function IntroSplash({ onEnter }: Props) {
         }
       });
 
-      // 3D Cube Math — Refined compact scale (0.11)
-      const fov = 340;
-      const baseScale = Math.min(canvas.width, canvas.height) * 0.11;
-      const currentScale = isEnteringRef.current ? baseScale * (1 + (speedMult * 0.12)) : baseScale;
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
+      // 3D Cube Perspective Math — Perfectly Centered & Proportioned
+      const baseRadius = Math.min(width, height) * 0.15;
+      const radius = isEnteringRef.current ? baseRadius * (1 + speedMult * 0.08) : baseRadius;
+      const cx = width / 2;
+      const cy = height / 2;
 
       const cosX = Math.cos(angleX);
       const sinX = Math.sin(angleX);
@@ -107,16 +113,16 @@ export default function IntroSplash({ onEnter }: Props) {
         const y2 = vy * cosX - z1 * sinX;
         const z2 = vy * sinX + z1 * cosX;
 
-        const distance = 3.5;
-        const sz = z2 + distance;
-        const px = (x1 * currentScale * fov) / (sz * 100) + cx;
-        const py = (y2 * currentScale * fov) / (sz * 100) + cy;
+        // Perspective scale factor
+        const fovScale = 3.2 / (z2 + 3.5);
+        const px = cx + x1 * radius * fovScale;
+        const py = cy + y2 * radius * fovScale;
 
         projected.push([px, py]);
       }
 
       // Draw wireframe edges with glowing whitish-grey / gold stroke
-      ctx.strokeStyle = isEnteringRef.current ? "rgba(212, 168, 71, 0.9)" : "rgba(240, 234, 214, 0.5)";
+      ctx.strokeStyle = isEnteringRef.current ? "rgba(212, 168, 71, 0.9)" : "rgba(240, 234, 214, 0.45)";
       ctx.lineWidth = isEnteringRef.current ? 2.2 : 1.5;
       ctx.shadowColor = "rgba(212, 168, 71, 0.5)";
       ctx.shadowBlur = isEnteringRef.current ? 20 : 10;
@@ -186,9 +192,9 @@ export default function IntroSplash({ onEnter }: Props) {
         key="intro-splash"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, scale: 2.8, filter: "blur(30px)" }}
+        exit={{ opacity: 0, scale: 2.5, filter: "blur(30px)" }}
         transition={{ duration: 3.0, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070604] overflow-hidden select-none p-4 sm:p-6"
+        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070604] overflow-hidden select-none p-4"
       >
         {/* 3D Canvas Background */}
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
@@ -196,9 +202,9 @@ export default function IntroSplash({ onEnter }: Props) {
         {/* Ambient Top & Bottom Gold Vignette */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#070604] via-transparent to-[#070604] opacity-95 pointer-events-none" />
 
-        {/* Content Box — Compact, elegant layout */}
+        {/* Content Box — Centered, compact layout */}
         <motion.div
-          animate={isEntering ? { scale: 1.25, opacity: 0, filter: "blur(15px)" } : { scale: 1, opacity: 1 }}
+          animate={isEntering ? { scale: 1.2, opacity: 0, filter: "blur(15px)" } : { scale: 1, opacity: 1 }}
           transition={{ duration: 3.0, ease: "easeIn" }}
           className="relative z-10 text-center max-w-lg mx-auto space-y-4"
         >
