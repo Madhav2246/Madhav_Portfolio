@@ -167,6 +167,8 @@ export interface HobbiesData {
     trivia: TriviaQuestion[];
   };
   musicAndCulture?: {
+    spotifyUrl?: string;
+    spotifyProfile?: string;
     philosophy: string;
     genres: MusicGenre[];
   };

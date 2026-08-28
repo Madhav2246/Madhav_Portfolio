@@ -1099,6 +1099,42 @@ export default function PortfolioShell({ projects, academic, achievements, resea
                       </div>
                     ))}
                   </div>
+
+                  {/* Spotify Connector & Player */}
+                  <div className="cine-card p-6 border-l-2" style={{ borderLeftColor: "#1DB954" }}>
+                    <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg text-black"
+                             style={{ background: "#1DB954", boxShadow: "0 0 20px rgba(29,185,84,0.4)" }}>
+                          ♫
+                        </div>
+                        <div>
+                          <div className="mono-tag" style={{ color: "#1DB954", fontSize: 9 }}>Spotify Integration</div>
+                          <h4 className="font-display font-bold text-[#f0ead6] text-base">Madhav&apos;s Curated Playlist</h4>
+                        </div>
+                      </div>
+                      <a href={hobbies.musicAndCulture?.spotifyProfile || "https://open.spotify.com"}
+                         target="_blank" rel="noreferrer"
+                         className="px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all hover:scale-105"
+                         style={{ background: "#1DB954", color: "#000" }}>
+                        Open in Spotify ↗
+                      </a>
+                    </div>
+
+                    {/* Spotify Embed Player */}
+                    <div className="rounded-xl overflow-hidden mt-3" style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(29,185,84,0.2)" }}>
+                      <iframe
+                        src={hobbies.musicAndCulture?.spotifyUrl || "https://open.spotify.com/embed/playlist/37i9dQZF1DXa2SPUyWl8Y5"}
+                        width="100%"
+                        height="152"
+                        frameBorder="0"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                        title="Spotify Playlist Player"
+                        className="rounded-xl"
+                      />
+                    </div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
