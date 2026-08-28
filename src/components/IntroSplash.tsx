@@ -47,12 +47,12 @@ export default function IntroSplash({ onEnter }: Props) {
     ];
 
     // Floating particles
-    const particles = Array.from({ length: 90 }, () => ({
+    const particles = Array.from({ length: 70 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       z: Math.random() * 1000,
-      radius: Math.random() * 2 + 0.5,
-      alpha: Math.random() * 0.6 + 0.1,
+      radius: Math.random() * 1.8 + 0.4,
+      alpha: Math.random() * 0.5 + 0.1,
       speedZ: Math.random() * 2 + 1,
     }));
 
@@ -61,7 +61,7 @@ export default function IntroSplash({ onEnter }: Props) {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (isEnteringRef.current) {
-        speedMult = Math.min(speedMult * 1.05, 12.0);
+        speedMult = Math.min(speedMult * 1.05, 10.0);
       }
 
       // Starfield / hyper-drive warp particles
@@ -74,7 +74,7 @@ export default function IntroSplash({ onEnter }: Props) {
         const py = (p.y - canvas.height / 2) * k + canvas.height / 2;
 
         if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
-          const size = Math.max(0.5, p.radius * k);
+          const size = Math.max(0.4, p.radius * k);
           ctx.fillStyle = isEnteringRef.current
             ? `rgba(212, 168, 71, ${Math.min(1, p.alpha * 1.8)})`
             : `rgba(226, 232, 240, ${p.alpha})`;
@@ -84,10 +84,10 @@ export default function IntroSplash({ onEnter }: Props) {
         }
       });
 
-      // 3D Cube Math
-      const fov = 360;
-      const baseScale = Math.min(canvas.width, canvas.height) * 0.18;
-      const currentScale = isEnteringRef.current ? baseScale * (1 + (speedMult * 0.15)) : baseScale;
+      // 3D Cube Math — Refined compact scale (0.11)
+      const fov = 340;
+      const baseScale = Math.min(canvas.width, canvas.height) * 0.11;
+      const currentScale = isEnteringRef.current ? baseScale * (1 + (speedMult * 0.12)) : baseScale;
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
 
@@ -116,10 +116,10 @@ export default function IntroSplash({ onEnter }: Props) {
       }
 
       // Draw wireframe edges with glowing whitish-grey / gold stroke
-      ctx.strokeStyle = isEnteringRef.current ? "rgba(212, 168, 71, 0.9)" : "rgba(240, 234, 214, 0.55)";
-      ctx.lineWidth = isEnteringRef.current ? 2.8 : 1.8;
-      ctx.shadowColor = "rgba(212, 168, 71, 0.6)";
-      ctx.shadowBlur = isEnteringRef.current ? 25 : 12;
+      ctx.strokeStyle = isEnteringRef.current ? "rgba(212, 168, 71, 0.9)" : "rgba(240, 234, 214, 0.5)";
+      ctx.lineWidth = isEnteringRef.current ? 2.2 : 1.5;
+      ctx.shadowColor = "rgba(212, 168, 71, 0.5)";
+      ctx.shadowBlur = isEnteringRef.current ? 20 : 10;
 
       for (const [start, end] of edges) {
         const [x1, y1] = projected[start];
@@ -135,7 +135,7 @@ export default function IntroSplash({ onEnter }: Props) {
       for (const [px, py] of projected) {
         ctx.fillStyle = "#d4a847";
         ctx.beginPath();
-        ctx.arc(px, py, isEnteringRef.current ? 5 : 3.5, 0, Math.PI * 2);
+        ctx.arc(px, py, isEnteringRef.current ? 4 : 3, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -186,9 +186,9 @@ export default function IntroSplash({ onEnter }: Props) {
         key="intro-splash"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, scale: 3.5, filter: "blur(40px)" }}
+        exit={{ opacity: 0, scale: 2.8, filter: "blur(30px)" }}
         transition={{ duration: 3.0, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070604] overflow-hidden select-none"
+        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070604] overflow-hidden select-none p-4 sm:p-6"
       >
         {/* 3D Canvas Background */}
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
@@ -196,57 +196,57 @@ export default function IntroSplash({ onEnter }: Props) {
         {/* Ambient Top & Bottom Gold Vignette */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#070604] via-transparent to-[#070604] opacity-95 pointer-events-none" />
 
-        {/* Content Box */}
+        {/* Content Box — Compact, elegant layout */}
         <motion.div
-          animate={isEntering ? { scale: 1.4, opacity: 0, filter: "blur(20px)" } : { scale: 1, opacity: 1 }}
+          animate={isEntering ? { scale: 1.25, opacity: 0, filter: "blur(15px)" } : { scale: 1, opacity: 1 }}
           transition={{ duration: 3.0, ease: "easeIn" }}
-          className="relative z-10 text-center px-6 max-w-2xl mx-auto space-y-6"
+          className="relative z-10 text-center max-w-lg mx-auto space-y-4"
         >
           {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full font-mono text-[10px] sm:text-xs uppercase tracking-widest border"
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full font-mono text-[9px] sm:text-[11px] uppercase tracking-widest border"
                style={{ background: "rgba(212,168,71,0.08)", borderColor: "rgba(212,168,71,0.3)", color: "#d4a847" }}>
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
             {isEntering ? "WARPING INTO MADHAV'S UNIVERSE..." : "INITIALIZING EXPERIENCE"}
           </div>
 
           {/* Main Question */}
-          <h1 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-[#f0ead6] tracking-tight leading-tight">
+          <h1 className="font-display font-black text-2xl sm:text-4xl md:text-5xl text-[#f0ead6] tracking-tight leading-snug">
             Do you want to know about <span className="text-gold">Madhav?</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="font-sans text-xs sm:text-sm max-w-md mx-auto leading-relaxed"
+          <p className="font-sans text-xs sm:text-sm max-w-sm mx-auto leading-relaxed"
              style={{ color: "rgba(240,234,214,0.65)" }}>
             AI &amp; Systems Engineer · Continual Learning Researcher · IIT Madras National Finalist
           </p>
 
           {/* Action CTA Button or 3-Sec Progress Bar */}
-          <div className="pt-4 flex flex-col items-center justify-center min-h-[90px]">
+          <div className="pt-2 flex flex-col items-center justify-center min-h-[75px]">
             {!isEntering ? (
               <button
                 onClick={handleStart}
-                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-mono text-xs sm:text-sm uppercase tracking-wider font-bold transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_35px_rgba(212,168,71,0.35)]"
+                className="group relative inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-mono text-xs sm:text-sm uppercase tracking-wider font-bold transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(212,168,71,0.3)]"
                 style={{
                   background: "linear-gradient(135deg, #d4a847 0%, #a87e2a 100%)",
                   color: "#070604",
                 }}
               >
                 <span>Take Me To Madhav&apos;s Universe</span>
-                <span className="text-base group-hover:translate-x-1 transition-transform">✦</span>
+                <span className="text-sm group-hover:translate-x-1 transition-transform">✦</span>
               </button>
             ) : (
               <div className="w-full max-w-xs space-y-2">
-                <div className="flex justify-between font-mono text-xs text-gold">
+                <div className="flex justify-between font-mono text-[11px] text-gold">
                   <span>HYPER-DRIVE WARP</span>
                   <span>{progress}%</span>
                 </div>
-                <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden border border-gold/30">
+                <div className="w-full h-1.5 bg-black/60 rounded-full overflow-hidden border border-gold/30">
                   <div
                     className="h-full bg-gradient-to-r from-amber-500 to-gold transition-all duration-75"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <div className="font-mono text-[10px] text-[rgba(240,234,214,0.5)] animate-pulse">
+                <div className="font-mono text-[9px] text-[rgba(240,234,214,0.5)] animate-pulse">
                   🔊 USSSHHH PORTAL AUDIO SYNTHESIS...
                 </div>
               </div>
