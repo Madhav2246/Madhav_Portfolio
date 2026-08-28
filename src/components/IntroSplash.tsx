@@ -14,6 +14,15 @@ export default function IntroSplash({ onEnter }: Props) {
 
   const isEnteringRef = useRef(false);
 
+  // Lock body scroll while splash screen is active so user cannot scroll into empty space
+  useEffect(() => {
+    const originalStyle = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   // 3D Rotating Wireframe Cube & Hyper-Warp Particle Field on Canvas
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -54,7 +63,7 @@ export default function IntroSplash({ onEnter }: Props) {
     ];
 
     // Floating particles
-    const particles = Array.from({ length: 70 }, () => ({
+    const particles = Array.from({ length: 60 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       z: Math.random() * 1000,
@@ -91,8 +100,8 @@ export default function IntroSplash({ onEnter }: Props) {
         }
       });
 
-      // 3D Cube Perspective Math — Perfectly Centered & Proportioned
-      const baseRadius = Math.min(width, height) * 0.15;
+      // 3D Cube Perspective Math — Compact 120px 3D wireframe box
+      const baseRadius = Math.min(width, height) * 0.055;
       const radius = isEnteringRef.current ? baseRadius * (1 + speedMult * 0.08) : baseRadius;
       const cx = width / 2;
       const cy = height / 2;
@@ -114,7 +123,7 @@ export default function IntroSplash({ onEnter }: Props) {
         const z2 = vy * sinX + z1 * cosX;
 
         // Perspective scale factor
-        const fovScale = 3.2 / (z2 + 3.5);
+        const fovScale = 2.5 / (z2 + 4.0);
         const px = cx + x1 * radius * fovScale;
         const py = cy + y2 * radius * fovScale;
 
@@ -202,7 +211,7 @@ export default function IntroSplash({ onEnter }: Props) {
         {/* Ambient Top & Bottom Gold Vignette */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#070604] via-transparent to-[#070604] opacity-95 pointer-events-none" />
 
-        {/* Content Box — Centered, compact layout */}
+        {/* Content Box — Perfectly Centered */}
         <motion.div
           animate={isEntering ? { scale: 1.2, opacity: 0, filter: "blur(15px)" } : { scale: 1, opacity: 1 }}
           transition={{ duration: 3.0, ease: "easeIn" }}
