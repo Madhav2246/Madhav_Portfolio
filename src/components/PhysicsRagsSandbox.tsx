@@ -7,8 +7,9 @@ const PRESET_QUERIES = [
   {
     id: "mosfet-vt",
     query: "What is the threshold voltage formula for a MOSFET considering body effect?",
-    latex: "V_{TN} = V_{TO} + \\gamma \\left( \\sqrt{2\\phi_F + V_{SB}} - \\sqrt{2\\phi_F} \\right)",
-    explanation: "Derived via LoRA-fine-tuned Qwen2.5-0.5B + SymPy verified dimensional checks. Correctly accounts for body effect coefficient \\gamma and source-to-body voltage V_{SB}.",
+    readableFormula: "V_TN = V_TO + γ · [ √(2φ_F + V_SB) - √(2φ_F) ]",
+    latexCode: "V_{TN} = V_{TO} + \\gamma \\left( \\sqrt{2\\phi_F + V_{SB}} - \\sqrt{2\\phi_F} \\right)",
+    explanation: "Derived via LoRA-fine-tuned Qwen2.5-0.5B + SymPy verified dimensional checks. Correctly accounts for body effect coefficient γ and source-to-body voltage V_SB.",
     retrievalScore: "RRF Score: 0.96 (FAISS Vector + BM25 Hybrid)",
     sympyStatus: "✅ SymPy Dimensional & Unit Verified",
     vramBudget: "0.45 GB VRAM · Single 8GB GPU",
@@ -17,7 +18,8 @@ const PRESET_QUERIES = [
   {
     id: "intrinsic-semiconductor",
     query: "Calculate intrinsic carrier concentration n_i in silicon at T = 300 K.",
-    latex: "n_i = \\sqrt{N_c N_v} \\cdot \\exp\\left(-\\frac{E_g}{2 k_B T}\\right) = 1.5 \\times 10^{10} \\text{ cm}^{-3}",
+    readableFormula: "n_i = √(N_c · N_v) · exp(-E_g / 2·k_B·T) = 1.5 × 10¹⁰ cm⁻³",
+    latexCode: "n_i = \\sqrt{N_c N_v} \\cdot \\exp\\left(-\\frac{E_g}{2 k_B T}\\right) = 1.5 \\times 10^{10} \\text{ cm}^{-3}",
     explanation: "SymPy numerical validator checked Boltzmann constant units (eV/K) and bandgap E_g = 1.12 eV. Numerical tolerance matched within 0.001%.",
     retrievalScore: "RRF Score: 0.98 (Cross-Encoder Reranked)",
     sympyStatus: "✅ SymPy Symbolic Equivalence Verified",
@@ -27,7 +29,8 @@ const PRESET_QUERIES = [
   {
     id: "mass-energy",
     query: "Verify dimensional consistency of relativistic mass-energy formula E = mc².",
-    latex: "[E] = \\text{M} \\cdot \\text{L}^2 \\cdot \\text{T}^{-2} \\quad \\equiv \\quad [m \\cdot c^2] = \\text{kg} \\cdot (\\text{m}/\\text{s})^2",
+    readableFormula: "[E] = M · L² · T⁻²  ≡  [m · c²] = kg · (m/s)²",
+    latexCode: "[E] = \\text{M} \\cdot \\text{L}^2 \\cdot \\text{T}^{-2} \\quad \\equiv \\quad [m \\cdot c^2] = \\text{kg} \\cdot (\\text{m}/\\text{s})^2",
     explanation: "SymPy dimensional analyzer verified mass M, length L, time T exponent matching across LHS and RHS.",
     retrievalScore: "RRF Score: 0.99 (Symbolic Rule Engine)",
     sympyStatus: "✅ SymPy Unit Dimensional Equivalence Passed",
@@ -46,7 +49,7 @@ export default function PhysicsRagsSandbox() {
     proceduralAudio.playCinematicPulse();
     setIsProcessing(true);
     setSelectedIdx(idx);
-    setTimeout(() => setIsProcessing(false), 350);
+    setTimeout(() => setIsProcessing(false), 300);
   };
 
   return (
@@ -127,19 +130,30 @@ export default function PhysicsRagsSandbox() {
             </span>
           </div>
 
-          {/* LaTeX equation output */}
+          {/* Rendered Equation Output */}
           <div>
-            <div className="mono-tag mb-1.5" style={{ fontSize: 9, color: "#d4a847" }}>
-              Verified Symbolic Equation Output:
+            <div className="mono-tag mb-1.5 flex items-center justify-between" style={{ fontSize: 9, color: "#d4a847" }}>
+              <span>Verified Symbolic Equation Output:</span>
+              <span style={{ color: "rgba(240,234,214,0.4)" }}>SymPy Solved</span>
             </div>
-            <div className="p-4 rounded-xl font-mono text-sm overflow-x-auto text-gold"
-                 style={{ background: "rgba(212,168,71,0.06)", border: "1px solid rgba(212,168,71,0.2)" }}>
+            <div className="p-4 rounded-xl font-mono text-sm sm:text-base font-bold text-gold"
+                 style={{ background: "rgba(212,168,71,0.08)", border: "1px solid rgba(212,168,71,0.25)" }}>
               {isProcessing ? (
                 <span className="animate-pulse text-sky-400">Executing SymPy verification solver... ⏳</span>
               ) : (
-                activeDemo.latex
+                activeDemo.readableFormula
               )}
             </div>
+          </div>
+
+          {/* Raw LaTeX Code Block */}
+          <div>
+            <div className="mono-tag mb-1" style={{ fontSize: 8, color: "rgba(240,234,214,0.4)" }}>
+              Raw SymPy / LaTeX Source:
+            </div>
+            <code className="block p-2.5 rounded-lg bg-black/60 border border-white/10 font-mono text-[11px] text-sky-300 overflow-x-auto">
+              {activeDemo.latexCode}
+            </code>
           </div>
 
           {/* Explanation */}
