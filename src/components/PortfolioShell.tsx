@@ -161,7 +161,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
 
   useEffect(() => {
     const handleFirstUserInteraction = () => {
-      proceduralAudio.unlock();
+      (proceduralAudio as { unlock?: () => void }).unlock?.();
     };
     window.addEventListener("click", handleFirstUserInteraction);
     window.addEventListener("keydown", handleFirstUserInteraction);

@@ -132,26 +132,30 @@ export default function PhysicsRagsSandbox() {
 
           {/* Rendered Equation Output */}
           <div>
-            <div className="mono-tag mb-1.5 flex items-center justify-between" style={{ fontSize: 9, color: "#d4a847" }}>
-              <span>Verified Symbolic Equation Output:</span>
-              <span style={{ color: "rgba(240,234,214,0.4)" }}>SymPy Solved</span>
+            <div className="mono-tag mb-2 flex items-center justify-between" style={{ fontSize: 10, color: "#d4a847" }}>
+              <span className="font-bold">⚡ Verified Symbolic Equation Output:</span>
+              <span className="text-emerald-400 font-mono">SymPy Engine Verified</span>
             </div>
-            <div className="p-4 rounded-xl font-mono text-sm sm:text-base font-bold text-gold"
-                 style={{ background: "rgba(212,168,71,0.08)", border: "1px solid rgba(212,168,71,0.25)" }}>
+            <div className="p-5 rounded-xl font-mono text-base sm:text-xl font-black text-white leading-relaxed tracking-wide"
+                 style={{
+                   background: "linear-gradient(135deg, rgba(212,168,71,0.18) 0%, rgba(10,8,5,0.9) 100%)",
+                   border: "1px solid rgba(212,168,71,0.5)",
+                   boxShadow: "0 0 20px rgba(212,168,71,0.15)",
+                 }}>
               {isProcessing ? (
                 <span className="animate-pulse text-sky-400">Executing SymPy verification solver... ⏳</span>
               ) : (
-                activeDemo.readableFormula
+                <span className="text-white font-bold">{activeDemo.readableFormula}</span>
               )}
             </div>
           </div>
 
           {/* Raw LaTeX Code Block */}
           <div>
-            <div className="mono-tag mb-1" style={{ fontSize: 8, color: "rgba(240,234,214,0.4)" }}>
-              Raw SymPy / LaTeX Source:
+            <div className="mono-tag mb-1.5" style={{ fontSize: 9, color: "rgba(240,234,214,0.6)" }}>
+              📄 Raw SymPy / LaTeX Source:
             </div>
-            <code className="block p-2.5 rounded-lg bg-black/60 border border-white/10 font-mono text-[11px] text-sky-300 overflow-x-auto">
+            <code className="block p-3 rounded-xl bg-[rgba(10,10,15,0.9)] border border-sky-500/30 font-mono text-xs text-sky-300 overflow-x-auto tracking-wide">
               {activeDemo.latexCode}
             </code>
           </div>
