@@ -1,21 +1,33 @@
 {
   "cricket": {
-    "role": "Top-Order Batsman & Strategist",
-    "favoritePlayer": "MS Dhoni & Virat Kohli",
-    "battingStyle": "Right-Hand Bat · Timing & Power Placement",
+    "role": "Top-Order Batter & Finisher",
+    "favoritePlayer": "MS Dhoni (Thala #7) 🏏⚡ & Virat Kohli",
+    "battingStyle": "Right-Hand Bat · Signature Helicopter Shot & High-Pressure Composure",
     "stats": [
-      { "label": "Batting Role", "value": "Anchor / Finisher" },
-      { "label": "Preferred Shot", "value": "Cover Drive & Pull" },
-      { "label": "Mindset", "value": "Pressure Absorber" },
-      { "label": "Match Strategy", "value": "Calculated Aggression" }
+      { "label": "Role Model", "value": "MS Dhoni #7 🚁" },
+      { "label": "Signature Shot", "value": "Helicopter & Cover Drive" },
+      { "label": "Finishing Mindset", "value": "Captain Cool Composure" },
+      { "label": "Match Strategy", "value": "Take it Deep & Win" }
     ],
-    "philosophy": "Cricket is applied game theory under pressure. Whether chasing down a 200+ target or architecting distributed AI models, composure in the final overs and reading the bowler's field setup defines victory."
+    "philosophy": "Cricket is applied game theory under pressure. Channeling the MS Dhoni #7 mindset: stay calm when the required run rate spikes, read the field, back your instincts, and finish it off in style 🚁⚡."
   },
   "cinema": {
-    "philosophy": "Cinema is the ultimate symphony of storytelling, visual framing, sound design, and emotional resonance. Great films, like elegant code, leave no wasted frames and challenge our worldview.",
-    "favoriteDirectors": ["Christopher Nolan", "Denis Villeneuve", "Quentin Tarantino", "S.S. Rajamouli", "David Fincher"],
-    "topGenres": ["Sci-Fi Mindbenders", "Psychological Thrillers", "Epic Cinema", "Neoclassical Drama"],
+    "philosophy": "Cinema is the ultimate canvas of emotion, visual framing, sound design, and world-building. From high-octane mass epics to mind-bending sci-fi, cinema pushes the boundary of human imagination.",
+    "favoriteActors": ["Prabhas (Rebel Star) 🦖⚔️", "Christian Bale", "Cillian Murphy"],
+    "favoriteDirectors": ["Prashanth Neel", "Christopher Nolan", "S.S. Rajamouli", "Denis Villeneuve", "David Fincher", "Quentin Tarantino"],
+    "topGenres": ["Pan-Indian Mass Epics 🦖", "Sci-Fi Mindbenders 🌀", "Psychological Thrillers ⚡", "Cinematic Masterpieces 🏛️", "World Cinema 🌍"],
     "recommendations": [
+      {
+        "id": "salaar",
+        "title": "Salaar: Part 1 – Ceasefire",
+        "year": 2023,
+        "director": "Prashanth Neel",
+        "genre": ["Mass Action", "Epic", "Drama"],
+        "vibe": "epic",
+        "rating": "9.9/10",
+        "posterBg": "from-red-950 via-zinc-950 to-black",
+        "takeaway": "Pure Rebel Star Prabhas dominance: unrivaled screen presence, deafening high-voltage sound design, and atmospheric Khansaar world-building. 'I am not violent, but I have a promise.' 🦖⚔️"
+      },
       {
         "id": "interstellar",
         "title": "Interstellar",
@@ -28,6 +40,17 @@
         "takeaway": "A timeless exploration of relativity, human endurance, and love as a quantifiable fifth dimension."
       },
       {
+        "id": "kalki-2898-ad",
+        "title": "Kalki 2898 AD",
+        "year": 2024,
+        "director": "Nag Ashwin",
+        "genre": ["Sci-Fi", "Mythology", "Epic"],
+        "vibe": "epic",
+        "rating": "9.7/10",
+        "posterBg": "from-amber-950 via-orange-950 to-black",
+        "takeaway": "Grand fusion of Mahabharata mythology with dystopian sci-fi cyberpunk aesthetics. Prabhas as Bhairava delivers legendary scale."
+      },
+      {
         "id": "oppenheimer",
         "title": "Oppenheimer",
         "year": 2023,
@@ -36,7 +59,18 @@
         "vibe": "epic",
         "rating": "9.6/10",
         "posterBg": "from-amber-950 via-red-950 to-black",
-        "takeaway": "Masterclass in pacing, sound design, and the ethical weight of transformative technology."
+        "takeaway": "Masterclass in pacing, sound design, and the ethical weight of transformative scientific breakthrough."
+      },
+      {
+        "id": "baahubali-2",
+        "title": "Baahubali 2: The Conclusion",
+        "year": 2017,
+        "director": "S.S. Rajamouli",
+        "genre": ["Epic", "Action", "Mythology"],
+        "vibe": "epic",
+        "rating": "9.8/10",
+        "posterBg": "from-amber-900 via-zinc-950 to-black",
+        "takeaway": "Indian cinema's greatest magnum opus. Prabhas as Amarendra Baahubali redefined cinematic scale forever."
       },
       {
         "id": "arrival",
@@ -61,49 +95,49 @@
         "takeaway": "Uncompromising obsession with greatness. The rhythm and editing mirror relentless algorithmic optimization."
       },
       {
-        "id": "fight-club",
-        "title": "Fight Club",
-        "year": 1999,
-        "director": "David Fincher",
-        "genre": ["Drama", "Psychological Thriller"],
+        "id": "the-dark-knight",
+        "title": "The Dark Knight",
+        "year": 2008,
+        "director": "Christopher Nolan",
+        "genre": ["Action", "Crime", "Drama"],
         "vibe": "thriller",
-        "rating": "9.4/10",
-        "posterBg": "from-purple-950 via-slate-950 to-black",
-        "takeaway": "Iconic subversive storytelling with razor-sharp direction and non-linear narrative depth."
+        "rating": "9.9/10",
+        "posterBg": "from-blue-950 via-slate-950 to-black",
+        "takeaway": "The pinnacle of psychological crime drama. Heath Ledger's Joker and Hans Zimmer's two-note score."
       }
     ],
     "trivia": [
       {
         "id": "q1",
-        "quoteOrQuestion": "\"Do not go gentle into that good night. Rage, rage against the dying of the light.\"",
-        "context": "Which iconic sci-fi masterpiece prominently features this Dylan Thomas poem?",
-        "options": ["Inception", "Interstellar", "Blade Runner 2049", "The Martian"],
-        "answer": 1,
-        "explanation": "Professor Brand recites Dylan Thomas's poem to the Endurance crew in Nolan's Interstellar (2014)."
+        "quoteOrQuestion": "\"Please... I politely request!\" (Kaateramma Koduku / Deva)",
+        "context": "Which monumental mass action blockbuster features Prabhas delivering this goosebumps-inducing dialogue before the coal mine interval fight?",
+        "options": ["Salaar: Ceasefire 🦖", "Baahubali 2", "Kalki 2898 AD", "Saaho"],
+        "answer": 0,
+        "explanation": "In Prashanth Neel's Salaar (2023), Prabhas as Deva delivers this polite warning before unleashing full rebel fury!"
       },
       {
         "id": "q2",
-        "quoteOrQuestion": "In Christopher Nolan's 'Oppenheimer', what visual format distinction was used to separate subjective vs objective perspectives?",
-        "context": "Cinematography Technique",
-        "options": ["Color vs Black & White IMAX", "4:3 Aspect Ratio vs 16:9", "Digital vs 35mm Film", "Handheld vs Steadicam"],
-        "answer": 0,
-        "explanation": "Color represents Oppenheimer's subjective viewpoint (Fission), while B&W represents Strauss's objective viewpoint (Fusion)."
+        "quoteOrQuestion": "\"Do not go gentle into that good night. Rage, rage against the dying of the light.\"",
+        "context": "Which iconic sci-fi masterpiece prominently features this Dylan Thomas poem?",
+        "options": ["Inception", "Interstellar 🚀", "Blade Runner 2049", "The Martian"],
+        "answer": 1,
+        "explanation": "Professor Brand recites Dylan Thomas's poem to the Endurance crew in Christopher Nolan's Interstellar (2014)."
       },
       {
         "id": "q3",
+        "quoteOrQuestion": "In MS Dhoni's iconic 2011 ICC World Cup final winning shot, who was the bowler he dispatched over long-on for a six?",
+        "context": "Cricket & Cinema (MS Dhoni: The Untold Story)",
+        "options": ["Nuwan Kulasekara 🏏", "Lasith Malinga", "Muttiah Muralitharan", "Thisara Perera"],
+        "answer": 0,
+        "explanation": "MS Dhoni hit Nuwan Kulasekara over long-on for the iconic 2011 World Cup-winning six to finish off in style!"
+      },
+      {
+        "id": "q4",
         "quoteOrQuestion": "\"There are no two words in the English language more harmful than 'good job'.\"",
         "context": "Which intense mentor character delivered this unforgettable philosophy on mastery?",
         "options": ["Terence Fletcher (Whiplash)", "Gordon Gekko (Wall Street)", "Morpheus (The Matrix)", "Tyler Durden (Fight Club)"],
         "answer": 0,
         "explanation": "J.K. Simmons' Terence Fletcher in Damien Chazelle's Whiplash delivers this ruthless pursuit of perfection."
-      },
-      {
-        "id": "q4",
-        "quoteOrQuestion": "In 'Arrival' (2016), what was the circular visual language of the Heptapods called?",
-        "context": "Linguistics & Sci-Fi",
-        "options": ["Semagrams", "Logograms", "Cryptographs", "Ideograms"],
-        "answer": 1,
-        "explanation": "The Heptapods communicate via non-linear circular Logograms, expressing complex thoughts simultaneously."
       }
     ]
   },

@@ -2,12 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Project, Achievement } from "@/lib/types";
-import type { SectionId } from "./PortfolioShell";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onNavigate: (section: SectionId) => void;
+  onNavigate: (sectionId: string) => void;
   onSelectProject: (p: Project) => void;
   projects: Project[];
   achievements: Achievement[];
@@ -29,9 +28,6 @@ export default function CommandCenter({
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         if (isOpen) onClose();
-        else {
-          // Trigger open via custom event or parent
-        }
       }
       if (e.key === "Escape" && isOpen) {
         onClose();
@@ -46,14 +42,15 @@ export default function CommandCenter({
   const cleanQuery = query.toLowerCase().trim();
 
   // Navigation shortcuts
-  const navItems: { label: string; id: SectionId; icon: string; desc: string }[] = [
-    { label: "Home Terminal", id: "home", icon: "🏠", desc: "Return to central 3D neural core" },
+  const navItems: { label: string; id: string; icon: string; desc: string }[] = [
+    { label: "Hero & Introduction", id: "hero", icon: "🚀", desc: "Overview, stats & quick actions" },
+    { label: "Research Publications", id: "research", icon: "📄", desc: "Continual Learning CIS 2026, Physics RAG SLM & Nexus" },
     { label: "Innovation Lab (Projects)", id: "projects", icon: "🔬", desc: "Explore AI, Vision, RAG & Web platforms" },
-    { label: "Arcade & Hobbies", id: "arcade" as SectionId, icon: "🏏", desc: "Play Mini-Cricket & Cinephile Trivia" },
-    { label: "Technical Arsenal (Skills)", id: "skills", icon: "⚡", desc: "PyTorch, Vision, DevOps & Soft Skills" },
-    { label: "Research Publications", id: "research", icon: "📄", desc: "Drug toxicity GNNs & Continual Learning" },
-    { label: "Awards & Recognitions", id: "achievements", icon: "🏆", desc: "IIT Madras, IISc Bengaluru & Certifications" },
-    { label: "About & Academic History", id: "about", icon: "👤", desc: "B.Tech AI at Amrita VV · CGPA 8.01" },
+    { label: "Arcade: MS Dhoni #7 Cricket Game", id: "arcade", icon: "🏏", desc: "Play Super Over with Dhoni Helicopter shot" },
+    { label: "Arcade: Salaar & Cinema Lounge", id: "arcade", icon: "🦖", desc: "Prabhas Salaar, Kalki & Movie Trivia" },
+    { label: "Technical Arsenal (Skills)", id: "skills", icon: "⚡", desc: "PyTorch, FastAPI, Continual Learning & Tools" },
+    { label: "Awards & Recognitions", id: "achievements", icon: "🏆", desc: "IIT Madras 2nd Prize, IISc Bengaluru & 1STOP.AI" },
+    { label: "About & Academic History", id: "about", icon: "👤", desc: "B.Tech AI at Amrita VV · CGPA 7.91" },
     { label: "Get In Touch", id: "contact", icon: "📫", desc: "Hire or collaborate with Madhav" },
   ];
 
@@ -91,7 +88,7 @@ export default function CommandCenter({
           initial={{ scale: 0.94, opacity: 0, y: -10 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.96, opacity: 0, y: -10 }}
-          className="relative w-full max-w-2xl bg-zinc-950/95 border border-white/20 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden z-10"
+          className="relative w-full max-w-2xl bg-[#0b0f19] border border-white/20 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden z-10"
           style={{
             boxShadow: "0 0 0 1px rgba(56,189,248,0.2), 0 20px 40px rgba(0,0,0,0.8)",
           }}
@@ -104,7 +101,7 @@ export default function CommandCenter({
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search projects, skills, games, cricket, research, or type to navigate..."
+              placeholder="Search projects, Dhoni cricket, Salaar movies, research papers, or skills..."
               className="w-full bg-transparent text-white font-sans text-sm outline-none placeholder:text-white/30"
             />
             <span className="font-mono text-[9px] uppercase tracking-wider text-white/30 border border-white/10 px-2 py-1 rounded">
@@ -124,7 +121,7 @@ export default function CommandCenter({
                 <div className="space-y-1 mt-1">
                   {filteredNav.map(item => (
                     <button
-                      key={item.id}
+                      key={item.label}
                       onClick={() => {
                         onNavigate(item.id);
                         onClose();
@@ -153,7 +150,7 @@ export default function CommandCenter({
             {filteredProjects.length > 0 && (
               <div>
                 <div className="font-mono text-[9px] uppercase tracking-wider text-emerald-400/70 px-3 py-1">
-                  Projects & Repositories ({filteredProjects.length})
+                  Projects &amp; Repositories ({filteredProjects.length})
                 </div>
                 <div className="space-y-1 mt-1">
                   {filteredProjects.slice(0, 5).map(p => (
@@ -187,7 +184,7 @@ export default function CommandCenter({
             {filteredAchievements.length > 0 && (
               <div>
                 <div className="font-mono text-[9px] uppercase tracking-wider text-amber-400/70 px-3 py-1">
-                  Recognitions & Awards
+                  Recognitions &amp; Awards
                 </div>
                 <div className="space-y-1 mt-1">
                   {filteredAchievements.map(a => (

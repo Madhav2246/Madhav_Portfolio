@@ -46,7 +46,7 @@ export default function CinephileLab({ recommendations, trivia, directors }: Pro
   return (
     <div className="w-full rounded-2xl p-6 md:p-8 relative overflow-hidden"
          style={{
-           background: "linear-gradient(135deg, rgba(20,15,35,0.92) 0%, rgba(10,8,20,0.95) 100%)",
+           background: "linear-gradient(135deg, rgba(20,12,30,0.92) 0%, rgba(10,8,20,0.95) 100%)",
            border: "1px solid rgba(168,85,247,0.25)",
            boxShadow: "0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(168,85,247,0.15)",
          }}>
@@ -55,17 +55,17 @@ export default function CinephileLab({ recommendations, trivia, directors }: Pro
       <div className="absolute -top-20 right-1/4 w-80 h-80 rounded-full pointer-events-none"
            style={{ background: "radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%)", filter: "blur(50px)" }} />
       <div className="absolute -bottom-20 left-1/4 w-80 h-80 rounded-full pointer-events-none"
-           style={{ background: "radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 70%)", filter: "blur(50px)" }} />
+           style={{ background: "radial-gradient(circle, rgba(239,68,68,0.1) 0%, transparent 70%)", filter: "blur(50px)" }} />
 
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-purple-500/20 pb-4">
         <div>
           <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-purple-400">
-            <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
-            Cinephile Lounge · Film Aesthetics & Trivia 🎬
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            Cinephile Lounge · Multi-Genre &amp; Prabhas Salaar 🦖⚔️
           </div>
           <h3 className="font-display font-black text-2xl text-white mt-1">
-            Cinema <span className="text-purple-400">Lab</span> & Vision
+            Cinema <span className="text-purple-400">Lab</span> &amp; Vision
           </h3>
         </div>
 
@@ -79,7 +79,7 @@ export default function CinephileLab({ recommendations, trivia, directors }: Pro
                 : "text-white/60 hover:text-white"
             }`}
           >
-            Vibe Matcher 🎞️
+            All Genres 🎞️
           </button>
           <button
             onClick={() => setActiveTab("trivia")}
@@ -110,9 +110,9 @@ export default function CinephileLab({ recommendations, trivia, directors }: Pro
           {/* Mood Filters */}
           <div className="flex flex-wrap gap-2 mb-6">
             {[
-              { id: "all", label: "All Masterpieces 🌟" },
+              { id: "all", label: "All Genres & Epics 🌟" },
+              { id: "epic", label: "Pan-Indian & Mass Epics 🦖" },
               { id: "mindbender", label: "Sci-Fi Mindbender 🌀" },
-              { id: "epic", label: "Cinematic Epic 🏛️" },
               { id: "thriller", label: "Psychological Thriller ⚡" },
             ].map(vibe => (
               <button
@@ -120,7 +120,7 @@ export default function CinephileLab({ recommendations, trivia, directors }: Pro
                 onClick={() => setSelectedVibe(vibe.id)}
                 className={`font-mono text-[10px] tracking-wider uppercase px-4 py-2 rounded-lg border transition-all ${
                   selectedVibe === vibe.id
-                    ? "bg-purple-500/20 border-purple-400 text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
+                    ? "bg-purple-500/20 border-purple-400 text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.3)] font-bold"
                     : "bg-white/[0.03] border-white/10 text-white/50 hover:border-white/20 hover:text-white"
                 }`}
               >
@@ -267,15 +267,17 @@ export default function CinephileLab({ recommendations, trivia, directors }: Pro
                 </div>
                 <h4 className="font-display font-bold text-base text-white mb-2">{dir}</h4>
                 <p className="text-xs text-white/60 leading-relaxed">
-                  {dir === "Christopher Nolan"
-                    ? "Non-linear timelines, IMAX practical effects, Shepard tone auditory tension, and physics-grounded stakes."
-                    : dir === "Denis Villeneuve"
-                    ? "Atmospheric scale, slow-burn tension, stark brutalist framing, and contemplative soundscapes."
-                    : dir === "David Fincher"
-                    ? "Meticulous single-pixel camera tracking, dark desaturated palettes, obsession with detail and procedure."
+                  {dir === "Prashanth Neel"
+                    ? "Atmospheric high-contrast black & coal aesthetics, relentless decibel design, towering hero elevation, and deep Khansaar lore."
+                    : dir === "Christopher Nolan"
+                    ? "Non-linear timelines, IMAX practical physics, Shepard tone auditory tension, and existential stakes."
                     : dir === "S.S. Rajamouli"
-                    ? "Grand visual emotion, larger-than-life character staging, high-octane interval sequences, and mythological scale."
-                    : "Iconic sharp dialogue, chapter structures, visual homage to world cinema, and kinetic editing."}
+                    ? "Monumental emotional staging, larger-than-life mythological scale, unstoppable character arcs, and cinematic grandeur."
+                    : dir === "Denis Villeneuve"
+                    ? "Slow-burn contemplation, brutalist architecture framing, and immersive acoustic tension."
+                    : dir === "David Fincher"
+                    ? "Single-pixel tracking, dark desaturated green-blue palettes, obsession with procedural mastery."
+                    : "Sharp rhythmic dialogue, chapter structures, and kinetic stylized energy."}
                 </p>
               </div>
             </div>

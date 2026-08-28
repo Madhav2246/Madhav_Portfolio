@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Space_Mono } from "next/font/google";
-import { Syne } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans, Space_Mono, Syne } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
   display: "swap",
 });
 
@@ -19,20 +23,20 @@ const spaceMono = Space_Mono({
 
 const syne = Syne({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
   variable: "--font-syne",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Madhav Yalamarthi — AI Engineer & ML Researcher",
+  title: "Madhav Yalamarthi — AI/ML Engineer & Researcher",
   description:
-    "AI Engineer, Machine Learning Researcher, Full Stack Developer. B.Tech AI at Amrita Vishwa Vidyapeetham. Hackathon finalist, builder, research aspirant.",
+    "AI/ML Engineer & Researcher – Continual Learning, Neuro-Symbolic RAG, Multi-Agent Systems. B.Tech AI at Amrita Vishwa Vidyapeetham. IIT Madras Hackathon Winner.",
   authors: [{ name: "Madhav Yalamarthi" }],
-  keywords: ["AI Engineer", "Machine Learning", "Full Stack", "Portfolio", "Madhav Yalamarthi"],
+  keywords: ["AI Engineer", "Machine Learning", "Continual Learning", "RAG", "Portfolio", "Madhav Yalamarthi"],
   openGraph: {
-    title: "Madhav Yalamarthi — AI Engineer",
-    description: "AI Engineer · ML Researcher · Full Stack Developer · Hackathon Builder",
+    title: "Madhav Yalamarthi — AI/ML Engineer & Researcher",
+    description: "AI/ML Engineer & Researcher · Continual Learning · Neuro-Symbolic RAG · Multi-Agent Systems",
     type: "website",
   },
 };
@@ -45,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${spaceMono.variable} ${syne.variable} font-sans bg-black text-[#f0f0f0] overflow-x-hidden antialiased`}
+        className={`${outfit.variable} ${jakarta.variable} ${spaceMono.variable} ${syne.variable} font-sans bg-[#06080d] text-[#e2e8f0] antialiased selection:bg-sky-500/30 selection:text-white`}
       >
         {children}
       </body>
