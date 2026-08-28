@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import type { AcademicData } from "@/lib/types";
-import type { SectionId } from "../PortfolioShell";
+import type { SectionId } from "@/lib/types";
 
 const TYPED_STRINGS = [
   "AI & Systems Engineer_",

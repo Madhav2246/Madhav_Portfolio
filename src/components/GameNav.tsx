@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import type { SectionId } from "./PortfolioShell";
+import type { SectionId } from "@/lib/types";
 
 const SECTIONS: { id: SectionId; label: string }[] = [
   { id: "home",         label: "Home" },

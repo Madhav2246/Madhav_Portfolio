@@ -1,4 +1,10 @@
+// Navigation section identifiers — shared across all components
+export type SectionId =
+  | "hero" | "home" | "about" | "projects" | "skills"
+  | "research" | "achievements" | "passions" | "contact" | "arcade";
+
 export interface Project {
+
   id: string;
   title: string;
   description: string;

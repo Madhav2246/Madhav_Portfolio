@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import type { SectionId } from "./PortfolioShell";
+import type { SectionId } from "@/lib/types";
 
 const NODES: { id: SectionId; label: string; num: string; icon?: string; special?: boolean }[] = [
   { id: "about",        label: "About",          num: "01" },
