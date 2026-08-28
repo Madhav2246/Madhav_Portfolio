@@ -7,6 +7,7 @@ import ProjectModal from "./ProjectModal";
 import CursorGlow from "./CursorGlow";
 import StoryboardTimeline from "./StoryboardTimeline";
 import AudioVisualizer from "./AudioVisualizer";
+import IntroSplash from "./IntroSplash";
 import { proceduralAudio } from "@/utils/proceduralAudio";
 
 const NeuralCanvas = dynamic(() => import("./NeuralCanvas"), { ssr: false });
@@ -97,6 +98,7 @@ function getSpotifyEmbedUrl(rawUrl: string): string {
 }
 
 export default function PortfolioShell({ projects, academic, achievements, research, hobbies }: Props) {
+  const [hasEntered, setHasEntered] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [projectCat, setProjectCat] = useState("all");
@@ -188,6 +190,7 @@ export default function PortfolioShell({ projects, academic, achievements, resea
 
   return (
     <div className="relative min-h-screen bg-void" style={{ color: "#f0ead6" }}>
+      {!hasEntered && <IntroSplash onEnter={() => setHasEntered(true)} />}
       <CursorGlow />
 
       {/* Ambient canvas */}
